@@ -1,0 +1,63 @@
+import ToggleColor from "./ToggleColor";
+
+export default function TogglePallate(props) {
+  return (
+    <div>
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"BLACK"}
+        bgColor={"black"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"GRAY"}
+        bgColor={"gray"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"WHITE"}
+        bgColor={"white"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"RED"}
+        bgColor={"red"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"ORANGE"}
+        bgColor={"orange"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"BLUE"}
+        bgColor={"blue"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"DODGER-BLUE"}
+        bgColor={"dodgerblue"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"GREEN"}
+        bgColor={"darkgreen"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"FOREST-GREEN"}
+        bgColor={"forestgreen"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"YELLOW"}
+        bgColor={"yellow"}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"PINK"}
+        bgColor={"deeppink"}
+      />
+    </div>
+  );
+}
