@@ -1,5 +1,5 @@
-import './App.css';
-import MyEditor from './components/DraftEditor/MyEditor';
+import "./App.css";
+import MyEditor from "./components/DraftEditor/MyEditor";
 
 function App() {
   return <MyEditor />;

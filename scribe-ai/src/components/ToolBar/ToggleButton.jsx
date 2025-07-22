@@ -2,7 +2,7 @@ export default function ToggleButton(props) {
   return (
     <button
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() => props.handleToggleInlineStyles(props.cmd)}
+      onClick={() => props.handler(props.cmd)}
       style={{ cursor: "pointer" }}
       title={props.title}
     >

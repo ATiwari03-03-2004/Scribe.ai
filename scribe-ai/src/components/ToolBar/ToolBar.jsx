@@ -1,42 +1,17 @@
-import ToggleButton from "./ToggleButton";
+import ToggleBlockStyle from "./ToggleBlockStyle";
+import ToggleInlineStyle from "./ToggleInlineStyle";
 import TogglePallate from "./TogglePallate";
 
 function ToolBar(props) {
   return (
-    <div className="tool-bar">
-      <ToggleButton
+    <div className="tool-bar" style={{zIndex: 2, position: "fixed", top: 0, width: "100%", height: "7rem", marginBottom: "1rem", backgroundColor: "#f5f5f5" }}>
+      <ToggleInlineStyle
         handleToggleInlineStyles={props.handleToggleInlineStyles}
-        cmd={"BOLD"}
-        title={"Bold"}
-        icon={"format_bold"}
-      />
-      <ToggleButton
-        handleToggleInlineStyles={props.handleToggleInlineStyles}
-        cmd={"ITALIC"}
-        title={"Italics"}
-        icon={"format_italic"}
-      />
-      <ToggleButton
-        handleToggleInlineStyles={props.handleToggleInlineStyles}
-        cmd={"UNDERLINE"}
-        title={"Underline"}
-        icon={"format_underlined"}
-      />
-      <ToggleButton
-        handleToggleInlineStyles={props.handleToggleInlineStyles}
-        cmd={"STRIKETHROUGH"}
-        title={"Strike-through"}
-        icon={"format_strikethrough"}
-      />
-      <ToggleButton
-        handleToggleInlineStyles={props.handleToggleInlineStyles}
-        cmd={"HIGHLIGHT"}
-        title={"Highlight"}
-        icon={"format_ink_highlighter"}
       />
       <TogglePallate
         handleToggleInlineStyles={props.handleToggleInlineStyles}
       />
+      <ToggleBlockStyle handleToggleBlockTypes={props.handleToggleBlockTypes} />
     </div>
   );
 }

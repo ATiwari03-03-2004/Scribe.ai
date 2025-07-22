@@ -21,47 +21,54 @@ function MyEditor() {
   }, []);
 
   let customStyleMaps = {
-    "HIGHLIGHT": {
+    HIGHLIGHT: {
       backgroundColor: "yellow",
     },
-    "RED": {
+    RED: {
       color: "red",
     },
-    "BLACK": {
+    BLACK: {
       color: "black",
     },
-    "BLUE": {
+    BLUE: {
       color: "blue",
     },
-    "GREEN": {
+    GREEN: {
       color: "darkgreen",
     },
-    "PINK": {
+    PINK: {
       color: "deeppink",
     },
-    "YELLOW": {
+    YELLOW: {
       color: "yellow",
     },
-    "WHITE": {
+    WHITE: {
       color: "white",
     },
     "DODGER-BLUE": {
       color: "dodgerblue",
     },
-    "ORANGE": {
+    ORANGE: {
       color: "orange",
     },
     "FOREST-GREEN": {
       color: "forestgreen",
     },
-    "GRAY": {
-      color: "gray"
-    }
+    GRAY: {
+      color: "gray",
+    },
   };
 
   let handleToggleInlineStyles = useCallback(
     (command) => {
       onChange(RichUtils.toggleInlineStyle(editorState, command));
+    },
+    [editorState, onChange]
+  );
+
+  let handleToggleBlockTypes = useCallback(
+    (command) => {
+      onChange(RichUtils.toggleBlockType(editorState, command));
     },
     [editorState, onChange]
   );
@@ -80,18 +87,23 @@ function MyEditor() {
   );
 
   return (
-    <div className="text-editor">
-      <ToolBar handleToggleInlineStyles={handleToggleInlineStyles} />
-      <Editor
-        customStyleMap={customStyleMaps}
-        editorState={editorState}
-        onChange={onChange}
-        handleKeyCommand={handleKeyCommand}
-        ref={editorRef}
-        style={{ width: "100vw", height: "100%" }}
-        placeholder="Type Something..."
+    <>
+      <ToolBar
+        handleToggleInlineStyles={handleToggleInlineStyles}
+        handleToggleBlockTypes={handleToggleBlockTypes}
       />
-    </div>
+      <div className="text-editor">
+        <Editor
+          customStyleMap={customStyleMaps}
+          editorState={editorState}
+          onChange={onChange}
+          handleKeyCommand={handleKeyCommand}
+          ref={editorRef}
+          style={{ width: "100vw", height: "100%" }}
+          placeholder="Type Something..."
+        />
+      </div>
+    </>
   );
 }
 
