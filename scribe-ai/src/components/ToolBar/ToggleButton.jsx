@@ -3,8 +3,16 @@ export default function ToggleButton(props) {
     <button
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => props.handler(props.cmd)}
-      style={{ cursor: "pointer" }}
       title={props.title}
+      style={
+        props.active
+          ? {
+              cursor: "pointer",
+              border: "1px solid black",
+              backgroundColor: "#ddd",
+            }
+          : { cursor: "pointer" }
+      }
     >
       <span className="material-symbols-outlined">{props.icon}</span>
     </button>

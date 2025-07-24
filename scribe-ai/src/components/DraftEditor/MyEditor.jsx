@@ -16,6 +16,12 @@ function MyEditor() {
     }
   }, []);
 
+  useEffect(() => {
+    if (editorState.getCurrentContent().hasText() === false) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [editorState]);
+
   const onChange = useCallback((newEditorState) => {
     setEditorState(newEditorState);
   }, []);
@@ -86,11 +92,27 @@ function MyEditor() {
     [onchange]
   );
 
+  function getPlaceholderForBlock(blockType) {
+    switch (blockType) {
+      case "header-one":
+        return "Enter a heading...";
+      case "blockquote":
+        return "Quote something...";
+      default:
+        return "Type something...";
+    }
+  }
+
   return (
     <>
       <ToolBar
         handleToggleInlineStyles={handleToggleInlineStyles}
+        currentInlineStyle={editorState.getCurrentInlineStyle()}
         handleToggleBlockTypes={handleToggleBlockTypes}
+        currentBlockStyle={editorState
+          .getCurrentContent()
+          .getBlockForKey(editorState.getSelection().getStartKey())
+          .getType()}
       />
       <div className="text-editor">
         <Editor

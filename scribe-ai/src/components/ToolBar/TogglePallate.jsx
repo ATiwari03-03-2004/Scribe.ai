@@ -7,56 +7,67 @@ export default function TogglePallate(props) {
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"BLACK"}
         bgColor={"black"}
+        active={props.activeStatus.has("BLACK")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"GRAY"}
         bgColor={"gray"}
+        active={props.activeStatus.has("GRAY")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"WHITE"}
         bgColor={"white"}
+        active={props.activeStatus.has("WHITE")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"RED"}
         bgColor={"red"}
+        active={props.activeStatus.has("RED")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"ORANGE"}
         bgColor={"orange"}
+        active={props.activeStatus.has("ORANGE")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"BLUE"}
         bgColor={"blue"}
+        active={props.activeStatus.has("BLUE")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"DODGER-BLUE"}
         bgColor={"dodgerblue"}
+        active={props.activeStatus.has("DODGER-BLUE")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"GREEN"}
         bgColor={"darkgreen"}
+        active={props.activeStatus.has("GREEN")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"FOREST-GREEN"}
         bgColor={"forestgreen"}
+        active={props.activeStatus.has("FOREST-GREEN")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"YELLOW"}
         bgColor={"yellow"}
+        active={props.activeStatus.has("YELLOW")}
       />
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"PINK"}
         bgColor={"deeppink"}
+        active={props.activeStatus.has("PINK")}
       />
     </div>
   );
