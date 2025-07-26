@@ -89,19 +89,20 @@ function MyEditor() {
       }
       return "not-handled";
     },
-    [onchange]
+    [onChange]
   );
 
-  function getPlaceholderForBlock(blockType) {
-    switch (blockType) {
-      case "header-one":
-        return "Enter a heading...";
-      case "blockquote":
-        return "Quote something...";
-      default:
-        return "Type something...";
-    }
-  }
+  // unused function? gets caught in ESLint errors
+  // function getPlaceholderForBlock(blockType) {
+  //   switch (blockType) {
+  //     case "header-one":
+  //       return "Enter a heading...";
+  //     case "blockquote":
+  //       return "Quote something...";
+  //     default:
+  //       return "Type something...";
+  //   }
+  // }
 
   return (
     <>
