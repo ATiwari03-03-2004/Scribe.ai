@@ -51,12 +51,6 @@ export default function ToggleBlockStyle(props) {
         title={"Quote"}
         icon={"format_quote"}
       />
-      <ToggleButton
-        handler={props.handleToggleBlockTypes}
-        cmd={"atomic"}
-        title={"Media"}
-        icon={"perm_media"}
-      />
     </>
   );
 }

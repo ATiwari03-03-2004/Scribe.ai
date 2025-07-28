@@ -3,10 +3,11 @@ import { Editor, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import ToolBar from "../ToolBar/ToolBar";
 import "./MyEditor.css";
+import { decorator } from "./CustomDecorators/LinkDecorator";
 
 function MyEditor() {
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    EditorState.createEmpty(decorator)
   );
 
   const editorRef = useRef(null);
@@ -81,7 +82,6 @@ function MyEditor() {
 
   const handleKeyCommand = useCallback(
     (command, editorState) => {
-      console.log(command);
       let newState = RichUtils.handleKeyCommand(editorState, command);
       if (newState) {
         onChange(newState);
@@ -89,19 +89,13 @@ function MyEditor() {
       }
       return "not-handled";
     },
-    [onchange]
+    [onChange]
   );
 
-  function getPlaceholderForBlock(blockType) {
-    switch (blockType) {
-      case "header-one":
-        return "Enter a heading...";
-      case "blockquote":
-        return "Quote something...";
-      default:
-        return "Type something...";
-    }
-  }
+  let contentState = editorState.getCurrentContent();
+  let firstBlock = contentState.getFirstBlock();
+  let blockType = firstBlock.getType();
+  let isEditorEmpty = contentState.hasText();
 
   return (
     <>
@@ -113,6 +107,8 @@ function MyEditor() {
           .getCurrentContent()
           .getBlockForKey(editorState.getSelection().getStartKey())
           .getType()}
+          editorState={editorState}
+          onChange={onChange}
       />
       <div className="text-editor">
         <Editor
@@ -122,7 +118,9 @@ function MyEditor() {
           handleKeyCommand={handleKeyCommand}
           ref={editorRef}
           style={{ width: "100vw", height: "100%" }}
-          placeholder="Type Something..."
+          placeholder={
+            !isEditorEmpty && blockType == 'unstyled' ? "Type Something..." : ""
+          }
         />
       </div>
     </>
