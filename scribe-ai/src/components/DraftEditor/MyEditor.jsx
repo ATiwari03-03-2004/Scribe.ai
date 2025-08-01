@@ -1,14 +1,74 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import {
+  Editor,
+  Modifier,
+  EditorState,
+  SelectionState,
+  RichUtils,
+} from "draft-js";
 import "draft-js/dist/Draft.css";
 import ToolBar from "../ToolBar/ToolBar";
 import "./MyEditor.css";
-import { decorator } from "./CustomDecorators/LinkDecorator";
+import decorator from "./CustomDecorators/Decorator";
+import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
 
 function MyEditor() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+
+  // Speech to text states
+  let [isRecognizing, setIsRecognizing] = useState(false);
+  let [interimRecognizedText, setInterimRecognizedText] = useState("");
+  let [finalRecognizedText, setFinalRecognizedText] = useState("");
+  let [isFinal, setIsFinal] = useState(false);
+
+  const updateCustomSpeechBlockText = (
+    editorState,
+    interim,
+    final,
+    isFinal
+  ) => {
+    const contentState = editorState.getCurrentContent();
+    const blockMap = contentState.getBlockMap();
+
+    const targetBlock = [...blockMap.values()]
+      .reverse()
+      .find((block) => block.getType() === "custom-speech-to-text");
+
+    if (!targetBlock) return;
+
+    const blockKey = targetBlock.getKey();
+    const blockText = targetBlock.getText();
+    const insertionPoint = blockText.length;
+
+    const selection = SelectionState.createEmpty(blockKey).merge({
+      anchorOffset: 0,
+      focusOffset: insertionPoint,
+    });
+
+    const newText = isFinal ? final : final + interim;
+    if (!newText) return;
+
+    const newContent = Modifier.replaceText(contentState, selection, newText);
+    const newEditorState = EditorState.push(
+      editorState,
+      newContent,
+      "insert-characters"
+    );
+    onChange(newEditorState);
+  };
+  
+  useEffect(() => {
+    if (interimRecognizedText) {
+      updateCustomSpeechBlockText(
+        editorState,
+        interimRecognizedText,
+        finalRecognizedText,
+        isFinal
+      );
+    }
+  }, [interimRecognizedText, finalRecognizedText, isFinal]);
 
   const editorRef = useRef(null);
   useEffect(() => {
@@ -107,8 +167,16 @@ function MyEditor() {
           .getCurrentContent()
           .getBlockForKey(editorState.getSelection().getStartKey())
           .getType()}
-          editorState={editorState}
-          onChange={onChange}
+        editorState={editorState}
+        onChange={onChange}
+        isRecognizing={isRecognizing}
+        setIsRecognizing={setIsRecognizing}
+        interimRecognizedText={interimRecognizedText}
+        setInterimRecognizedText={setInterimRecognizedText}
+        finalRecognizedText={finalRecognizedText}
+        setFinalRecognizedText={setFinalRecognizedText}
+        isFinal={isFinal}
+        setIsFinal={setIsFinal}
       />
       <div className="text-editor">
         <Editor
@@ -119,7 +187,14 @@ function MyEditor() {
           ref={editorRef}
           style={{ width: "100vw", height: "100%" }}
           placeholder={
-            !isEditorEmpty && blockType == 'unstyled' ? "Type Something..." : ""
+            !isEditorEmpty && blockType == "unstyled" ? "Type Something..." : ""
+          }
+          blockRendererFn={(block) =>
+            customBlockRenderer(block, {
+              interimRecognizedText,
+              finalRecognizedText,
+              isFinal,
+            })
           }
         />
       </div>

@@ -1,8 +1,5 @@
-import React from "react";
-import { Editor, EditorState, CompositeDecorator } from "draft-js";
-
 // Link DEcorator Strategy
-function findLinkEntities(contentBlock, callback, contentState) {
+const findLinkEntities = (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges(
     (character) => {
       const entityKey = character.getEntity();
@@ -28,12 +25,4 @@ const Link = (props) => {
   );
 };
 
-
-const decorator = new CompositeDecorator([
-  {
-    strategy: findLinkEntities,
-    component: Link,
-  },
-]);
-
-export {decorator};
+export {findLinkEntities, Link};
