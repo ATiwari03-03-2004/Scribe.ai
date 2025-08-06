@@ -81,7 +81,7 @@ export default function SpeechToText(props) {
     const newBlock = new ContentBlock({
       key: blockKey,
       type: "custom-speech-to-text",
-      text: " ",
+      text: "Listening...",
     });
     const blockMap = contentState.getBlockMap();
     const blocksBefore = blockMap
@@ -169,12 +169,6 @@ export default function SpeechToText(props) {
       ) : (
         <></>
       )}
-      {/* {isRecognizing ? (
-        <RecognizedTextStateCustomBlock
-          interimRecognizedText={interimRecognizedText}
-          finalRecognizedText={finalRecognizedText}
-        />
-      ) : null} */}
     </>
   );
 }

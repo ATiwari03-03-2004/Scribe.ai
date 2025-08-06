@@ -11,8 +11,10 @@ import ToolBar from "../ToolBar/ToolBar";
 import "./MyEditor.css";
 import decorator from "./CustomDecorators/Decorator";
 import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
+import Navbar from "../Navbar/Navbar";
 
 function MyEditor() {
+  // Editor State
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
@@ -159,7 +161,7 @@ function MyEditor() {
 
   return (
     <>
-      <ToolBar
+      <Navbar
         handleToggleInlineStyles={handleToggleInlineStyles}
         currentInlineStyle={editorState.getCurrentInlineStyle()}
         handleToggleBlockTypes={handleToggleBlockTypes}
