@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SpeechRecognition, recognition } from "./language";
 import LanguageSelector from "../Modal/LanguageSelector";
-import { EditorState, Modifier } from "draft-js";
+import { EditorState, ContentBlock, genKey } from "draft-js";
 
 export default function SpeechToText(props) {
   let [modalDisplay, setModalDisplay] = useState(false);
@@ -19,6 +19,7 @@ export default function SpeechToText(props) {
   let startRecognition = () => {
     recognition.continuous = true;
     recognition.interimResults = true;
+
     recognition.onresult = (event) => {
       let interimTranscript = "";
       for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -45,8 +46,20 @@ export default function SpeechToText(props) {
         alert("Speech recognition error " + event.error);
       }
       console.log("Speech recognition error: ", event.error);
-      setIsRecognizing(false);
+      props.setIsRecognizing(false);
+      props.setIsRecognizing(false);
+      props.setInterimRecognizedText("");
+      props.setFinalRecognizedText("");
+      props.setIsFinal(false);
       recognition.stop();
+    };
+
+    recognition.onend = (event) => {
+      alert("Recognition finished!");
+      props.setIsRecognizing(false);
+      props.setInterimRecognizedText("");
+      props.setFinalRecognizedText("");
+      props.setIsFinal(false);
     };
 
     recognition.start();
@@ -55,16 +68,45 @@ export default function SpeechToText(props) {
   let stopRecognition = () => {
     recognition.stop();
     props.setIsRecognizing(false);
+    props.setIsRecognizing(false);
+    props.setInterimRecognizedText("");
+    props.setFinalRecognizedText("");
+    props.setIsFinal(false);
   };
 
   let insertBlock = () => {
     const contentState = props.editorState.getCurrentContent();
-    const selection = props.editorState.getSelection();
-    const newContentState = Modifier.setBlockType(
-      contentState,
-      selection,
-      "custom-speech-to-text"
-    );
+    const selectionState = props.editorState.getSelection();
+    const blockKey = genKey();
+    const newBlock = new ContentBlock({
+      key: blockKey,
+      type: "custom-speech-to-text",
+      text: " ",
+    });
+    const blockMap = contentState.getBlockMap();
+    const blocksBefore = blockMap
+      .toSeq()
+      .takeUntil((v) => v.getKey() === selectionState.getStartKey());
+    const blocksAfter = blockMap
+      .toSeq()
+      .skipUntil((v) => v.getKey() === selectionState.getStartKey())
+      .rest();
+    const newBlocks = blocksBefore
+      .concat(
+        [
+          [
+            selectionState.getStartKey(),
+            blockMap.get(selectionState.getStartKey()),
+          ],
+        ],
+        [[newBlock.getKey(), newBlock]],
+        blocksAfter
+      )
+      .toOrderedMap();
+    const newContentState = contentState.merge({
+      blockMap: newBlocks,
+      selectionAfter: selectionState,
+    });
     let newEditorState = EditorState.push(
       props.editorState,
       newContentState,

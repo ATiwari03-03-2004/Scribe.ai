@@ -2,7 +2,6 @@ import InterimSpeechRecognizedTextBlock from "../../ToolBar/InterimSpeechRecogni
 
 export default function customBlockRenderer(block, sharedState) {
   if (block.getType() === "custom-speech-to-text") {
-    console.log(sharedState)
     return {
       component: InterimSpeechRecognizedTextBlock,
       editable: true,
