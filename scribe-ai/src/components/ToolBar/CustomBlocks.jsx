@@ -1,5 +1,6 @@
 import LinkBlock from "./LinkBlock";
 import SpeechToText from "./SpeechToText";
+import TextToSpeech from "./TextToSpeech";
 
 export default function CustomBlocks(props) {
   return (
@@ -17,6 +18,7 @@ export default function CustomBlocks(props) {
         isFinal={props.isFinal}
         setIsFinal={props.setIsFinal}
       />
+      <TextToSpeech />
     </div>
   );
 }
