@@ -7,7 +7,6 @@ import {
   RichUtils,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-import ToolBar from "../ToolBar/ToolBar";
 import "./MyEditor.css";
 import decorator from "./CustomDecorators/Decorator";
 import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";

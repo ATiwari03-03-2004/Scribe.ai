@@ -1,6 +1,8 @@
 import LinkBlock from "./LinkBlock";
 import SpeechToText from "./SpeechToText";
 import TextToSpeech from "./TextToSpeech";
+import Undo from "./Undo";
+import Redo from "./Redo";
 
 export default function CustomBlocks(props) {
   return (
@@ -18,7 +20,7 @@ export default function CustomBlocks(props) {
         isFinal={props.isFinal}
         setIsFinal={props.setIsFinal}
       />
-      <TextToSpeech />
+      <TextToSpeech editorState={props.editorState} />
     </div>
   );
 }
