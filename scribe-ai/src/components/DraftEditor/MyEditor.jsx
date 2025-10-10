@@ -4,6 +4,7 @@ import {
   Modifier,
   EditorState,
   SelectionState,
+  AtomicBlockUtils,
   RichUtils,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
@@ -58,7 +59,7 @@ function MyEditor() {
     );
     onChange(newEditorState);
   };
-  
+
   useEffect(() => {
     if (interimRecognizedText) {
       updateCustomSpeechBlockText(
@@ -157,6 +158,40 @@ function MyEditor() {
   let blockType = firstBlock.getType();
   let isEditorEmpty = contentState.hasText();
 
+  let handleImageURLEmbed = (URL) => {
+    const contentState = editorState.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity(
+      "IMAGE",
+      "IMMUTABLE",
+      { src: URL }
+    );
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+      editorState,
+      entityKey,
+      " "
+    );
+    onChange(newEditorState);
+  };
+
+  let handleOnPaste = (e) => {
+    if (
+      e.clipboardData.files.length &&
+      e.clipboardData.files[0].type.startsWith("image/")
+    ) {
+      let base64String = "";
+      let reader = new FileReader();
+      reader.onload = function () {
+        base64String = reader.result;
+        if (base64String) handleImageURLEmbed(base64String);
+      };
+      reader.onerror = function () {
+        alert("Something went wrong with Image embeding!");
+      };
+      reader.readAsDataURL(e.clipboardData.files[0]);
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -178,7 +213,7 @@ function MyEditor() {
         isFinal={isFinal}
         setIsFinal={setIsFinal}
       />
-      <div className="text-editor">
+      <div className="text-editor" onPaste={handleOnPaste}>
         <Editor
           customStyleMap={customStyleMaps}
           editorState={editorState}
