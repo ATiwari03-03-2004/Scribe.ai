@@ -11,7 +11,7 @@ export default function Undo(props) {
       title="UNDO&#10;Ctrl + Z"
       style={{ cursor: "pointer" }}
     >
-      <span class="material-symbols-outlined">undo</span>
+      <span className="material-symbols-outlined">undo</span>
     </button>
   );
 }

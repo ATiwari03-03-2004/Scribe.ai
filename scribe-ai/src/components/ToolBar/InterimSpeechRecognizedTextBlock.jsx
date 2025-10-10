@@ -1,7 +1,6 @@
+import { EditorBlock } from "draft-js";
+
 export default function InterimSpeechRecognizedTextBlock(props) {
-  return (
-    <div className="speech-box">
-      {props.block.getText()}
-    </div>
-  );
+  console.log(props);
+  return <EditorBlock {...props} />;
 }

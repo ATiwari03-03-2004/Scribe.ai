@@ -11,7 +11,7 @@ export default function Redo(props) {
       title="REDO&#10;Ctrl + Y"
       style={{ cursor: "pointer" }}
     >
-      <span class="material-symbols-outlined">redo</span>
+      <span className="material-symbols-outlined">redo</span>
     </button>
   );
 }

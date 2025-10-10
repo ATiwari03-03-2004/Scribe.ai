@@ -13,7 +13,6 @@ import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
 import Navbar from "../Navbar/Navbar";
 
 function MyEditor() {
-  // Editor State
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
