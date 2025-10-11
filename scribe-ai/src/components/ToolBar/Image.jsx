@@ -80,4 +80,3 @@ export default function Image(props) {
     </>
   );
 }
-//   <span className="material-symbols-outlined">video_library</span>

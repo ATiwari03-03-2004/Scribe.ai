@@ -4,6 +4,7 @@ import TextToSpeech from "./TextToSpeech";
 import Undo from "./Undo";
 import Redo from "./Redo";
 import Image from "./Image";
+import Video from "./Video";
 
 export default function CustomBlocks(props) {
   return (
@@ -24,7 +25,8 @@ export default function CustomBlocks(props) {
       <TextToSpeech editorState={props.editorState} />
       <Undo editorState={props.editorState} onChange={props.onChange} />
       <Redo editorState={props.editorState} onChange={props.onChange} />
-      <Image editorState={props.editorState} onChange={props.onChange}/>
+      <Image editorState={props.editorState} onChange={props.onChange} />
+      <Video editorState={props.editorState} onChange={props.onChange} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function Redo(props) {
     <button
       onMouseDown={(e) => e.preventDefault()}
       onClick={handleRedo}
-      title="REDO&#10;Ctrl + Y"
+      title="REDO"
       style={{ cursor: "pointer" }}
     >
       <span className="material-symbols-outlined">redo</span>

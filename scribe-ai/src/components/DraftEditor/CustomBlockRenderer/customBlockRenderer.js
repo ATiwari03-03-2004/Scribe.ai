@@ -1,5 +1,5 @@
 import InterimSpeechRecognizedTextBlock from "../../ToolBar/InterimSpeechRecognizedTextBlock";
-import ImageBlock from "../../ToolBar/ImageBlock";
+import MediaBlock from "../../ToolBar/MediaBlock";
 
 export default function customBlockRenderer(block, sharedState) {
   if (block.getType() === "custom-speech-to-text") {
@@ -10,7 +10,7 @@ export default function customBlockRenderer(block, sharedState) {
     };
   } else if (block.getType() === "atomic") {
     return {
-      component: ImageBlock,
+      component: MediaBlock,
       editable: false,
     }
   }

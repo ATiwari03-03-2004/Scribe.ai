@@ -8,7 +8,7 @@ export default function Undo(props) {
     <button
       onMouseDown={(e) => e.preventDefault()}
       onClick={handleUndo}
-      title="UNDO&#10;Ctrl + Z"
+      title="UNDO"
       style={{ cursor: "pointer" }}
     >
       <span className="material-symbols-outlined">undo</span>
