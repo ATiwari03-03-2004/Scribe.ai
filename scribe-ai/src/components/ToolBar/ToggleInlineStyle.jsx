@@ -38,6 +38,20 @@ export default function ToggleInlineStyle(props) {
         icon={"format_ink_highlighter"}
         active={props.activeStatus.has("HIGHLIGHT")}
       />
+      <ToggleButton
+        handler={props.handleToggleInlineStyles}
+        cmd={"SUBSCRIPT"}
+        title={"Subscript"}
+        icon={"subscript"}
+        active={props.activeStatus.has("SUBSCRIPT")}
+      />
+      <ToggleButton
+        handler={props.handleToggleInlineStyles}
+        cmd={"SUPERSCRIPT"}
+        title={"Superscript"}
+        icon={"superscript"}
+        active={props.activeStatus.has("SUPERSCRIPT")}
+      />
     </>
   );
 }

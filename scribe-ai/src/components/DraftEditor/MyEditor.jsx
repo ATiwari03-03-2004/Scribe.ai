@@ -18,7 +18,6 @@ function MyEditor() {
     EditorState.createEmpty(decorator)
   );
 
-  // Speech to text states
   let [isRecognizing, setIsRecognizing] = useState(false);
   let [interimRecognizedText, setInterimRecognizedText] = useState("");
   let [finalRecognizedText, setFinalRecognizedText] = useState("");
@@ -125,7 +124,18 @@ function MyEditor() {
     GRAY: {
       color: "gray",
     },
+    SUBSCRIPT: { verticalAlign: "sub", fontSize: "smaller" },
+    SUPERSCRIPT: { verticalAlign: "super", fontSize: "smaller" },
   };
+
+  let blockStyleFn = useCallback((contentBlock) => {
+    let type = contentBlock.getType();
+    if (type === "LEFT_ALIGN") return "LEFT_ALIGN";
+    if (type === "CENTER_ALIGN") return "CENTER_ALIGN";
+    if (type === "RIGHT_ALIGN") return "RIGHT_ALIGN";
+    if (type === "JUSTIFY") return "JUSTIFY";
+    return null;
+  });
 
   let handleToggleInlineStyles = useCallback(
     (command) => {
@@ -224,6 +234,7 @@ function MyEditor() {
           placeholder={
             !isEditorEmpty && blockType == "unstyled" ? "Type Something..." : ""
           }
+          blockStyleFn={blockStyleFn}
           blockRendererFn={(block) =>
             customBlockRenderer(block, {
               interimRecognizedText,

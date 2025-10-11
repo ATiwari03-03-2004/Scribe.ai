@@ -7,22 +7,22 @@
   margin-bottom: 1rem;
   background-color: #f5f5f5;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .logo {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .logo img {
-  height: 5rem;
-  width: 5rem;
-  border-radius: 1rem;
-  margin: 1rem 1rem 1rem 1rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.2rem;
+  margin: 0.35rem 0.35rem 0.35rem 0.35rem;
   transition: transform 0.25s ease-in-out 0.1s;
 }
 
 .logo img:hover {
-    transform: scale(1.01, 1.01);
-    box-shadow: 2px 2px 10px gray;
+  transform: scale(1.01, 1.01);
+  box-shadow: 2px 2px 10px gray;
 }

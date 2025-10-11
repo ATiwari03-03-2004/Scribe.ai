@@ -2,6 +2,7 @@ import ToggleBlockStyle from "./ToggleBlockStyle";
 import ToggleInlineStyle from "./ToggleInlineStyle";
 import TogglePallate from "./TogglePallate";
 import CustomBlocks from "./CustomBlocks";
+import "../ToolBar/ToolBar.css"
 
 export default function ToolBar(props) {
   return (
@@ -14,7 +15,7 @@ export default function ToolBar(props) {
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         activeStatus={props.currentInlineStyle}
       />
-      <ToggleBlockStyle handleToggleBlockTypes={props.handleToggleBlockTypes} />
+      <ToggleBlockStyle handleToggleBlockTypes={props.handleToggleBlockTypes} activeStatus={props.currentBlockStyle} />
       <CustomBlocks
         editorState={props.editorState}
         onChange={props.onChange}

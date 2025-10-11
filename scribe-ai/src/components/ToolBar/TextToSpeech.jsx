@@ -1,5 +1,5 @@
 export default function TextToSpeech(props) {
-  // Temporary TTS -> will replace with gemini tts in backend
+
   let handleSpeech = () => {
     let text = props.editorState.getCurrentContent().getPlainText();
     const utterance = new SpeechSynthesisUtterance(text);
