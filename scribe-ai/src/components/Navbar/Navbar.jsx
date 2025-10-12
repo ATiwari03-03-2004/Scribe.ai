@@ -11,7 +11,6 @@ export default function Navbar(props) {
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         currentInlineStyle={props.currentInlineStyle}
         handleToggleBlockTypes={props.handleToggleBlockTypes}
-        handleFontChange={props.handleFontChange}
         currentBlockStyle={props.currentBlockStyle}
         editorState={props.editorState}
         onChange={props.onChange}

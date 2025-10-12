@@ -8,7 +8,7 @@ import Video from "./Video";
 
 export default function CustomBlocks(props) {
   return (
-    <div className="custom-block">
+    <div className="custom-block" style={{paddingRight: "0.35rem"}} >
       <LinkBlock editorState={props.editorState} onChange={props.onChange} />
       <Image
         editorState={props.editorState}

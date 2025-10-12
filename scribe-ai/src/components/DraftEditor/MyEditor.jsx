@@ -150,6 +150,21 @@ function MyEditor() {
     BRUSH_SCRIPT_MT: { fontFamily: "Brush Script MT, cursive, sans-serif" },
     IMPACT: { fontFamily: "Impact, Charcoal, sans-serif" },
     FANTASY: { fontFamily: "Fantasy, Impact, Charcoal, sans-serif" },
+    EIGHT: { fontSize: '8px', lineHeight: '12px' },
+    NINE: { fontSize: '9px', lineHeight: '14px' },
+    TEN: { fontSize: '10px', lineHeight: '15px' },
+    ELEVEN: { fontSize: '11px', lineHeight: '16px' },
+    TWELVE: { fontSize: '12px', lineHeight: '18px' },
+    FOURTEEN: { fontSize: '14px', lineHeight: '21px' },
+    SIXTEEN: { fontSize: '16px', lineHeight: '24px' },
+    EIGHTEEN: { fontSize: '18px', lineHeight: '27px' },
+    TWENTY: { fontSize: '20px', lineHeight: '30px' },
+    TWENTYTWO: { fontSize: '22px', lineHeight: '33px' },
+    TWENTYFOUR: { fontSize: '24px', lineHeight: '36px' },
+    TWENTYEIGHT: { fontSize: '28px', lineHeight: '42px' },
+    THIRTYSIX: { fontSize: '36px', lineHeight: '54px' },
+    FORTYEIGHT: { fontSize: '48px', lineHeight: '72px' },
+    SEVENTYTWO: { fontSize: '72px', lineHeight: '108px' }
   };
 
   let blockStyleFn = useCallback((contentBlock) => {
@@ -160,48 +175,6 @@ function MyEditor() {
     if (type === "JUSTIFY") return "JUSTIFY";
     return null;
   });
-
-  const FONT_STYLES = [
-    "ARIAL",
-    "HELVETICA",
-    "VERDANA",
-    "TAHOMA",
-    "TREBUCHET_MS",
-    "SEGOE_UI",
-    "GENEVA",
-    "TIMES_NEW_ROMAN",
-    "GEORGIA",
-    "PALATINO_LINOTYPE",
-    "BOOK_ANTIQUA",
-    "GARAMOND",
-    "COURIER_NEW",
-    "LUCIDA_CONSOLE",
-    "MONACO",
-    "CONSOLAS",
-    "COMIC_SANS_MS",
-    "BRUSH_SCRIPT_MT",
-    "IMPACT",
-    "FANTASY",
-  ];
-
-  let handleFontChange = useCallback((fontKey) => {
-    const selection = editorState.getSelection();
-    let nextContentState = editorState.getCurrentContent();
-    FONT_STYLES.forEach((fontStyle) => {
-      nextContentState = Modifier.removeInlineStyle(
-        nextContentState,
-        selection,
-        fontStyle
-      );
-    });
-    let nextEditorState = EditorState.push(
-      editorState,
-      nextContentState,
-      "change-inline-style"
-    );
-    nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, fontKey);
-    onChange(nextEditorState);
-  }, [onChange, editorState]);
 
   let handleToggleInlineStyles = useCallback(
     (command) => {
@@ -289,7 +262,6 @@ function MyEditor() {
         handleToggleInlineStyles={handleToggleInlineStyles}
         currentInlineStyle={editorState.getCurrentInlineStyle()}
         handleToggleBlockTypes={handleToggleBlockTypes}
-        handleFontChange={handleFontChange}
         currentBlockStyle={editorState
           .getCurrentContent()
           .getBlockForKey(editorState.getSelection().getStartKey())

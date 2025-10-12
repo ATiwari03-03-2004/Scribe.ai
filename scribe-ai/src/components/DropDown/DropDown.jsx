@@ -84,7 +84,6 @@ export default function DropDown(props) {
 
   useEffect(() => {
     if (props.isClose.open && props.buttonref) {
-      console.log(props.buttonref.current.getBoundingClientRect());
       setPositions((prev) => {
         return {
           left:
@@ -106,20 +105,26 @@ export default function DropDown(props) {
             position: "absolute",
             left: `${positions.left}px`,
             top: `${positions.top}px`,
+            width: "5.5rem",
           }}
           className="DD"
         >
           <button
-            className="DDItem"
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => props.handleImageURL}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", width: "5.5rem" }}
           >
             Embed URL
           </button>
           <br />
+
           <label htmlFor="img" className="DDItem" style={{ cursor: "pointer" }}>
-            Choose file
+            <button
+              onMouseDown={(e) => e.preventDefault()}
+              style={{ cursor: "pointer", width: "5.5rem" }}
+            >
+              Choose File
+            </button>
           </label>
           <input
             type="file"
@@ -158,6 +163,36 @@ export default function DropDown(props) {
               }}
             >
               {font.name}
+            </button>
+          ))}
+        </div>
+      ) : props.isClose.dropdown === "font-size" ? (
+        <div
+          style={{
+            position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
+            display: "flex",
+            flexDirection: "column",
+            width: "3rem",
+          }}
+          className="DD"
+        >
+          {props.fontSizes.map((fontSize) => (
+            <button
+              key={fontSize.key}
+              className="font"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                props.handler(fontSize.key);
+                props.handleDropDown("");
+                props.setFontSize(fontSize.name);
+              }}
+              style={{
+                cursor: "pointer",
+              }}
+            >
+              {fontSize.name}
             </button>
           ))}
         </div>

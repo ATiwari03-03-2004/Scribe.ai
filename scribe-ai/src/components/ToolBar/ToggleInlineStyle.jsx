@@ -1,10 +1,11 @@
 import ToggleButton from "./ToggleButton";
 import Font from "./Font";
 import "../ToolBar/ToggleInlineStyle.css";
+import FontSize from "./FontSize";
 
 export default function ToggleInlineStyle(props) {
   return (
-    <div className="inline-style">
+    <div className="inline-style" style={{paddingLeft: "0.35rem"}}>
       <Font
         handler={props.handleToggleInlineStyles}
         title={"Font"}
@@ -12,6 +13,11 @@ export default function ToggleInlineStyle(props) {
         handleDropDown={props.handleDropDown}
         activeStatus={props.activeStatus}
       />
+      <FontSize handler={props.handleToggleInlineStyles}
+        title={"Font Size"}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
+        activeStatus={props.activeStatus} />
       <ToggleButton
         handler={props.handleToggleInlineStyles}
         cmd={"BOLD"}

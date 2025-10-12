@@ -51,9 +51,9 @@ export default function Image(props) {
       >
         <span className="material-symbols-outlined">image</span>
         {props.isClose.open && props.isClose.dropdown === "image" ? (
-          <span className="material-symbols-outlined">arrow_drop_up</span>
+          <span className="material-symbols-outlined drop" style={{backgroundColor: "gray"}}>arrow_drop_up</span>
         ) : (
-          <span className="material-symbols-outlined">arrow_drop_down</span>
+          <span className="material-symbols-outlined drop">arrow_drop_down</span>
         )}
       </button>
       {props.isClose.open && props.isClose.dropdown === "image" ? (

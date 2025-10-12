@@ -28,15 +28,38 @@ export default function Font(props) {
     { key: "FANTASY", name: "Fantasy" },
   ];
 
+  const fontStylesMap = {
+    ARIAL: "Arial",
+    HELVETICA: "Helvetica",
+    VERDANA: "Verdana",
+    TAHOMA: "Tahoma",
+    TREBUCHET_MS: "Trebuchet MS",
+    SEGOE_UI: "Segoe UI",
+    GENEVA: "Geneva",
+    TIMES_NEW_ROMAN: "Times New Roman",
+    GEORGIA: "Georgia",
+    PALATINO_LINOTYPE: "Palatino Linotype",
+    BOOK_ANTIQUA: "Book Antiqua",
+    GARAMOND: "Garamond",
+    COURIER_NEW: "Courier New",
+    LUCIDA_CONSOLE: "Lucida Console",
+    MONACO: "Monaco",
+    CONSOLAS: "Consolas",
+    COMIC_SANS_MS: "Comic Sans MS",
+    BRUSH_SCRIPT_MT: "Brush Script MT",
+    IMPACT: "Impact",
+    FANTASY: "Fantasy",
+  };
+
   useEffect(() => {
     let activeFont = fontStyles.find((fontStyle) =>
       props.activeStatus.has(fontStyle.key)
     );
-    if (activeFont)
-      setFont(
-        props.activeStatus._map._list._tail.array[props.activeStatus.size - 1]
-      );
-    else setFont("Arial");
+    if (activeFont) {
+      let key =
+        props.activeStatus._map._list._tail.array[props.activeStatus.size - 1][0];
+      setFont(fontStylesMap[key]);
+    } else setFont("Arial");
   }, [props.activeStatus]);
 
   return (
@@ -45,25 +68,22 @@ export default function Font(props) {
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => props.handleDropDown("font")}
         title={props.title}
-        style={{ cursor: "pointer", paddingRight: "0px" }}
+        style={{
+          cursor: "pointer",
+          paddingRight: "0px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "10.5rem",
+        }}
         ref={buttonref}
       >
-        <span
-          className="current-font"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "10rem",
-          }}
-        >
-          <span>{font}</span>
-          {props.isClose.open && props.isClose.dropdown === "font" ? (
-            <span className="material-symbols-outlined">arrow_drop_up</span>
-          ) : (
-            <span className="material-symbols-outlined">arrow_drop_down</span>
-          )}
-        </span>
+        <span>{font}</span>
+        {props.isClose.open && props.isClose.dropdown === "font" ? (
+          <span className="material-symbols-outlined drop" style={{backgroundColor: "gray"}}>arrow_drop_up</span>
+        ) : (
+          <span className="material-symbols-outlined drop">arrow_drop_down</span>
+        )}
       </button>
       {props.isClose.open && props.isClose.dropdown === "font" ? (
         <DropDown

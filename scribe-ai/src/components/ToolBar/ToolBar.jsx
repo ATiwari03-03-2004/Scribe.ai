@@ -20,11 +20,17 @@ export default function ToolBar(props) {
     });
   };
   return (
-    <div className="tool-bar">
+    <div
+      className="tool-bar"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
       <ToggleInlineStyle
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         handleToggleBlockTypes={props.handleToggleBlockTypes}
-        handleFontChange={props.handleFontChange}
         activeStatus={props.currentInlineStyle}
         editorState={props.editorState}
         isClose={isClose}

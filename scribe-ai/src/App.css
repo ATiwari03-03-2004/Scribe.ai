@@ -25,17 +25,4 @@ blockquote {
 .DD {
   background-color: #acacac;
   border-radius: 0.25rem;
-  border: 0.5px solid gray;
-}
-
-.DD .DDItem {
-  background-color: transparent;
-  border: none;
-  text-align: center;
-  width: 100%;
-  display: inline-block;
-}
-
-.DD .DDItem:hover {
-  background-color: #808080;
 }
