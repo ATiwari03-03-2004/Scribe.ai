@@ -42,16 +42,20 @@ export default function FontSize(props) {
   };
 
   useEffect(() => {
-    let activeFont = fontSizes.find((fontSize) =>
+    let key = "EIGHT";
+    let activeFontSize = fontSizes.find((fontSize) =>
       props.activeStatus.has(fontSize.key)
     );
-    if (activeFont) {
-      setFontSize(
-        fontSizesMap[
-          props.activeStatus._map._list._tail.array[props.activeStatus.size - 1][0]
-        ]
-      );
-    } else setFontSize("8");
+    if (!activeFontSize) {
+      setFontSize("8");
+      return;
+    }
+    props.activeStatus._map._list._tail.array.forEach(arr => {
+      if (fontSizesMap[arr[0]]) {
+        key = arr[0];
+      }
+    })
+    setFontSize(fontSizesMap[key]);
   }, [props.activeStatus]);
 
   return (

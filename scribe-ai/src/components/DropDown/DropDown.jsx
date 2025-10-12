@@ -111,20 +111,26 @@ export default function DropDown(props) {
         >
           <button
             onMouseDown={(e) => e.preventDefault()}
-            onClick={() => props.handleImageURL}
-            style={{ cursor: "pointer", width: "5.5rem" }}
+            onClick={() => props.handleImageURL()}
+            style={{ cursor: "pointer", width: "5.6rem", border: "1px solid gray" }}
           >
             Embed URL
           </button>
           <br />
-
-          <label htmlFor="img" className="DDItem" style={{ cursor: "pointer" }}>
-            <button
-              onMouseDown={(e) => e.preventDefault()}
-              style={{ cursor: "pointer", width: "5.5rem" }}
-            >
-              Choose File
-            </button>
+          <label
+            htmlFor="img"
+            className="DDItem"
+            style={{
+              cursor: "pointer",
+              width: "5.5rem",
+              backgroundColor: "rgb(240, 240, 240)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px solid gray",
+            }}
+          >
+            Choose File
           </label>
           <input
             type="file"
@@ -181,7 +187,7 @@ export default function DropDown(props) {
           {props.fontSizes.map((fontSize) => (
             <button
               key={fontSize.key}
-              className="font"
+              className="font-size"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 props.handler(fontSize.key);

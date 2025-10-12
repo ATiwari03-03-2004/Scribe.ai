@@ -52,14 +52,20 @@ export default function Font(props) {
   };
 
   useEffect(() => {
+    let key = "ARIAL";
     let activeFont = fontStyles.find((fontStyle) =>
       props.activeStatus.has(fontStyle.key)
     );
-    if (activeFont) {
-      let key =
-        props.activeStatus._map._list._tail.array[props.activeStatus.size - 1][0];
-      setFont(fontStylesMap[key]);
-    } else setFont("Arial");
+    if (!activeFont) {
+      setFont("Arial")
+      return;
+    }
+    props.activeStatus._map._list._tail.array.forEach(arr => {
+      if (fontStylesMap[arr[0]]) {
+        key = arr[0];
+      }
+    })
+    setFont(fontStylesMap[key]);
   }, [props.activeStatus]);
 
   return (

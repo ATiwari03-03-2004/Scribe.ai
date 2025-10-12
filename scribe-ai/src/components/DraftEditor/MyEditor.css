@@ -19,3 +19,7 @@
 .JUSTIFY .public-DraftStyleDefault-block {
   text-align: justify;
 }
+
+.DD button:hover, .DD label:hover {
+  background-color: rgb(220, 220, 220) !important;
+}
