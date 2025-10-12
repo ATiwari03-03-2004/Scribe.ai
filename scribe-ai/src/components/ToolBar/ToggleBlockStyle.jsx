@@ -2,7 +2,7 @@ import ToggleButton from "./ToggleButton";
 
 export default function ToggleBlockStyle(props) {
   return (
-    <>
+    <div className="block">
       <ToggleButton
         handler={props.handleToggleBlockTypes}
         cmd={"header-one"}
@@ -101,6 +101,6 @@ export default function ToggleBlockStyle(props) {
         icon={"format_align_justify"}
         active={props.activeStatus === "JUSTIFY"}
       />
-    </>
+    </div>
   );
 }

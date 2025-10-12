@@ -1,8 +1,17 @@
 import ToggleButton from "./ToggleButton";
+import Font from "./Font";
+import "../ToolBar/ToggleInlineStyle.css";
 
 export default function ToggleInlineStyle(props) {
   return (
-    <>
+    <div className="inline-style">
+      <Font
+        handler={props.handleToggleInlineStyles}
+        title={"Font"}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
+        activeStatus={props.activeStatus}
+      />
       <ToggleButton
         handler={props.handleToggleInlineStyles}
         cmd={"BOLD"}
@@ -50,8 +59,7 @@ export default function ToggleInlineStyle(props) {
         cmd={"SUPERSCRIPT"}
         title={"Superscript"}
         icon={"superscript"}
-        active={props.activeStatus.has("SUPERSCRIPT")}
       />
-    </>
+    </div>
   );
 }

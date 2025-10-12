@@ -6,6 +6,7 @@ import {
   SelectionState,
   AtomicBlockUtils,
   RichUtils,
+  getDefaultKeyBinding,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./MyEditor.css";
@@ -124,8 +125,31 @@ function MyEditor() {
     GRAY: {
       color: "gray",
     },
+    PURPLE: {
+      color: "#be04beff",
+    },
     SUBSCRIPT: { verticalAlign: "sub", fontSize: "smaller" },
     SUPERSCRIPT: { verticalAlign: "super", fontSize: "smaller" },
+    ARIAL: { fontFamily: "Arial, Helvetica, sans-serif" },
+    HELVETICA: { fontFamily: "Helvetica, Arial, sans-serif" },
+    VERDANA: { fontFamily: "Verdana, Geneva, sans-serif" },
+    TAHOMA: { fontFamily: "Tahoma, Geneva, sans-serif" },
+    TREBUCHET_MS: { fontFamily: "Trebuchet MS, Helvetica, sans-serif" },
+    SEGOE_UI: { fontFamily: "Segoe UI, Tahoma, Geneva, sans-serif" },
+    GENEVA: { fontFamily: "Geneva, Verdana, sans-serif" },
+    TIMES_NEW_ROMAN: { fontFamily: "Times New Roman, Times, serif" },
+    GEORGIA: { fontFamily: "Georgia, Times New Roman, serif" },
+    PALATINO_LINOTYPE: { fontFamily: "Palatino Linotype, Palatino, serif" },
+    BOOK_ANTIQUA: { fontFamily: "Book Antiqua, Palatino, serif" },
+    GARAMOND: { fontFamily: "Garamond, Times New Roman, serif" },
+    COURIER_NEW: { fontFamily: "Courier New, Courier, monospace" },
+    LUCIDA_CONSOLE: { fontFamily: "Lucida Console, Monaco, monospace" },
+    MONACO: { fontFamily: "Monaco, Lucida Console, monospace" },
+    CONSOLAS: { fontFamily: "Consolas, Courier New, monospace" },
+    COMIC_SANS_MS: { fontFamily: "Comic Sans MS, cursive, sans-serif" },
+    BRUSH_SCRIPT_MT: { fontFamily: "Brush Script MT, cursive, sans-serif" },
+    IMPACT: { fontFamily: "Impact, Charcoal, sans-serif" },
+    FANTASY: { fontFamily: "Fantasy, Impact, Charcoal, sans-serif" },
   };
 
   let blockStyleFn = useCallback((contentBlock) => {
@@ -136,6 +160,48 @@ function MyEditor() {
     if (type === "JUSTIFY") return "JUSTIFY";
     return null;
   });
+
+  const FONT_STYLES = [
+    "ARIAL",
+    "HELVETICA",
+    "VERDANA",
+    "TAHOMA",
+    "TREBUCHET_MS",
+    "SEGOE_UI",
+    "GENEVA",
+    "TIMES_NEW_ROMAN",
+    "GEORGIA",
+    "PALATINO_LINOTYPE",
+    "BOOK_ANTIQUA",
+    "GARAMOND",
+    "COURIER_NEW",
+    "LUCIDA_CONSOLE",
+    "MONACO",
+    "CONSOLAS",
+    "COMIC_SANS_MS",
+    "BRUSH_SCRIPT_MT",
+    "IMPACT",
+    "FANTASY",
+  ];
+
+  let handleFontChange = useCallback((fontKey) => {
+    const selection = editorState.getSelection();
+    let nextContentState = editorState.getCurrentContent();
+    FONT_STYLES.forEach((fontStyle) => {
+      nextContentState = Modifier.removeInlineStyle(
+        nextContentState,
+        selection,
+        fontStyle
+      );
+    });
+    let nextEditorState = EditorState.push(
+      editorState,
+      nextContentState,
+      "change-inline-style"
+    );
+    nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, fontKey);
+    onChange(nextEditorState);
+  }, [onChange, editorState]);
 
   let handleToggleInlineStyles = useCallback(
     (command) => {
@@ -153,6 +219,14 @@ function MyEditor() {
 
   const handleKeyCommand = useCallback(
     (command, editorState) => {
+      if (command === "tab") {
+        const newEditorState = RichUtils.onTab(event, editorState, 4);
+        if (newEditorState !== editorState) {
+          onChange(newEditorState);
+          return "handled";
+        }
+        return "not-handled";
+      }
       let newState = RichUtils.handleKeyCommand(editorState, command);
       if (newState) {
         onChange(newState);
@@ -160,7 +234,7 @@ function MyEditor() {
       }
       return "not-handled";
     },
-    [onChange]
+    [onChange, editorState]
   );
 
   let contentState = editorState.getCurrentContent();
@@ -202,12 +276,20 @@ function MyEditor() {
     }
   };
 
+  let handleTab = useCallback((e) => {
+    if (e.keyCode === 9) {
+      return "tab";
+    }
+    return getDefaultKeyBinding(e);
+  }, []);
+
   return (
     <>
       <Navbar
         handleToggleInlineStyles={handleToggleInlineStyles}
         currentInlineStyle={editorState.getCurrentInlineStyle()}
         handleToggleBlockTypes={handleToggleBlockTypes}
+        handleFontChange={handleFontChange}
         currentBlockStyle={editorState
           .getCurrentContent()
           .getBlockForKey(editorState.getSelection().getStartKey())
@@ -229,6 +311,7 @@ function MyEditor() {
           editorState={editorState}
           onChange={onChange}
           handleKeyCommand={handleKeyCommand}
+          keyBindingFn={handleTab}
           ref={editorRef}
           style={{ width: "100vw", height: "100%" }}
           placeholder={

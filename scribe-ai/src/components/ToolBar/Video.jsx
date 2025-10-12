@@ -19,6 +19,7 @@ export default function Video(props) {
 
   let handleVideoURL = () => {
     const URL = prompt("Enter video URL to be embedded:");
+    if (URL.length === 0) return;
     if (URL.includes("youtube.com") || URL.includes("youtu.be")) {
       const videoId = URL.match(
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/

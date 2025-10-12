@@ -1,8 +1,9 @@
 import ToggleColor from "./ToggleColor";
+import "../ToolBar/TogglePallate.css"
 
 export default function TogglePallate(props) {
   return (
-    <div>
+    <div className="font-color">
       <ToggleColor
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         cmd={"BLACK"}
@@ -68,6 +69,12 @@ export default function TogglePallate(props) {
         cmd={"PINK"}
         bgColor={"deeppink"}
         active={props.activeStatus.has("PINK")}
+      />
+      <ToggleColor
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        cmd={"PURPLE"}
+        bgColor={"#be04beff"}
+        active={props.activeStatus.has("PURPLE")}
       />
     </div>
   );

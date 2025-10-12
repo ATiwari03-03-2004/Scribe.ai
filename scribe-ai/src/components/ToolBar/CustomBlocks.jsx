@@ -8,8 +8,15 @@ import Video from "./Video";
 
 export default function CustomBlocks(props) {
   return (
-    <div>
+    <div className="custom-block">
       <LinkBlock editorState={props.editorState} onChange={props.onChange} />
+      <Image
+        editorState={props.editorState}
+        onChange={props.onChange}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
+      />
+      <Video editorState={props.editorState} onChange={props.onChange} />
       <SpeechToText
         editorState={props.editorState}
         onChange={props.onChange}
@@ -25,8 +32,6 @@ export default function CustomBlocks(props) {
       <TextToSpeech editorState={props.editorState} />
       <Undo editorState={props.editorState} onChange={props.onChange} />
       <Redo editorState={props.editorState} onChange={props.onChange} />
-      <Image editorState={props.editorState} onChange={props.onChange} />
-      <Video editorState={props.editorState} onChange={props.onChange} />
     </div>
   );
 }

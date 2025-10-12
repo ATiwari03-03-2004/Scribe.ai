@@ -1,12 +1,9 @@
 import { AtomicBlockUtils } from "draft-js";
-import { useState } from "react";
+import DropDown from "../DropDown/DropDown";
+import { useRef } from "react";
 
 export default function Image(props) {
-  let [isClose, setIsClose] = useState(true);
-
-  let handleDropDown = () => {
-    setIsClose((prev) => !prev);
-  };
+  let buttonref = useRef(null);
 
   let handleImageURLEmbed = (URL) => {
     const contentState = props.editorState.getCurrentContent();
@@ -22,7 +19,7 @@ export default function Image(props) {
       " "
     );
     props.onChange(newEditorState);
-    handleDropDown();
+    props.handleDropDown("");
   };
 
   let handleImageFile = (e) => {
@@ -41,42 +38,32 @@ export default function Image(props) {
   let handleImageURL = () => {
     const URL = prompt("Enter image URL to be embedded:");
     if (URL) handleImageURLEmbed(URL);
-  }
+  };
 
   return (
     <>
       <button
         onMouseDown={(e) => e.preventDefault()}
         title="Embed Image"
-        onClick={handleDropDown}
-        style={{ cursor: "pointer" }}
+        onClick={() => props.handleDropDown("image")}
+        style={{ cursor: "pointer", paddingRight: "0px", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+        ref={buttonref}
       >
         <span className="material-symbols-outlined">image</span>
+        {props.isClose.open && props.isClose.dropdown === "image" ? (
+          <span className="material-symbols-outlined">arrow_drop_up</span>
+        ) : (
+          <span className="material-symbols-outlined">arrow_drop_down</span>
+        )}
       </button>
-      {isClose ? null : (
-        <div style={{ position: "absolute", left: "19.25rem" }} className="DD">
-          <button
-            className="DDItem"
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={handleImageURL}
-            style={{ cursor: "pointer" }}
-          >
-            Embed URL
-          </button>
-          <br />
-          <label htmlFor="img" className="DDItem" style={{ cursor: "pointer" }}>
-            Choose file
-          </label>
-          <input
-            type="file"
-            name="img"
-            id="img"
-            accept="image/*"
-            onChange={handleImageFile}
-            style={{ display: "none" }}
-          />
-        </div>
-      )}
+      {props.isClose.open && props.isClose.dropdown === "image" ? (
+        <DropDown
+          isClose={props.isClose}
+          handleImageURL={handleImageURL}
+          handleImageFile={handleImageFile}
+          buttonref={buttonref}
+        />
+      ) : null}
     </>
   );
 }
