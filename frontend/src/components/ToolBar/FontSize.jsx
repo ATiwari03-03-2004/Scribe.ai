@@ -51,7 +51,7 @@ export default function FontSize(props) {
       return;
     }
     props.activeStatus._map._list._tail.array.forEach(arr => {
-      if (fontSizesMap[arr[0]]) {
+      if (arr?.[0] && fontSizesMap[arr[0]]) {
         key = arr[0];
       }
     })

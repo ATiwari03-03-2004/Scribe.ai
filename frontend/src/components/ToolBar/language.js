@@ -183,7 +183,7 @@ const langsObj = {
   ภาษาไทย: ["th-TH"],
 };
 
-const SpeechRecognition =
+let SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 if (!SpeechRecognition) {
   SpeechRecognition = null;

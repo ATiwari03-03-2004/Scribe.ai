@@ -12,6 +12,7 @@ export default function customBlockRenderer(block, sharedState) {
     return {
       component: MediaBlock,
       editable: false,
+      props: sharedState,
     }
   }
   return null;

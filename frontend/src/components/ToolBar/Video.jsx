@@ -19,19 +19,19 @@ export default function Video(props) {
 
   let handleVideoURL = () => {
     const URL = prompt("Enter video URL to be embedded:");
-    if (URL.length === 0) return;
+    if (URL.length) return;
     if (URL.includes("youtube.com") || URL.includes("youtu.be")) {
       const videoId = URL.match(
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/
       )?.[1];
       videoId
         ? handleVideoURLEmbed(`https://www.youtube.com/embed/${videoId}`)
-        : null;
+        : alert("Unsupported URL!!\nThe URL embedding is only supported for YouTube videos, Dailymotion, and Vimeo.");
     } else if (URL.includes("vimeo.com")) {
       const videoId = URL.match(/vimeo\.com\/(\d+)/)?.[1];
       videoId
         ? handleVideoURLEmbed(`https://player.vimeo.com/video/${videoId}`)
-        : null;
+        : alert("Unsupported URL!!\nThe URL embedding is only supported for YouTube, Dailymotion, and Vimeo.");
     } else if (URL.includes("dailymotion.com") || URL.includes("dai.ly")) {
       const videoId = URL.match(
         /(?:dailymotion\.com\/video\/|dai\.ly\/)([^_?/]+)/
@@ -40,9 +40,9 @@ export default function Video(props) {
         ? handleVideoURLEmbed(
             `https://www.dailymotion.com/embed/video/${videoId}`
           )
-        : null;
+        : alert("Unsupported URL!!\nThe URL embedding is only supported for YouTube, Dailymotion, and Vimeo.");
     } else {
-        alert("Unsupported URL!!\nThe URL embedding is only supported for YouTube, Dailymotion, and Vimeo.")
+        alert("Unsupported URL!!\nThe URL embedding is only supported for YouTube videos, Dailymotion, and Vimeo.")
     }
   };
 

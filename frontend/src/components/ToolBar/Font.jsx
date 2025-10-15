@@ -61,7 +61,7 @@ export default function Font(props) {
       return;
     }
     props.activeStatus._map._list._tail.array.forEach(arr => {
-      if (fontStylesMap[arr[0]]) {
+      if (arr?.[0] && fontStylesMap[arr[0]]) {
         key = arr[0];
       }
     })
