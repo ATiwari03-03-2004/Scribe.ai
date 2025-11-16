@@ -1,23 +1,27 @@
 import ToggleButton from "./ToggleButton";
 import Font from "./Font";
-import "../ToolBar/ToggleInlineStyle.css";
+import "./ToggleInlineStyle.css";
 import FontSize from "./FontSize";
 
 export default function ToggleInlineStyle(props) {
   return (
-    <div className="inline-style" style={{paddingLeft: "0.35rem"}}>
-      <Font
-        handler={props.handleToggleInlineStyles}
-        title={"Font"}
-        isClose={props.isClose}
-        handleDropDown={props.handleDropDown}
-        activeStatus={props.activeStatus}
-      />
-      <FontSize handler={props.handleToggleInlineStyles}
-        title={"Font Size"}
-        isClose={props.isClose}
-        handleDropDown={props.handleDropDown}
-        activeStatus={props.activeStatus} />
+    <div className="inline-style" style={{ paddingLeft: "0.35rem" }}>
+      <div className="font-style-size">
+        <Font
+          handler={props.handleToggleInlineStyles}
+          title={"Font"}
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          activeStatus={props.activeStatus}
+        />
+        <FontSize
+          handler={props.handleToggleInlineStyles}
+          title={"Font Size"}
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          activeStatus={props.activeStatus}
+        />
+      </div>
       <ToggleButton
         handler={props.handleToggleInlineStyles}
         cmd={"BOLD"}
@@ -66,6 +70,16 @@ export default function ToggleInlineStyle(props) {
         title={"Superscript"}
         icon={"superscript"}
       />
+      <p
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "default",
+        }}
+      >
+        Font
+      </p>
     </div>
   );
 }

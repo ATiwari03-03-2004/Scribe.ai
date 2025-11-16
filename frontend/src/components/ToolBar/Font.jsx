@@ -80,7 +80,8 @@ export default function Font(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "10.5rem",
+          width: "12.3rem",
+          height: "2rem",
         }}
         ref={buttonref}
       >

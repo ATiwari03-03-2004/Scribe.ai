@@ -95,6 +95,12 @@ function MyEditor() {
     RED: {
       color: "red",
     },
+    CRIMSON: {
+      color: "#c90c52",
+    },
+    NEON: {
+      color: "#07ede9",
+    },
     BLACK: {
       color: "black",
     },
@@ -113,6 +119,9 @@ function MyEditor() {
     WHITE: {
       color: "white",
     },
+    deepORANGE: {
+      color: "#f2680c",
+    },
     "DODGER-BLUE": {
       color: "dodgerblue",
     },
@@ -127,6 +136,15 @@ function MyEditor() {
     },
     PURPLE: {
       color: "#be04beff",
+    },
+    BROWN: {
+      color: "#591713",
+    },
+    "LIGHT-GREEN": {
+      color: "#19e679",
+    },
+    voilet: {
+      color: "#680cad",
     },
     SUBSCRIPT: { verticalAlign: "sub", fontSize: "smaller" },
     SUPERSCRIPT: { verticalAlign: "super", fontSize: "smaller" },

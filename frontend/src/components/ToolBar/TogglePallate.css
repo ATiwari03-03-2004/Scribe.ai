@@ -1,3 +1,6 @@
 .font-color {
-    
+    max-width: 450px;
+    margin-left: 0.25rem;
+    height: 6rem;
+    padding-bottom: 0.8rem;
 }

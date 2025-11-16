@@ -8,16 +8,16 @@ export default function ToggleColor(props) {
           ? {
               cursor: "pointer",
               backgroundColor: props.bgColor,
-              height: "2.45rem",
-              width: "2.45rem",
+              height: "2rem",
+              width: "2rem",
               opacity: "0.8",
               border: "1px solid black",
             }
           : {
               cursor: "pointer",
               backgroundColor: props.bgColor,
-              height: "2.45rem",
-              width: "2.45rem",
+              height: "2rem",
+              width: "2rem",
               border: `1px solid ${props.bgColor}`,
             }
       }

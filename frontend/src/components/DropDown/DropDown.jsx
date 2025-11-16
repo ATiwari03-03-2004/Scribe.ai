@@ -149,7 +149,7 @@ export default function DropDown(props) {
             top: `${positions.top}px`,
             display: "flex",
             flexDirection: "column",
-            width: "10.5rem",
+            width: "12.3rem",
           }}
           className="DD"
         >
@@ -180,7 +180,7 @@ export default function DropDown(props) {
             top: `${positions.top}px`,
             display: "flex",
             flexDirection: "column",
-            width: "3rem",
+            width: "4.8rem",
           }}
           className="DD"
         >

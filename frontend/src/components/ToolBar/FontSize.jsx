@@ -70,7 +70,8 @@ export default function FontSize(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "3rem",
+          width: "4.8rem",
+          height: "2rem",
         }}
         ref={buttonref}
       >

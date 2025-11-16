@@ -46,7 +46,7 @@ export default function Image(props) {
         onMouseDown={(e) => e.preventDefault()}
         title="Embed Image"
         onClick={() => props.handleDropDown("image")}
-        style={{ cursor: "pointer", paddingRight: "0px", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+        style={{ height: "2.1rem", cursor: "pointer", paddingRight: "0px", display: "flex", alignItems: "center", justifyContent: "space-between" }}
         ref={buttonref}
       >
         <span className="material-symbols-outlined">image</span>
