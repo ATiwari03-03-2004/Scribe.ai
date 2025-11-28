@@ -6,19 +6,7 @@ import { useState } from "react";
 import "../ToolBar/ToolBar.css";
 
 export default function ToolBar(props) {
-  let [isClose, setIsClose] = useState({ open: false, dropdown: "" });
-
-  let handleDropDown = (dditem) => {
-    setIsClose((prev) => {
-      if (prev.open && prev.dropdown === dditem) {
-        return { open: false, dropdown: "" };
-      }
-      if (prev.open && prev.dropdown !== dditem && dditem.length) {
-        return { open: true, dropdown: dditem };
-      }
-      return { open: true, dropdown: dditem };
-    });
-  };
+  
   return (
     <div
       className="tool-bar"
@@ -33,8 +21,8 @@ export default function ToolBar(props) {
         handleToggleBlockTypes={props.handleToggleBlockTypes}
         activeStatus={props.currentInlineStyle}
         editorState={props.editorState}
-        isClose={isClose}
-        handleDropDown={handleDropDown}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
       />
       <TogglePallate
         handleToggleInlineStyles={props.handleToggleInlineStyles}
@@ -55,8 +43,8 @@ export default function ToolBar(props) {
         setFinalRecognizedText={props.setFinalRecognizedText}
         isFinal={props.isFinal}
         setIsFinal={props.setIsFinal}
-        isClose={isClose}
-        handleDropDown={handleDropDown}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
       />
     </div>
   );

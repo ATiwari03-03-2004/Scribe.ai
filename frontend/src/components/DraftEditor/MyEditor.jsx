@@ -13,12 +13,14 @@ import "./MyEditor.css";
 import decorator from "./CustomDecorators/Decorator";
 import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
 import Navbar from "../Navbar/Navbar";
+import SideBar from "../SideBar/SideBar";
 
 function MyEditor() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
 
+  let [sideBarDisplay, setSideBarDisplay] = useState("none");
   let [isRecognizing, setIsRecognizing] = useState(false);
   let [interimRecognizedText, setInterimRecognizedText] = useState("");
   let [finalRecognizedText, setFinalRecognizedText] = useState("");
@@ -168,21 +170,21 @@ function MyEditor() {
     BRUSH_SCRIPT_MT: { fontFamily: "Brush Script MT, cursive, sans-serif" },
     IMPACT: { fontFamily: "Impact, Charcoal, sans-serif" },
     FANTASY: { fontFamily: "Fantasy, Impact, Charcoal, sans-serif" },
-    EIGHT: { fontSize: '8px', lineHeight: '12px' },
-    NINE: { fontSize: '9px', lineHeight: '14px' },
-    TEN: { fontSize: '10px', lineHeight: '15px' },
-    ELEVEN: { fontSize: '11px', lineHeight: '16px' },
-    TWELVE: { fontSize: '12px', lineHeight: '18px' },
-    FOURTEEN: { fontSize: '14px', lineHeight: '21px' },
-    SIXTEEN: { fontSize: '16px', lineHeight: '24px' },
-    EIGHTEEN: { fontSize: '18px', lineHeight: '27px' },
-    TWENTY: { fontSize: '20px', lineHeight: '30px' },
-    TWENTYTWO: { fontSize: '22px', lineHeight: '33px' },
-    TWENTYFOUR: { fontSize: '24px', lineHeight: '36px' },
-    TWENTYEIGHT: { fontSize: '28px', lineHeight: '42px' },
-    THIRTYSIX: { fontSize: '36px', lineHeight: '54px' },
-    FORTYEIGHT: { fontSize: '48px', lineHeight: '72px' },
-    SEVENTYTWO: { fontSize: '72px', lineHeight: '108px' }
+    EIGHT: { fontSize: "8px", lineHeight: "12px" },
+    NINE: { fontSize: "9px", lineHeight: "14px" },
+    TEN: { fontSize: "10px", lineHeight: "15px" },
+    ELEVEN: { fontSize: "11px", lineHeight: "16px" },
+    TWELVE: { fontSize: "12px", lineHeight: "18px" },
+    FOURTEEN: { fontSize: "14px", lineHeight: "21px" },
+    SIXTEEN: { fontSize: "16px", lineHeight: "24px" },
+    EIGHTEEN: { fontSize: "18px", lineHeight: "27px" },
+    TWENTY: { fontSize: "20px", lineHeight: "30px" },
+    TWENTYTWO: { fontSize: "22px", lineHeight: "33px" },
+    TWENTYFOUR: { fontSize: "24px", lineHeight: "36px" },
+    TWENTYEIGHT: { fontSize: "28px", lineHeight: "42px" },
+    THIRTYSIX: { fontSize: "36px", lineHeight: "54px" },
+    FORTYEIGHT: { fontSize: "48px", lineHeight: "72px" },
+    SEVENTYTWO: { fontSize: "72px", lineHeight: "108px" },
   };
 
   let blockStyleFn = useCallback((contentBlock) => {
@@ -277,6 +279,7 @@ function MyEditor() {
   return (
     <>
       <Navbar
+        display={setSideBarDisplay}
         handleToggleInlineStyles={handleToggleInlineStyles}
         currentInlineStyle={editorState.getCurrentInlineStyle()}
         handleToggleBlockTypes={handleToggleBlockTypes}
@@ -295,7 +298,11 @@ function MyEditor() {
         isFinal={isFinal}
         setIsFinal={setIsFinal}
       />
-      <div className="text-editor" onPaste={handleOnPaste}>
+      <div
+        className="text-editor"
+        style={{ display: "flex" }}
+        onPaste={handleOnPaste}
+      >
         <Editor
           customStyleMap={customStyleMaps}
           editorState={editorState}
@@ -316,6 +323,7 @@ function MyEditor() {
             })
           }
         />
+        <SideBar display={sideBarDisplay} displaySet={setSideBarDisplay} />
       </div>
     </>
   );

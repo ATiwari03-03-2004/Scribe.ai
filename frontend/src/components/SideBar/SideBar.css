@@ -1,0 +1,42 @@
+.SideBar {
+  padding: 0.5rem;
+  width: 22%;
+  height: calc(93.5vh - 10.5rem);
+  border: 1px solid gray;
+}
+
+.SideBar .top-bar {
+    height: 5%;
+    width: 100%;
+}
+
+.SideBar .top-bar span, span.mic {
+  transition: background-color 0.35s ease-in 0s;
+}
+
+.SideBar .top-bar span:hover, span.mic:hover {
+  background-color: rgba(128, 128, 128, 0.7);
+}
+
+.SideBar .content {
+    height: 80%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.SideBar .search textarea {
+    resize: none;
+}
+
+.SideBar .search textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+}
