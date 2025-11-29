@@ -18,7 +18,7 @@ export default function Navbar(props) {
       });
     };
   return (
-    <div className="navbar">
+    <div className="navbar" style={(props.displayVal === 'flex' ? {width: "76.5%"} : {width: "100%"})}>
       <div className="label">
         <div className="doc">
           <img src="/Scribe_Black.png" alt="Scribe_logo" title="Home" />

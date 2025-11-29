@@ -2,11 +2,10 @@ import ToggleBlockStyle from "./ToggleBlockStyle";
 import ToggleInlineStyle from "./ToggleInlineStyle";
 import TogglePallate from "./TogglePallate";
 import CustomBlocks from "./CustomBlocks";
-import { useState } from "react";
+import Highlighter from "./Highlighter";
 import "../ToolBar/ToolBar.css";
 
 export default function ToolBar(props) {
-  
   return (
     <div
       className="tool-bar"
@@ -24,9 +23,19 @@ export default function ToolBar(props) {
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
       />
+      <Highlighter
+        handleToggleInlineStyles={props.handleToggleInlineStyles}
+        activeStatus={props.currentInlineStyle}
+        editorState={props.editorState}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
+      />
       <TogglePallate
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         activeStatus={props.currentInlineStyle}
+        editorState={props.editorState}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
       />
       <ToggleBlockStyle
         handleToggleBlockTypes={props.handleToggleBlockTypes}

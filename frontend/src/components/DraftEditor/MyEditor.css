@@ -27,6 +27,5 @@
 }
 
 .DraftEditor-root {
-  min-width: 50%;
-  max-width: 100%;
+  width: 100%;
 }

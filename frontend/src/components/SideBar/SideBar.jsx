@@ -9,7 +9,7 @@ export default function SideBar(props) {
   let [interimRecognizedText, setInterimRecognizedText] = useState("");
 
   let generate = () => {
-    
+
   }
 
   let startRecognition = () => {
@@ -77,9 +77,10 @@ export default function SideBar(props) {
         display: props.display,
         flexDirection: "column",
         position: "fixed",
+        top: "0.1rem",
+        right: "0.1rem",
         zIndex: 2,
         backgroundColor: "rgb(245, 245, 245)",
-        right: "0.5rem",
         borderTopLeftRadius: "1rem",
         borderBottomRightRadius: "1rem",
       }}

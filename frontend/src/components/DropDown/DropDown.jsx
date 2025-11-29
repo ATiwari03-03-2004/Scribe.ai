@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ToggleColor from "../ToolBar/ToggleColor";
 
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
@@ -82,6 +83,133 @@ export default function DropDown(props) {
     { key: "FANTASY", name: "Fantasy", style: "Fantasy, cursive, sans-serif" },
   ];
 
+  const colorOptions = [
+    { cmd: "COLOR-BLACK", bgColor: "#000000" },
+    { cmd: "COLOR-CHARCOAL", bgColor: "#404040" },
+    { cmd: "COLOR-GRAY", bgColor: "#808080" },
+    { cmd: "COLOR-SILVER-GRAY", bgColor: "#999999" },
+    { cmd: "COLOR-LIGHT-GRAY", bgColor: "#B3B3B3" },
+    { cmd: "COLOR-SILVER", bgColor: "#CCCCCC" },
+    { cmd: "COLOR-GAINSBORO", bgColor: "#D9D9D9" },
+    { cmd: "COLOR-PLATINUM", bgColor: "#E6E6E6" },
+    { cmd: "COLOR-WHITE-SMOKE", bgColor: "#F2F2F2" },
+    { cmd: "COLOR-WHITE", bgColor: "#FFFFFF" },
+    { cmd: "COLOR-RED", bgColor: "#CC0000" },
+    { cmd: "COLOR-BRIGHT-RED", bgColor: "#FF0000" },
+    { cmd: "COLOR-ORANGE", bgColor: "#FF9900" },
+    { cmd: "COLOR-YELLOW", bgColor: "#FFFF00" },
+    { cmd: "COLOR-LIME", bgColor: "#00FF00" },
+    { cmd: "COLOR-CYAN", bgColor: "#00FFFF" },
+    { cmd: "COLOR-SKY-BLUE", bgColor: "#0099FF" },
+    { cmd: "COLOR-BLUE", bgColor: "#0000FF" },
+    { cmd: "COLOR-VIOLET", bgColor: "#CC00FF" },
+    { cmd: "COLOR-MAGENTA", bgColor: "#FF00FF" },
+    { cmd: "COLOR-PALE-PINK", bgColor: "#FFCCCC" },
+    { cmd: "COLOR-LIGHT-PINK", bgColor: "#FFB3CC" },
+    { cmd: "COLOR-PEACH", bgColor: "#FFE6CC" },
+    { cmd: "COLOR-CREAM", bgColor: "#FFFFCC" },
+    { cmd: "COLOR-MINT-CREAM", bgColor: "#CCFFCC" },
+    { cmd: "COLOR-POWDER-BLUE", bgColor: "#CCE6E6" },
+    { cmd: "COLOR-ALICE-BLUE", bgColor: "#CCE6FF" },
+    { cmd: "COLOR-LAVENDER", bgColor: "#CCCCFF" },
+    { cmd: "COLOR-THISTLE", bgColor: "#E6CCFF" },
+    { cmd: "COLOR-PINK-LACE", bgColor: "#FFCCFF" },
+    { cmd: "COLOR-ROSY-BROWN", bgColor: "#CC9999" },
+    { cmd: "COLOR-MAUVE", bgColor: "#CC6699" },
+    { cmd: "COLOR-APRICOT", bgColor: "#FFCC99" },
+    { cmd: "COLOR-LIGHT-YELLOW", bgColor: "#FFFF99" },
+    { cmd: "COLOR-DARK-SEA-GREEN", bgColor: "#99CC99" },
+    { cmd: "COLOR-CADET-BLUE", bgColor: "#99CCCC" },
+    { cmd: "COLOR-CORNFLOWER", bgColor: "#99CCFF" },
+    { cmd: "COLOR-BLUE-BELL", bgColor: "#9999CC" },
+    { cmd: "COLOR-PLUM", bgColor: "#CC99CC" },
+    { cmd: "COLOR-KOBI", bgColor: "#CC99BB" },
+    { cmd: "COLOR-COPPER-ROSE", bgColor: "#996666" },
+    { cmd: "COLOR-CERISE", bgColor: "#CC3366" },
+    { cmd: "COLOR-PERU", bgColor: "#CC9933" },
+    { cmd: "COLOR-BRASS", bgColor: "#CCCC33" },
+    { cmd: "COLOR-FERN-GREEN", bgColor: "#669966" },
+    { cmd: "COLOR-TEAL", bgColor: "#339999" },
+    { cmd: "COLOR-DENIM", bgColor: "#3366CC" },
+    { cmd: "COLOR-SAPPHIRE", bgColor: "#333399" },
+    { cmd: "COLOR-REBECCA-PURPLE", bgColor: "#663399" },
+    { cmd: "COLOR-ROYAL-PURPLE", bgColor: "#993399" },
+    { cmd: "COLOR-DARK-BROWN", bgColor: "#663333" },
+    { cmd: "COLOR-BURGUNDY", bgColor: "#990033" },
+    { cmd: "COLOR-BRONZE", bgColor: "#996600" },
+    { cmd: "COLOR-OLIVE", bgColor: "#999900" },
+    { cmd: "COLOR-HUNTER-GREEN", bgColor: "#336633" },
+    { cmd: "COLOR-DARK-CYAN", bgColor: "#006666" },
+    { cmd: "COLOR-PRUSSIAN-BLUE", bgColor: "#003366" },
+    { cmd: "COLOR-NAVY", bgColor: "#000066" },
+    { cmd: "COLOR-INDIGO", bgColor: "#330066" },
+    { cmd: "COLOR-DARK-PURPLE", bgColor: "#660066" },
+  ];
+
+  let highlightColorOptions = [
+  { cmd: "HIGHLIGHT-BLACK", bgColor: "#000000" },
+  { cmd: "HIGHLIGHT-CHARCOAL", bgColor: "#404040" },
+  { cmd: "HIGHLIGHT-GRAY", bgColor: "#808080" },
+  { cmd: "HIGHLIGHT-SILVER-GRAY", bgColor: "#999999" },
+  { cmd: "HIGHLIGHT-LIGHT-GRAY", bgColor: "#B3B3B3" },
+  { cmd: "HIGHLIGHT-SILVER", bgColor: "#CCCCCC" },
+  { cmd: "HIGHLIGHT-GAINSBORO", bgColor: "#D9D9D9" },
+  { cmd: "HIGHLIGHT-PLATINUM", bgColor: "#E6E6E6" },
+  { cmd: "HIGHLIGHT-WHITE-SMOKE", bgColor: "#F2F2F2" },
+  { cmd: "HIGHLIGHT-WHITE", bgColor: "#FFFFFF" },
+  { cmd: "HIGHLIGHT-RED", bgColor: "#CC0000" },
+  { cmd: "HIGHLIGHT-BRIGHT-RED", bgColor: "#FF0000" },
+  { cmd: "HIGHLIGHT-ORANGE", bgColor: "#FF9900" },
+  { cmd: "HIGHLIGHT-YELLOW", bgColor: "#FFFF00" },
+  { cmd: "HIGHLIGHT-LIME", bgColor: "#00FF00" },
+  { cmd: "HIGHLIGHT-CYAN", bgColor: "#00FFFF" },
+  { cmd: "HIGHLIGHT-SKY-BLUE", bgColor: "#0099FF" },
+  { cmd: "HIGHLIGHT-BLUE", bgColor: "#0000FF" },
+  { cmd: "HIGHLIGHT-VIOLET", bgColor: "#CC00FF" },
+  { cmd: "HIGHLIGHT-MAGENTA", bgColor: "#FF00FF" },
+  { cmd: "HIGHLIGHT-PALE-PINK", bgColor: "#FFCCCC" },
+  { cmd: "HIGHLIGHT-LIGHT-PINK", bgColor: "#FFB3CC" },
+  { cmd: "HIGHLIGHT-PEACH", bgColor: "#FFE6CC" },
+  { cmd: "HIGHLIGHT-CREAM", bgColor: "#FFFFCC" },
+  { cmd: "HIGHLIGHT-MINT-CREAM", bgColor: "#CCFFCC" },
+  { cmd: "HIGHLIGHT-POWDER-BLUE", bgColor: "#CCE6E6" },
+  { cmd: "HIGHLIGHT-ALICE-BLUE", bgColor: "#CCE6FF" },
+  { cmd: "HIGHLIGHT-LAVENDER", bgColor: "#CCCCFF" },
+  { cmd: "HIGHLIGHT-THISTLE", bgColor: "#E6CCFF" },
+  { cmd: "HIGHLIGHT-PINK-LACE", bgColor: "#FFCCFF" },
+  { cmd: "HIGHLIGHT-ROSY-BROWN", bgColor: "#CC9999" },
+  { cmd: "HIGHLIGHT-MAUVE", bgColor: "#CC6699" },
+  { cmd: "HIGHLIGHT-APRICOT", bgColor: "#FFCC99" },
+  { cmd: "HIGHLIGHT-LIGHT-YELLOW", bgColor: "#FFFF99" },
+  { cmd: "HIGHLIGHT-DARK-SEA-GREEN", bgColor: "#99CC99" },
+  { cmd: "HIGHLIGHT-CADET-BLUE", bgColor: "#99CCCC" },
+  { cmd: "HIGHLIGHT-CORNFLOWER", bgColor: "#99CCFF" },
+  { cmd: "HIGHLIGHT-BLUE-BELL", bgColor: "#9999CC" },
+  { cmd: "HIGHLIGHT-PLUM", bgColor: "#CC99CC" },
+  { cmd: "HIGHLIGHT-KOBI", bgColor: "#CC99BB" },
+  { cmd: "HIGHLIGHT-COPPER-ROSE", bgColor: "#996666" },
+  { cmd: "HIGHLIGHT-CERISE", bgColor: "#CC3366" },
+  { cmd: "HIGHLIGHT-PERU", bgColor: "#CC9933" },
+  { cmd: "HIGHLIGHT-BRASS", bgColor: "#CCCC33" },
+  { cmd: "HIGHLIGHT-FERN-GREEN", bgColor: "#669966" },
+  { cmd: "HIGHLIGHT-TEAL", bgColor: "#339999" },
+  { cmd: "HIGHLIGHT-DENIM", bgColor: "#3366CC" },
+  { cmd: "HIGHLIGHT-SAPPHIRE", bgColor: "#333399" },
+  { cmd: "HIGHLIGHT-REBECCA-PURPLE", bgColor: "#663399" },
+  { cmd: "HIGHLIGHT-ROYAL-PURPLE", bgColor: "#993399" },
+  { cmd: "HIGHLIGHT-DARK-BROWN", bgColor: "#663333" },
+  { cmd: "HIGHLIGHT-BURGUNDY", bgColor: "#990033" },
+  { cmd: "HIGHLIGHT-BRONZE", bgColor: "#996600" },
+  { cmd: "HIGHLIGHT-OLIVE", bgColor: "#999900" },
+  { cmd: "HIGHLIGHT-HUNTER-GREEN", bgColor: "#336633" },
+  { cmd: "HIGHLIGHT-DARK-CYAN", bgColor: "#006666" },
+  { cmd: "HIGHLIGHT-PRUSSIAN-BLUE", bgColor: "#003366" },
+  { cmd: "HIGHLIGHT-NAVY", bgColor: "#000066" },
+  { cmd: "HIGHLIGHT-INDIGO", bgColor: "#330066" },
+  { cmd: "HIGHLIGHT-DARK-PURPLE", bgColor: "#660066" }
+]
+
+
   useEffect(() => {
     if (props.isClose.open && props.buttonref) {
       setPositions((prev) => {
@@ -106,13 +234,19 @@ export default function DropDown(props) {
             left: `${positions.left}px`,
             top: `${positions.top}px`,
             width: "5.5rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
           }}
           className="DD"
         >
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => props.handleImageURL()}
-            style={{ cursor: "pointer", width: "5.6rem", border: "1px solid gray" }}
+            style={{
+              cursor: "pointer",
+              width: "5.6rem",
+              border: "1px solid gray",
+            }}
           >
             Embed URL
           </button>
@@ -150,6 +284,8 @@ export default function DropDown(props) {
             display: "flex",
             flexDirection: "column",
             width: "12.3rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
           }}
           className="DD"
         >
@@ -181,6 +317,8 @@ export default function DropDown(props) {
             display: "flex",
             flexDirection: "column",
             width: "4.8rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
           }}
           className="DD"
         >
@@ -200,6 +338,58 @@ export default function DropDown(props) {
             >
               {fontSize.name}
             </button>
+          ))}
+        </div>
+      ) : props.isClose.dropdown === "text_color" ? (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "baseline",
+            width: "14rem",
+            position: "absolute",
+            backgroundColor: "white",
+            padding: "0.75rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+          }}
+        >
+          {colorOptions.map((colorOption, key) => (
+            <ToggleColor
+              handleToggleInlineStyles={props.handleToggleInlineStyles}
+              handleDropDown={props.handleDropDown}
+              key={key}
+              cmd={colorOption.cmd}
+              bgColor={colorOption.bgColor}
+              activeColor={props.activeColor}
+              close={"text_color"}
+            />
+          ))}
+        </div>
+      ) : props.isClose.dropdown === "highlighter_color" ? (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "baseline",
+            width: "14rem",
+            position: "absolute",
+            backgroundColor: "white",
+            padding: "0.75rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+          }}
+        >
+          {highlightColorOptions.map((highlightColorOption, key) => (
+            <ToggleColor
+              handleToggleInlineStyles={props.handleToggleInlineStyles}
+              handleDropDown={props.handleDropDown}
+              key={key}
+              cmd={highlightColorOption.cmd}
+              bgColor={highlightColorOption.bgColor}
+              activeColor={props.activeColor}
+              close={"highlighter_color"}
+            />
           ))}
         </div>
       ) : null}

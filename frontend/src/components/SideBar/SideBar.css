@@ -1,7 +1,7 @@
 .SideBar {
   padding: 0.5rem;
   width: 22%;
-  height: calc(93.5vh - 10.5rem);
+  height: calc(97vh);
   border: 1px solid gray;
 }
 
@@ -11,6 +11,11 @@
 }
 
 .SideBar .top-bar span, span.mic {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: background-color 0.35s ease-in 0s;
 }
 
@@ -19,7 +24,7 @@
 }
 
 .SideBar .content {
-    height: 80%;
+    height: 85%;
     width: 100%;
     overflow-y: auto;
 }

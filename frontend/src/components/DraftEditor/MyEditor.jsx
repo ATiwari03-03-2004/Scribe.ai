@@ -14,6 +14,7 @@ import decorator from "./CustomDecorators/Decorator";
 import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
 import Navbar from "../Navbar/Navbar";
 import SideBar from "../SideBar/SideBar";
+import { customStyleMaps } from "./custom";
 
 function MyEditor() {
   const [editorState, setEditorState] = useState(() =>
@@ -89,103 +90,6 @@ function MyEditor() {
   const onChange = useCallback((newEditorState) => {
     setEditorState(newEditorState);
   }, []);
-
-  let customStyleMaps = {
-    HIGHLIGHT: {
-      backgroundColor: "yellow",
-    },
-    RED: {
-      color: "red",
-    },
-    CRIMSON: {
-      color: "#c90c52",
-    },
-    NEON: {
-      color: "#07ede9",
-    },
-    BLACK: {
-      color: "black",
-    },
-    BLUE: {
-      color: "blue",
-    },
-    GREEN: {
-      color: "darkgreen",
-    },
-    PINK: {
-      color: "deeppink",
-    },
-    YELLOW: {
-      color: "yellow",
-    },
-    WHITE: {
-      color: "white",
-    },
-    deepORANGE: {
-      color: "#f2680c",
-    },
-    "DODGER-BLUE": {
-      color: "dodgerblue",
-    },
-    ORANGE: {
-      color: "orange",
-    },
-    "FOREST-GREEN": {
-      color: "forestgreen",
-    },
-    GRAY: {
-      color: "gray",
-    },
-    PURPLE: {
-      color: "#be04beff",
-    },
-    BROWN: {
-      color: "#591713",
-    },
-    "LIGHT-GREEN": {
-      color: "#19e679",
-    },
-    voilet: {
-      color: "#680cad",
-    },
-    SUBSCRIPT: { verticalAlign: "sub", fontSize: "smaller" },
-    SUPERSCRIPT: { verticalAlign: "super", fontSize: "smaller" },
-    ARIAL: { fontFamily: "Arial, Helvetica, sans-serif" },
-    HELVETICA: { fontFamily: "Helvetica, Arial, sans-serif" },
-    VERDANA: { fontFamily: "Verdana, Geneva, sans-serif" },
-    TAHOMA: { fontFamily: "Tahoma, Geneva, sans-serif" },
-    TREBUCHET_MS: { fontFamily: "Trebuchet MS, Helvetica, sans-serif" },
-    SEGOE_UI: { fontFamily: "Segoe UI, Tahoma, Geneva, sans-serif" },
-    GENEVA: { fontFamily: "Geneva, Verdana, sans-serif" },
-    TIMES_NEW_ROMAN: { fontFamily: "Times New Roman, Times, serif" },
-    GEORGIA: { fontFamily: "Georgia, Times New Roman, serif" },
-    PALATINO_LINOTYPE: { fontFamily: "Palatino Linotype, Palatino, serif" },
-    BOOK_ANTIQUA: { fontFamily: "Book Antiqua, Palatino, serif" },
-    GARAMOND: { fontFamily: "Garamond, Times New Roman, serif" },
-    COURIER_NEW: { fontFamily: "Courier New, Courier, monospace" },
-    LUCIDA_CONSOLE: { fontFamily: "Lucida Console, Monaco, monospace" },
-    MONACO: { fontFamily: "Monaco, Lucida Console, monospace" },
-    CONSOLAS: { fontFamily: "Consolas, Courier New, monospace" },
-    COMIC_SANS_MS: { fontFamily: "Comic Sans MS, cursive, sans-serif" },
-    BRUSH_SCRIPT_MT: { fontFamily: "Brush Script MT, cursive, sans-serif" },
-    IMPACT: { fontFamily: "Impact, Charcoal, sans-serif" },
-    FANTASY: { fontFamily: "Fantasy, Impact, Charcoal, sans-serif" },
-    EIGHT: { fontSize: "8px", lineHeight: "12px" },
-    NINE: { fontSize: "9px", lineHeight: "14px" },
-    TEN: { fontSize: "10px", lineHeight: "15px" },
-    ELEVEN: { fontSize: "11px", lineHeight: "16px" },
-    TWELVE: { fontSize: "12px", lineHeight: "18px" },
-    FOURTEEN: { fontSize: "14px", lineHeight: "21px" },
-    SIXTEEN: { fontSize: "16px", lineHeight: "24px" },
-    EIGHTEEN: { fontSize: "18px", lineHeight: "27px" },
-    TWENTY: { fontSize: "20px", lineHeight: "30px" },
-    TWENTYTWO: { fontSize: "22px", lineHeight: "33px" },
-    TWENTYFOUR: { fontSize: "24px", lineHeight: "36px" },
-    TWENTYEIGHT: { fontSize: "28px", lineHeight: "42px" },
-    THIRTYSIX: { fontSize: "36px", lineHeight: "54px" },
-    FORTYEIGHT: { fontSize: "48px", lineHeight: "72px" },
-    SEVENTYTWO: { fontSize: "72px", lineHeight: "108px" },
-  };
 
   let blockStyleFn = useCallback((contentBlock) => {
     let type = contentBlock.getType();
@@ -279,6 +183,7 @@ function MyEditor() {
   return (
     <>
       <Navbar
+        displayVal={sideBarDisplay}
         display={setSideBarDisplay}
         handleToggleInlineStyles={handleToggleInlineStyles}
         currentInlineStyle={editorState.getCurrentInlineStyle()}
@@ -303,28 +208,41 @@ function MyEditor() {
         style={{ display: "flex" }}
         onPaste={handleOnPaste}
       >
-        <Editor
-          customStyleMap={customStyleMaps}
-          editorState={editorState}
-          onChange={onChange}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={handleTab}
-          ref={editorRef}
-          style={{ width: "100vw", height: "100%" }}
-          placeholder={
-            !isEditorEmpty && blockType == "unstyled" ? "Type Something..." : ""
+        <div
+          style={
+            sideBarDisplay === "flex"
+              ? { width: "76%", height: "100%" }
+              : { width: "100%", height: "100%" }
           }
-          blockStyleFn={blockStyleFn}
-          blockRendererFn={(block) =>
-            customBlockRenderer(block, {
-              interimRecognizedText,
-              finalRecognizedText,
-              isFinal,
-            })
-          }
-        />
-        <SideBar display={sideBarDisplay} displaySet={setSideBarDisplay} />
+        >
+          <Editor
+            customStyleMap={customStyleMaps}
+            editorState={editorState}
+            onChange={onChange}
+            handleKeyCommand={handleKeyCommand}
+            keyBindingFn={handleTab}
+            ref={editorRef}
+            style={{ width: "100vw", height: "100%" }}
+            editorStyle={
+              sideBarDisplay === "flex" ? { width: "76%" } : { width: "100%" }
+            }
+            placeholder={
+              !isEditorEmpty && blockType == "unstyled"
+                ? "Type Something..."
+                : ""
+            }
+            blockStyleFn={blockStyleFn}
+            blockRendererFn={(block) =>
+              customBlockRenderer(block, {
+                interimRecognizedText,
+                finalRecognizedText,
+                isFinal,
+              })
+            }
+          />
+        </div>
       </div>
+      <SideBar display={sideBarDisplay} displaySet={setSideBarDisplay} />
     </>
   );
 }
