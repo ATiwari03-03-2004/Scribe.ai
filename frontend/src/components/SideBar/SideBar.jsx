@@ -178,7 +178,6 @@ export default function SideBar(props) {
               color: "white",
               backgroundColor: "rgba(14, 137, 252, 1)",
             } : {
-              cursor: "pointer",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

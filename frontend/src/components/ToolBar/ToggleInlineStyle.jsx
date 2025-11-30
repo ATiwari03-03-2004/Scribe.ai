@@ -13,6 +13,8 @@ export default function ToggleInlineStyle(props) {
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
           activeStatus={props.activeStatus}
+          editorState={props.editorState}
+          onChange={props.onChange}
         />
         <FontSize
           handler={props.handleToggleInlineStyles}
@@ -20,6 +22,8 @@ export default function ToggleInlineStyle(props) {
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
           activeStatus={props.activeStatus}
+          editorState={props.editorState}
+          onChange={props.onChange}
         />
       </div>
       <div className="container" style={{ width: "17.22rem" }}>

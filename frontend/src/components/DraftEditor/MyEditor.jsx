@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { OrderedSet } from "immutable";
 import {
   Editor,
   Modifier,
@@ -79,7 +80,7 @@ function MyEditor() {
     if (editorRef.current) {
       editorRef.current.focus();
     }
-  }, []);
+  }, [editorState]);
 
   useEffect(() => {
     if (editorState.getCurrentContent().hasText() === false) {
@@ -93,10 +94,15 @@ function MyEditor() {
 
   let blockStyleFn = useCallback((contentBlock) => {
     let type = contentBlock.getType();
-    if (type === "LEFT_ALIGN") return "LEFT_ALIGN";
-    if (type === "CENTER_ALIGN") return "CENTER_ALIGN";
-    if (type === "RIGHT_ALIGN") return "RIGHT_ALIGN";
-    if (type === "JUSTIFY") return "JUSTIFY";
+    if (type === "Left") return "LEFT_ALIGN";
+    if (type === "Center") return "CENTER_ALIGN";
+    if (type === "Right") return "RIGHT_ALIGN";
+    if (type === "Justify") return "JUSTIFY";
+    const data = contentBlock.getData();
+    if (data.get("textAlign") === "Left") return "LEFT_ALIGN";
+    if (data.get("textAlign") === "Right") return "RIGHT_ALIGN";
+    if (data.get("textAlign") === "Center") return "CENTER_ALIGN";
+    if (data.get("textAlign") === "Justify") return "JUSTIFY";
     return null;
   });
 

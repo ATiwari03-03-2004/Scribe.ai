@@ -20,6 +20,7 @@ export default function ToolBar(props) {
         handleToggleBlockTypes={props.handleToggleBlockTypes}
         activeStatus={props.currentInlineStyle}
         editorState={props.editorState}
+        onChange={props.onChange}
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
       />
@@ -40,6 +41,10 @@ export default function ToolBar(props) {
       <ToggleBlockStyle
         handleToggleBlockTypes={props.handleToggleBlockTypes}
         activeStatus={props.currentBlockStyle}
+        editorState={props.editorState}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
+        onChange={props.onChange}
       />
       <CustomBlocks
         editorState={props.editorState}

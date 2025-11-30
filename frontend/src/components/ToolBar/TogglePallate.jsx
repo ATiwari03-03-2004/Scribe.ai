@@ -1,6 +1,6 @@
 import DropDown from "../DropDown/DropDown";
 import "./TogglePallate.css";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export default function TogglePallate(props) {
   let buttonref = useRef(null);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ToggleColor from "../ToolBar/ToggleColor";
+import EditorState from "draft-js/lib/EditorState";
 
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
@@ -147,68 +148,110 @@ export default function DropDown(props) {
   ];
 
   let highlightColorOptions = [
-  { cmd: "HIGHLIGHT-BLACK", bgColor: "#000000" },
-  { cmd: "HIGHLIGHT-CHARCOAL", bgColor: "#404040" },
-  { cmd: "HIGHLIGHT-GRAY", bgColor: "#808080" },
-  { cmd: "HIGHLIGHT-SILVER-GRAY", bgColor: "#999999" },
-  { cmd: "HIGHLIGHT-LIGHT-GRAY", bgColor: "#B3B3B3" },
-  { cmd: "HIGHLIGHT-SILVER", bgColor: "#CCCCCC" },
-  { cmd: "HIGHLIGHT-GAINSBORO", bgColor: "#D9D9D9" },
-  { cmd: "HIGHLIGHT-PLATINUM", bgColor: "#E6E6E6" },
-  { cmd: "HIGHLIGHT-WHITE-SMOKE", bgColor: "#F2F2F2" },
-  { cmd: "HIGHLIGHT-WHITE", bgColor: "#FFFFFF" },
-  { cmd: "HIGHLIGHT-RED", bgColor: "#CC0000" },
-  { cmd: "HIGHLIGHT-BRIGHT-RED", bgColor: "#FF0000" },
-  { cmd: "HIGHLIGHT-ORANGE", bgColor: "#FF9900" },
-  { cmd: "HIGHLIGHT-YELLOW", bgColor: "#FFFF00" },
-  { cmd: "HIGHLIGHT-LIME", bgColor: "#00FF00" },
-  { cmd: "HIGHLIGHT-CYAN", bgColor: "#00FFFF" },
-  { cmd: "HIGHLIGHT-SKY-BLUE", bgColor: "#0099FF" },
-  { cmd: "HIGHLIGHT-BLUE", bgColor: "#0000FF" },
-  { cmd: "HIGHLIGHT-VIOLET", bgColor: "#CC00FF" },
-  { cmd: "HIGHLIGHT-MAGENTA", bgColor: "#FF00FF" },
-  { cmd: "HIGHLIGHT-PALE-PINK", bgColor: "#FFCCCC" },
-  { cmd: "HIGHLIGHT-LIGHT-PINK", bgColor: "#FFB3CC" },
-  { cmd: "HIGHLIGHT-PEACH", bgColor: "#FFE6CC" },
-  { cmd: "HIGHLIGHT-CREAM", bgColor: "#FFFFCC" },
-  { cmd: "HIGHLIGHT-MINT-CREAM", bgColor: "#CCFFCC" },
-  { cmd: "HIGHLIGHT-POWDER-BLUE", bgColor: "#CCE6E6" },
-  { cmd: "HIGHLIGHT-ALICE-BLUE", bgColor: "#CCE6FF" },
-  { cmd: "HIGHLIGHT-LAVENDER", bgColor: "#CCCCFF" },
-  { cmd: "HIGHLIGHT-THISTLE", bgColor: "#E6CCFF" },
-  { cmd: "HIGHLIGHT-PINK-LACE", bgColor: "#FFCCFF" },
-  { cmd: "HIGHLIGHT-ROSY-BROWN", bgColor: "#CC9999" },
-  { cmd: "HIGHLIGHT-MAUVE", bgColor: "#CC6699" },
-  { cmd: "HIGHLIGHT-APRICOT", bgColor: "#FFCC99" },
-  { cmd: "HIGHLIGHT-LIGHT-YELLOW", bgColor: "#FFFF99" },
-  { cmd: "HIGHLIGHT-DARK-SEA-GREEN", bgColor: "#99CC99" },
-  { cmd: "HIGHLIGHT-CADET-BLUE", bgColor: "#99CCCC" },
-  { cmd: "HIGHLIGHT-CORNFLOWER", bgColor: "#99CCFF" },
-  { cmd: "HIGHLIGHT-BLUE-BELL", bgColor: "#9999CC" },
-  { cmd: "HIGHLIGHT-PLUM", bgColor: "#CC99CC" },
-  { cmd: "HIGHLIGHT-KOBI", bgColor: "#CC99BB" },
-  { cmd: "HIGHLIGHT-COPPER-ROSE", bgColor: "#996666" },
-  { cmd: "HIGHLIGHT-CERISE", bgColor: "#CC3366" },
-  { cmd: "HIGHLIGHT-PERU", bgColor: "#CC9933" },
-  { cmd: "HIGHLIGHT-BRASS", bgColor: "#CCCC33" },
-  { cmd: "HIGHLIGHT-FERN-GREEN", bgColor: "#669966" },
-  { cmd: "HIGHLIGHT-TEAL", bgColor: "#339999" },
-  { cmd: "HIGHLIGHT-DENIM", bgColor: "#3366CC" },
-  { cmd: "HIGHLIGHT-SAPPHIRE", bgColor: "#333399" },
-  { cmd: "HIGHLIGHT-REBECCA-PURPLE", bgColor: "#663399" },
-  { cmd: "HIGHLIGHT-ROYAL-PURPLE", bgColor: "#993399" },
-  { cmd: "HIGHLIGHT-DARK-BROWN", bgColor: "#663333" },
-  { cmd: "HIGHLIGHT-BURGUNDY", bgColor: "#990033" },
-  { cmd: "HIGHLIGHT-BRONZE", bgColor: "#996600" },
-  { cmd: "HIGHLIGHT-OLIVE", bgColor: "#999900" },
-  { cmd: "HIGHLIGHT-HUNTER-GREEN", bgColor: "#336633" },
-  { cmd: "HIGHLIGHT-DARK-CYAN", bgColor: "#006666" },
-  { cmd: "HIGHLIGHT-PRUSSIAN-BLUE", bgColor: "#003366" },
-  { cmd: "HIGHLIGHT-NAVY", bgColor: "#000066" },
-  { cmd: "HIGHLIGHT-INDIGO", bgColor: "#330066" },
-  { cmd: "HIGHLIGHT-DARK-PURPLE", bgColor: "#660066" }
-]
+    { cmd: "HIGHLIGHT-BLACK", bgColor: "#000000" },
+    { cmd: "HIGHLIGHT-CHARCOAL", bgColor: "#404040" },
+    { cmd: "HIGHLIGHT-GRAY", bgColor: "#808080" },
+    { cmd: "HIGHLIGHT-SILVER-GRAY", bgColor: "#999999" },
+    { cmd: "HIGHLIGHT-LIGHT-GRAY", bgColor: "#B3B3B3" },
+    { cmd: "HIGHLIGHT-SILVER", bgColor: "#CCCCCC" },
+    { cmd: "HIGHLIGHT-GAINSBORO", bgColor: "#D9D9D9" },
+    { cmd: "HIGHLIGHT-PLATINUM", bgColor: "#E6E6E6" },
+    { cmd: "HIGHLIGHT-WHITE-SMOKE", bgColor: "#F2F2F2" },
+    { cmd: "HIGHLIGHT-WHITE", bgColor: "#FFFFFF" },
+    { cmd: "HIGHLIGHT-RED", bgColor: "#CC0000" },
+    { cmd: "HIGHLIGHT-BRIGHT-RED", bgColor: "#FF0000" },
+    { cmd: "HIGHLIGHT-ORANGE", bgColor: "#FF9900" },
+    { cmd: "HIGHLIGHT-YELLOW", bgColor: "#FFFF00" },
+    { cmd: "HIGHLIGHT-LIME", bgColor: "#00FF00" },
+    { cmd: "HIGHLIGHT-CYAN", bgColor: "#00FFFF" },
+    { cmd: "HIGHLIGHT-SKY-BLUE", bgColor: "#0099FF" },
+    { cmd: "HIGHLIGHT-BLUE", bgColor: "#0000FF" },
+    { cmd: "HIGHLIGHT-VIOLET", bgColor: "#CC00FF" },
+    { cmd: "HIGHLIGHT-MAGENTA", bgColor: "#FF00FF" },
+    { cmd: "HIGHLIGHT-PALE-PINK", bgColor: "#FFCCCC" },
+    { cmd: "HIGHLIGHT-LIGHT-PINK", bgColor: "#FFB3CC" },
+    { cmd: "HIGHLIGHT-PEACH", bgColor: "#FFE6CC" },
+    { cmd: "HIGHLIGHT-CREAM", bgColor: "#FFFFCC" },
+    { cmd: "HIGHLIGHT-MINT-CREAM", bgColor: "#CCFFCC" },
+    { cmd: "HIGHLIGHT-POWDER-BLUE", bgColor: "#CCE6E6" },
+    { cmd: "HIGHLIGHT-ALICE-BLUE", bgColor: "#CCE6FF" },
+    { cmd: "HIGHLIGHT-LAVENDER", bgColor: "#CCCCFF" },
+    { cmd: "HIGHLIGHT-THISTLE", bgColor: "#E6CCFF" },
+    { cmd: "HIGHLIGHT-PINK-LACE", bgColor: "#FFCCFF" },
+    { cmd: "HIGHLIGHT-ROSY-BROWN", bgColor: "#CC9999" },
+    { cmd: "HIGHLIGHT-MAUVE", bgColor: "#CC6699" },
+    { cmd: "HIGHLIGHT-APRICOT", bgColor: "#FFCC99" },
+    { cmd: "HIGHLIGHT-LIGHT-YELLOW", bgColor: "#FFFF99" },
+    { cmd: "HIGHLIGHT-DARK-SEA-GREEN", bgColor: "#99CC99" },
+    { cmd: "HIGHLIGHT-CADET-BLUE", bgColor: "#99CCCC" },
+    { cmd: "HIGHLIGHT-CORNFLOWER", bgColor: "#99CCFF" },
+    { cmd: "HIGHLIGHT-BLUE-BELL", bgColor: "#9999CC" },
+    { cmd: "HIGHLIGHT-PLUM", bgColor: "#CC99CC" },
+    { cmd: "HIGHLIGHT-KOBI", bgColor: "#CC99BB" },
+    { cmd: "HIGHLIGHT-COPPER-ROSE", bgColor: "#996666" },
+    { cmd: "HIGHLIGHT-CERISE", bgColor: "#CC3366" },
+    { cmd: "HIGHLIGHT-PERU", bgColor: "#CC9933" },
+    { cmd: "HIGHLIGHT-BRASS", bgColor: "#CCCC33" },
+    { cmd: "HIGHLIGHT-FERN-GREEN", bgColor: "#669966" },
+    { cmd: "HIGHLIGHT-TEAL", bgColor: "#339999" },
+    { cmd: "HIGHLIGHT-DENIM", bgColor: "#3366CC" },
+    { cmd: "HIGHLIGHT-SAPPHIRE", bgColor: "#333399" },
+    { cmd: "HIGHLIGHT-REBECCA-PURPLE", bgColor: "#663399" },
+    { cmd: "HIGHLIGHT-ROYAL-PURPLE", bgColor: "#993399" },
+    { cmd: "HIGHLIGHT-DARK-BROWN", bgColor: "#663333" },
+    { cmd: "HIGHLIGHT-BURGUNDY", bgColor: "#990033" },
+    { cmd: "HIGHLIGHT-BRONZE", bgColor: "#996600" },
+    { cmd: "HIGHLIGHT-OLIVE", bgColor: "#999900" },
+    { cmd: "HIGHLIGHT-HUNTER-GREEN", bgColor: "#336633" },
+    { cmd: "HIGHLIGHT-DARK-CYAN", bgColor: "#006666" },
+    { cmd: "HIGHLIGHT-PRUSSIAN-BLUE", bgColor: "#003366" },
+    { cmd: "HIGHLIGHT-NAVY", bgColor: "#000066" },
+    { cmd: "HIGHLIGHT-INDIGO", bgColor: "#330066" },
+    { cmd: "HIGHLIGHT-DARK-PURPLE", bgColor: "#660066" },
+  ];
 
+  let handleFontSize = (key, name) => {
+    props.handler(key);
+    props.handleDropDown("");
+    props.setFontSize(name);
+  };
+
+  let handleAlignment = (alignment) => {
+    const selection = props.editorState.getSelection();
+    const contentState = props.editorState.getCurrentContent();
+    const blockKey = selection.getStartKey();
+    const block = contentState.getBlockForKey(blockKey);
+    if (
+      !block.getType().startsWith("header-") &&
+      block.getType() !== "blockquote" &&
+      block.getType() !== "code-block"
+    ) {
+      props.handleToggleBlockTypes(alignment);
+    } else {
+      const newData = block.getData().merge({ textAlign: alignment });
+      const newBlock = block.merge({ data: newData });
+      const newContentState = contentState.merge({
+        blockMap: contentState.getBlockMap().set(blockKey, newBlock),
+      });
+      props.onChange(
+        EditorState.push(
+          props.editorState,
+          newContentState,
+          "changed-block-data"
+        )
+      );
+    }
+    if (alignment === "Left") {
+      props.setAlignmentType("format_align_left");
+    } else if (alignment === "Right") {
+      props.setAlignmentType("format_align_right");
+    } else if (alignment === "Center") {
+      props.setAlignmentType("format_align_center");
+    } else {
+      props.setAlignmentType("format_align_justify");
+    }
+    props.handleDropDown("alignment");
+  };
 
   useEffect(() => {
     if (props.isClose.open && props.buttonref) {
@@ -229,6 +272,7 @@ export default function DropDown(props) {
     <>
       {!props.isClose.open ? null : props.isClose.dropdown === "image" ? (
         <div
+          className="DD"
           style={{
             position: "absolute",
             left: `${positions.left}px`,
@@ -237,7 +281,6 @@ export default function DropDown(props) {
             boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
             borderRadius: "0.25rem",
           }}
-          className="DD"
         >
           <button
             onMouseDown={(e) => e.preventDefault()}
@@ -328,9 +371,7 @@ export default function DropDown(props) {
               className="font-size"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
-                props.handler(fontSize.key);
-                props.handleDropDown("");
-                props.setFontSize(fontSize.name);
+                handleFontSize(fontSize.key, fontSize.name);
               }}
               style={{
                 cursor: "pointer",
@@ -342,6 +383,7 @@ export default function DropDown(props) {
         </div>
       ) : props.isClose.dropdown === "text_color" ? (
         <div
+          className="pallete_dd"
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -368,6 +410,7 @@ export default function DropDown(props) {
         </div>
       ) : props.isClose.dropdown === "highlighter_color" ? (
         <div
+          className="pallete_dd"
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -391,6 +434,43 @@ export default function DropDown(props) {
               close={"highlighter_color"}
             />
           ))}
+        </div>
+      ) : props.isClose.dropdown === "alignment" ? (
+        <div className="DD" style={{ display: "flex", width: "3.75rem" }}>
+          <button
+            title={"Left Align"}
+            style={{ cursor: "pointer" }}
+            onClick={() => handleAlignment("Left")}
+          >
+            <span className="material-symbols-outlined">format_align_left</span>
+          </button>
+          <button
+            title={"Center Align"}
+            style={{ cursor: "pointer" }}
+            onClick={() => handleAlignment("Center")}
+          >
+            <span className="material-symbols-outlined">
+              format_align_center
+            </span>
+          </button>
+          <button
+            title={"Right Align"}
+            style={{ cursor: "pointer" }}
+            onClick={() => handleAlignment("Right")}
+          >
+            <span className="material-symbols-outlined">
+              format_align_right
+            </span>
+          </button>
+          <button
+            title={"Justify"}
+            style={{ cursor: "pointer" }}
+            onClick={() => handleAlignment("Justify")}
+          >
+            <span className="material-symbols-outlined">
+              format_align_justify
+            </span>
+          </button>
         </div>
       ) : null}
     </>

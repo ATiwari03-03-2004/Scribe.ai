@@ -1,4 +1,5 @@
 import ToggleButton from "./ToggleButton";
+import Alignment from "./Alignment";
 import "./ToggleBlockStyle.css";
 
 export default function ToggleBlockStyle(props) {
@@ -75,45 +76,15 @@ export default function ToggleBlockStyle(props) {
           icon={"format_list_numbered"}
           active={props.activeStatus === "ordered-list-item"}
         />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"LEFT_ALIGN"}
-          title={"Align Left"}
-          icon={"format_align_left"}
-          active={props.activeStatus === "LEFT_ALIGN"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"CENTER_ALIGN"}
-          title={"Align Center"}
-          icon={"format_align_center"}
-          active={props.activeStatus === "CENTER_ALIGN"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"RIGHT_ALIGN"}
-          title={"Align Right"}
-          icon={"format_align_right"}
-          active={props.activeStatus === "RIGHT_ALIGN"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"JUSTIFY"}
-          title={"Justify"}
-          icon={"format_align_justify"}
-          active={props.activeStatus === "JUSTIFY"}
+        <Alignment
+          activeStatus={props.activeStatus}
+          handleToggleBlockTypes={props.handleToggleBlockTypes}
+          editorState={props.editorState}
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          onChange={props.onChange}
         />
       </div>
-      <p
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "center",
-          cursor: "default",
-        }}
-      >
-        Blocks
-      </p>
     </div>
   );
 }
