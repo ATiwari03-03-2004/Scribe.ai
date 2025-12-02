@@ -71,7 +71,6 @@ export default function FontSize(props) {
       props.activeStatus.has(fontSize.key)
     );
     if (!activeFontSize) {
-      props.handler(key);
       setFontSize("11");
       return;
     }

@@ -35,17 +35,6 @@ export default function CustomBlocks(props) {
         <Undo editorState={props.editorState} onChange={props.onChange} />
         <Redo editorState={props.editorState} onChange={props.onChange} />
       </div>
-      <p
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "center",
-          paddingTop: "2rem",
-          cursor: "default",
-        }}
-      >
-        Advanced
-      </p>
     </div>
   );
 }

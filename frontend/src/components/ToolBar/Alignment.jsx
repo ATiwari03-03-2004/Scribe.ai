@@ -43,6 +43,7 @@ export default function Alignment(props) {
         <DropDown
           handleToggleBlockTypes={props.handleToggleBlockTypes}
           editorState={props.editorState}
+          editorRef={props.editorRef}
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
           activeStatus={props.activeStatus}

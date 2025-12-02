@@ -6,49 +6,49 @@ export default function Font(props) {
   let buttonref = useRef(null);
 
   const fontStyles = [
-    { key: "ARIAL", name: "Arial" },
-    { key: "HELVETICA", name: "Helvetica" },
-    { key: "VERDANA", name: "Verdana" },
-    { key: "TAHOMA", name: "Tahoma" },
-    { key: "TREBUCHET_MS", name: "Trebuchet MS" },
-    { key: "SEGOE_UI", name: "Segoe UI" },
-    { key: "GENEVA", name: "Geneva" },
-    { key: "TIMES_NEW_ROMAN", name: "Times New Roman" },
-    { key: "GEORGIA", name: "Georgia" },
-    { key: "PALATINO_LINOTYPE", name: "Palatino Linotype" },
-    { key: "BOOK_ANTIQUA", name: "Book Antiqua" },
-    { key: "GARAMOND", name: "Garamond" },
-    { key: "COURIER_NEW", name: "Courier New" },
-    { key: "LUCIDA_CONSOLE", name: "Lucida Console" },
-    { key: "MONACO", name: "Monaco" },
-    { key: "CONSOLAS", name: "Consolas" },
-    { key: "COMIC_SANS_MS", name: "Comic Sans MS" },
-    { key: "BRUSH_SCRIPT_MT", name: "Brush Script MT" },
-    { key: "IMPACT", name: "Impact" },
-    { key: "FANTASY", name: "Fantasy" },
+    { key: "FONT-ARIAL", name: "Arial" },
+    { key: "FONT-HELVETICA", name: "Helvetica" },
+    { key: "FONT-VERDANA", name: "Verdana" },
+    { key: "FONT-TAHOMA", name: "Tahoma" },
+    { key: "FONT-TREBUCHET_MS", name: "Trebuchet MS" },
+    { key: "FONT-SEGOE_UI", name: "Segoe UI" },
+    { key: "FONT-GENEVA", name: "Geneva" },
+    { key: "FONT-TIMES_NEW_ROMAN", name: "Times New Roman" },
+    { key: "FONT-GEORGIA", name: "Georgia" },
+    { key: "FONT-PALATINO_LINOTYPE", name: "Palatino Linotype" },
+    { key: "FONT-BOOK_ANTIQUA", name: "Book Antiqua" },
+    { key: "FONT-GARAMOND", name: "Garamond" },
+    { key: "FONT-COURIER_NEW", name: "Courier New" },
+    { key: "FONT-LUCIDA_CONSOLE", name: "Lucida Console" },
+    { key: "FONT-MONACO", name: "Monaco" },
+    { key: "FONT-CONSOLAS", name: "Consolas" },
+    { key: "FONT-COMIC_SANS_MS", name: "Comic Sans MS" },
+    { key: "FONT-BRUSH_SCRIPT_MT", name: "Brush Script MT" },
+    { key: "FONT-IMPACT", name: "Impact" },
+    { key: "FONT-FANTASY", name: "Fantasy" },
   ];
 
   const fontStylesMap = {
-    ARIAL: "Arial",
-    HELVETICA: "Helvetica",
-    VERDANA: "Verdana",
-    TAHOMA: "Tahoma",
-    TREBUCHET_MS: "Trebuchet MS",
-    SEGOE_UI: "Segoe UI",
-    GENEVA: "Geneva",
-    TIMES_NEW_ROMAN: "Times New Roman",
-    GEORGIA: "Georgia",
-    PALATINO_LINOTYPE: "Palatino Linotype",
-    BOOK_ANTIQUA: "Book Antiqua",
-    GARAMOND: "Garamond",
-    COURIER_NEW: "Courier New",
-    LUCIDA_CONSOLE: "Lucida Console",
-    MONACO: "Monaco",
-    CONSOLAS: "Consolas",
-    COMIC_SANS_MS: "Comic Sans MS",
-    BRUSH_SCRIPT_MT: "Brush Script MT",
-    IMPACT: "Impact",
-    FANTASY: "Fantasy",
+    "FONT-ARIAL": "Arial",
+    "FONT-HELVETICA": "Helvetica",
+    "FONT-VERDANA": "Verdana",
+    "FONT-TAHOMA": "Tahoma",
+    "FONT-TREBUCHET_MS": "Trebuchet MS",
+    "FONT-SEGOE_UI": "Segoe UI",
+    "FONT-GENEVA": "Geneva",
+    "FONT-TIMES_NEW_ROMAN": "Times New Roman",
+    "FONT-GEORGIA": "Georgia",
+    "FONT-PALATINO_LINOTYPE": "Palatino Linotype",
+    "FONT-BOOK_ANTIQUA": "Book Antiqua",
+    "FONT-GARAMOND": "Garamond",
+    "FONT-COURIER_NEW": "Courier New",
+    "FONT-LUCIDA_CONSOLE": "Lucida Console",
+    "FONT-MONACO": "Monaco",
+    "FONT-CONSOLAS": "Consolas",
+    "FONT-COMIC_SANS_MS": "Comic Sans MS",
+    "FONT-BRUSH_SCRIPT_MT": "Brush Script MT",
+    "FONT-IMPACT": "Impact",
+    "FONT-FANTASY": "Fantasy",
   };
 
   useEffect(() => {
@@ -57,14 +57,14 @@ export default function Font(props) {
       props.activeStatus.has(fontStyle.key)
     );
     if (!activeFont) {
-      setFont("Arial")
+      setFont("Arial");
       return;
     }
-    props.activeStatus._map._list._tail.array.forEach(arr => {
+    props.activeStatus._map._list._tail.array.forEach((arr) => {
       if (arr?.[0] && fontStylesMap[arr[0]]) {
         key = arr[0];
       }
-    })
+    });
     setFont(fontStylesMap[key]);
   }, [props.activeStatus]);
 
@@ -87,9 +87,16 @@ export default function Font(props) {
       >
         <span>{font}</span>
         {props.isClose.open && props.isClose.dropdown === "font" ? (
-          <span className="material-symbols-outlined drop" style={{backgroundColor: "gray"}}>arrow_drop_up</span>
+          <span
+            className="material-symbols-outlined drop"
+            style={{ backgroundColor: "gray" }}
+          >
+            arrow_drop_up
+          </span>
         ) : (
-          <span className="material-symbols-outlined drop">arrow_drop_down</span>
+          <span className="material-symbols-outlined drop">
+            arrow_drop_down
+          </span>
         )}
       </button>
       {props.isClose.open && props.isClose.dropdown === "font" ? (
@@ -98,7 +105,9 @@ export default function Font(props) {
           handleDropDown={props.handleDropDown}
           handler={props.handler}
           setFont={setFont}
+          activeStatus={props.activeStatus}
           editorState={props.editorState}
+          onChange={props.onChange}
           buttonref={buttonref}
         />
       ) : null}

@@ -44,6 +44,7 @@ export default function ToolBar(props) {
         editorState={props.editorState}
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
+        editorRef={props.editorRef}
         onChange={props.onChange}
       />
       <CustomBlocks

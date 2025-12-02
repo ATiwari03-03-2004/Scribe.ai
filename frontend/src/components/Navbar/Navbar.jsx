@@ -5,35 +5,40 @@ import { useState } from "react";
 export default function Navbar(props) {
   let [docName, setDocName] = useState("Untitled");
   let [isClose, setIsClose] = useState({ open: false, dropdown: "" });
-  
-    let handleDropDown = (dditem) => {
-      setIsClose((prev) => {
-        if (prev.open && prev.dropdown === dditem) {
-          return { open: false, dropdown: "" };
-        }
-        if (prev.open && prev.dropdown !== dditem && dditem.length) {
-          return { open: true, dropdown: dditem };
-        }
+
+  let handleDropDown = (dditem) => {
+    setIsClose((prev) => {
+      if (prev.open && prev.dropdown === dditem) {
+        return { open: false, dropdown: "" };
+      }
+      if (prev.open && prev.dropdown !== dditem && dditem.length) {
         return { open: true, dropdown: dditem };
-      });
-    };
+      }
+      return { open: true, dropdown: dditem };
+    });
+  };
   return (
-    <div className="navbar" style={(props.displayVal === 'flex' ? {width: "76.5%"} : {width: "100%"})}>
+    <div
+      className="navbar"
+      style={
+        props.displayVal === "flex" ? { width: "76.5%" } : { width: "100%" }
+      }
+    >
       <div className="label">
         <div className="doc">
           <img src="/Scribe_Black.png" alt="Scribe_logo" title="Home" />
-            <input
-              type="text"
-              placeholder={docName}
-              value={docName}
-              onChange={(e) => setDocName(e.target.value)}
-              onKeyDown={(e) => (e.key === 'Enter' ? e.target.blur() : null)}
-              style={{
-                backgroundColor: "#f5f5f5",
-                border: "1px solid black",
-                fontSize: "1.2rem",
-              }}
-            ></input>
+          <input
+            type="text"
+            placeholder={docName}
+            value={docName}
+            onChange={(e) => setDocName(e.target.value)}
+            onKeyDown={(e) => (e.key === "Enter" ? e.target.blur() : null)}
+            style={{
+              backgroundColor: "#f5f5f5",
+              border: "1px solid black",
+              fontSize: "1.2rem",
+            }}
+          ></input>
           <button
             style={{ marginLeft: "0.5rem", cursor: "pointer" }}
             title="Save"
@@ -59,7 +64,9 @@ export default function Navbar(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => props.display((prev) => (prev === "none" ? "flex" : "none"))}
+            onClick={() =>
+              props.display((prev) => (prev === "none" ? "flex" : "none"))
+            }
           >
             <img
               className="GEMINI_IMG"
@@ -92,6 +99,7 @@ export default function Navbar(props) {
         </div>
       </div>
       <ToolBar
+        editorRef={props.editorRef}
         handleToggleInlineStyles={props.handleToggleInlineStyles}
         currentInlineStyle={props.currentInlineStyle}
         handleToggleBlockTypes={props.handleToggleBlockTypes}

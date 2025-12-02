@@ -1,87 +1,104 @@
 import { useEffect, useState } from "react";
 import ToggleColor from "../ToolBar/ToggleColor";
 import EditorState from "draft-js/lib/EditorState";
+import { RichUtils } from "draft-js";
 
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
 
   const fonts = [
-    { key: "ARIAL", name: "Arial", style: "Arial, Helvetica, sans-serif" },
+    { key: "FONT-ARIAL", name: "Arial", style: "Arial, Helvetica, sans-serif" },
     {
-      key: "HELVETICA",
+      key: "FONT-HELVETICA",
       name: "Helvetica",
       style: "Helvetica, Arial, sans-serif",
     },
-    { key: "VERDANA", name: "Verdana", style: "Verdana, Geneva, sans-serif" },
-    { key: "TAHOMA", name: "Tahoma", style: "Tahoma, Geneva, sans-serif" },
     {
-      key: "TREBUCHET_MS",
+      key: "FONT-VERDANA",
+      name: "Verdana",
+      style: "Verdana, Geneva, sans-serif",
+    },
+    { key: "FONT-TAHOMA", name: "Tahoma", style: "Tahoma, Geneva, sans-serif" },
+    {
+      key: "FONT-TREBUCHET_MS",
       name: "Trebuchet MS",
       style: "Trebuchet MS, Helvetica, sans-serif",
     },
     {
-      key: "SEGOE_UI",
+      key: "FONT-SEGOE_UI",
       name: "Segoe UI",
       style: "Segoe UI, Tahoma, Geneva, sans-serif",
     },
-    { key: "GENEVA", name: "Geneva", style: "Geneva, Verdana, sans-serif" },
     {
-      key: "TIMES_NEW_ROMAN",
+      key: "FONT-GENEVA",
+      name: "Geneva",
+      style: "Geneva, Verdana, sans-serif",
+    },
+    {
+      key: "FONT-TIMES_NEW_ROMAN",
       name: "Times New Roman",
       style: "Times New Roman, Times, serif",
     },
     {
-      key: "GEORGIA",
+      key: "FONT-GEORGIA",
       name: "Georgia",
       style: "Georgia, Times New Roman, serif",
     },
     {
-      key: "PALATINO_LINOTYPE",
+      key: "FONT-PALATINO_LINOTYPE",
       name: "Palatino Linotype",
       style: "Palatino Linotype, Palatino, serif",
     },
     {
-      key: "BOOK_ANTIQUA",
+      key: "FONT-BOOK_ANTIQUA",
       name: "Book Antiqua",
       style: "Book Antiqua, Palatino, serif",
     },
     {
-      key: "GARAMOND",
+      key: "FONT-GARAMOND",
       name: "Garamond",
       style: "Garamond, Times New Roman, serif",
     },
     {
-      key: "COURIER_NEW",
+      key: "FONT-COURIER_NEW",
       name: "Courier New",
       style: "Courier New, Courier, monospace",
     },
     {
-      key: "LUCIDA_CONSOLE",
+      key: "FONT-LUCIDA_CONSOLE",
       name: "Lucida Console",
       style: "Lucida Console, Monaco, monospace",
     },
     {
-      key: "MONACO",
+      key: "FONT-MONACO",
       name: "Monaco",
       style: "Monaco, Lucida Console, monospace",
     },
     {
-      key: "CONSOLAS",
+      key: "FONT-CONSOLAS",
       name: "Consolas",
       style: "Consolas, Courier New, monospace",
     },
     {
-      key: "COMIC_SANS_MS",
+      key: "FONT-COMIC_SANS_MS",
       name: "Comic Sans MS",
       style: "Comic Sans MS, cursive, sans-serif",
     },
     {
-      key: "BRUSH_SCRIPT_MT",
+      key: "FONT-BRUSH_SCRIPT_MT",
       name: "Brush Script MT",
       style: "Brush Script MT, cursive, sans-serif",
     },
-    { key: "IMPACT", name: "Impact", style: "Impact, Charcoal, sans-serif" },
-    { key: "FANTASY", name: "Fantasy", style: "Fantasy, cursive, sans-serif" },
+    {
+      key: "FONT-IMPACT",
+      name: "Impact",
+      style: "Impact, Charcoal, sans-serif",
+    },
+    {
+      key: "FONT-FANTASY",
+      name: "Fantasy",
+      style: "Fantasy, cursive, sans-serif",
+    },
   ];
 
   const colorOptions = [
@@ -210,10 +227,30 @@ export default function DropDown(props) {
     { cmd: "HIGHLIGHT-DARK-PURPLE", bgColor: "#660066" },
   ];
 
-  let handleFontSize = (key, name) => {
-    props.handler(key);
+  let handleFont = (key, name) => {
+    let newState = props.editorState;
+    props.activeStatus._map._map._root?.entries.forEach((entry) => {
+      if (entry[0].startsWith("FONT-")) {
+        newState = RichUtils.toggleInlineStyle(newState, entry[0]);
+      }
+    });
+    newState = RichUtils.toggleInlineStyle(newState, key);
+    props.onChange(newState);
+    props.setFont(name);
     props.handleDropDown("");
+  };
+
+  let handleFontSize = (key, name) => {
+    let newState = props.editorState;
+    props.activeStatus._map._map._root?.entries.forEach((entry) => {
+      if (entry[0].startsWith("FONTSIZE-")) {
+        newState = RichUtils.toggleInlineStyle(newState, entry[0]);
+      }
+    });
+    newState = RichUtils.toggleInlineStyle(newState, key);
+    props.onChange(newState);
     props.setFontSize(name);
+    props.handleDropDown("");
   };
 
   let handleAlignment = (alignment) => {
@@ -221,11 +258,7 @@ export default function DropDown(props) {
     const contentState = props.editorState.getCurrentContent();
     const blockKey = selection.getStartKey();
     const block = contentState.getBlockForKey(blockKey);
-    if (
-      !block.getType().startsWith("header-") &&
-      block.getType() !== "blockquote" &&
-      block.getType() !== "code-block"
-    ) {
+    if (!block.getType().startsWith("header-")) {
       props.handleToggleBlockTypes(alignment);
     } else {
       const newData = block.getData().merge({ textAlign: alignment });
@@ -338,9 +371,7 @@ export default function DropDown(props) {
               className="font"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
-                props.handler(font.key);
-                props.handleDropDown("");
-                props.setFont(font.name);
+                handleFont(font.key, font.name);
               }}
               style={{
                 cursor: "pointer",

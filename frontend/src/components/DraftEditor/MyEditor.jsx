@@ -80,7 +80,7 @@ function MyEditor() {
     if (editorRef.current) {
       editorRef.current.focus();
     }
-  }, [editorState]);
+  }, []);
 
   useEffect(() => {
     if (editorState.getCurrentContent().hasText() === false) {
@@ -120,15 +120,50 @@ function MyEditor() {
     [editorState, onChange]
   );
 
-  const handleKeyCommand = useCallback(
+  const handleKeyCmd = useCallback(
     (command, editorState) => {
-      if (command === "tab") {
+      const selectionState = editorState.getSelection();
+      const contentState = editorState.getCurrentContent();
+      const blockKey = selectionState.getStartKey();
+      const contentBlock = contentState.getBlockForKey(blockKey);
+      const blockType = contentBlock.getType();
+      if (
+        command === "tab" &&
+        (blockType === "unordered-list-item" ||
+          blockType === "ordered-list-item")
+      ) {
         const newEditorState = RichUtils.onTab(event, editorState, 4);
         if (newEditorState !== editorState) {
           onChange(newEditorState);
           return "handled";
         }
         return "not-handled";
+      } else if (command === "tab") {
+        const newContent = Modifier.insertText(
+          contentState,
+          selectionState,
+          "\t",
+          editorState.getCurrentInlineStyle()
+        );
+        onChange(
+          EditorState.push(editorState, newContent, "insert-characters")
+        );
+        return "handled";
+      }
+      if (command === "backspace" || command === "delete") {
+        const blockText = contentBlock.getText();
+        if (blockText === "" && contentBlock.getData().has("textAlign")) {
+          const newData = contentBlock.getData().remove("textAlign");
+          const newContent = Modifier.setBlockData(
+            contentState,
+            selectionState,
+            newData
+          );
+          onChange(
+            EditorState.push(editorState, newContent, "change-block-data")
+          );
+          return "handled";
+        }
       }
       let newState = RichUtils.handleKeyCommand(editorState, command);
       if (newState) {
@@ -208,6 +243,7 @@ function MyEditor() {
         setFinalRecognizedText={setFinalRecognizedText}
         isFinal={isFinal}
         setIsFinal={setIsFinal}
+        editorRef={editorRef}
       />
       <div
         className="text-editor"
@@ -225,7 +261,7 @@ function MyEditor() {
             customStyleMap={customStyleMaps}
             editorState={editorState}
             onChange={onChange}
-            handleKeyCommand={handleKeyCommand}
+            handleKeyCommand={handleKeyCmd}
             keyBindingFn={handleTab}
             ref={editorRef}
             style={{ width: "100vw", height: "100%" }}
