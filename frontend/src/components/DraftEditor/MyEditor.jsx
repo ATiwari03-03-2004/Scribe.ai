@@ -103,6 +103,10 @@ function MyEditor() {
     if (data.get("textAlign") === "Right") return "RIGHT_ALIGN";
     if (data.get("textAlign") === "Center") return "CENTER_ALIGN";
     if (data.get("textAlign") === "Justify") return "JUSTIFY";
+    if (data.has("indent")) {
+      const indentLevel = data.get("indent") || 0;
+      return `indent-${indentLevel}`;
+    }
     return null;
   });
 
@@ -154,6 +158,18 @@ function MyEditor() {
         const blockText = contentBlock.getText();
         if (blockText === "" && contentBlock.getData().has("textAlign")) {
           const newData = contentBlock.getData().remove("textAlign");
+          const newContent = Modifier.setBlockData(
+            contentState,
+            selectionState,
+            newData
+          );
+          onChange(
+            EditorState.push(editorState, newContent, "change-block-data")
+          );
+          return "handled";
+        }
+        if (blockText === "" && contentBlock.getData().has("indent")) {
+          const newData = contentBlock.getData().remove("indent");
           const newContent = Modifier.setBlockData(
             contentState,
             selectionState,

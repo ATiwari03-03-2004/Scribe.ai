@@ -1,7 +1,6 @@
 import { RichUtils } from "draft-js";
 
 export default function ToggleColor(props) {
-
   let handleTextColor = (key) => {
     let newState = props.editorState;
     props.activeStatus._map._map._root?.entries.forEach((entry) => {
@@ -9,7 +8,6 @@ export default function ToggleColor(props) {
         newState = RichUtils.toggleInlineStyle(newState, entry[0]);
       }
     });
-    console.log(newState)
     newState = RichUtils.toggleInlineStyle(newState, key);
     props.onChange(newState);
     props.handleDropDown("");
@@ -22,8 +20,6 @@ export default function ToggleColor(props) {
         newState = RichUtils.toggleInlineStyle(newState, entry[0]);
       }
     });
-    
-    console.log(newState)
     newState = RichUtils.toggleInlineStyle(newState, key);
     props.onChange(newState);
     props.handleDropDown("");

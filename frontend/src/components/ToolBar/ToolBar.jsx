@@ -4,6 +4,8 @@ import TogglePallate from "./TogglePallate";
 import CustomBlocks from "./CustomBlocks";
 import Highlighter from "./Highlighter";
 import "../ToolBar/ToolBar.css";
+import IncreaseIndent from "./IncreaseIndent";
+import DecreaseIndent from "./DecreaseIndent";
 
 export default function ToolBar(props) {
   return (
@@ -38,6 +40,16 @@ export default function ToolBar(props) {
         editorState={props.editorState}
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
+        onChange={props.onChange}
+      />
+      <IncreaseIndent
+        activeStatus={props.currentBlockStyle}
+        editorState={props.editorState}
+        onChange={props.onChange}
+      />
+      <DecreaseIndent
+        activeStatus={props.currentBlockStyle}
+        editorState={props.editorState}
         onChange={props.onChange}
       />
       <ToggleBlockStyle
