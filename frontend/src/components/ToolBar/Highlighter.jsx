@@ -3,11 +3,12 @@ import DropDown from "../DropDown/DropDown";
 
 export default function Highlighter(props) {
   let buttonref = useRef(null);
-  let filteredHighlightColors = props.editorState
-    .getCurrentInlineStyle()
-    ._map._map._root?.entries?.filter((inlineStyles) => {
-      if (inlineStyles[0].startsWith("HIGHLIGHT-")) return inlineStyles;
-    }) || [];
+  let filteredHighlightColors =
+    props.editorState
+      .getCurrentInlineStyle()
+      ._map._map._root?.entries?.filter((inlineStyles) => {
+        if (inlineStyles[0].startsWith("HIGHLIGHT-")) return inlineStyles;
+      }) || [];
   let finalColor = filteredHighlightColors.length
     ? filteredHighlightColors.reduce((acc, curr) =>
         curr[1] > acc[1] ? curr : acc
@@ -96,7 +97,9 @@ export default function Highlighter(props) {
           className="material-symbols-outlined"
           style={{
             marginRight: "0.18rem",
-            borderBottom: `3.5px solid ${ finalColor.length ? colorOptions[finalColor[0]] : "black"}`,
+            borderBottom: `3.5px solid ${
+              finalColor.length ? colorOptions[finalColor[0]] : "black"
+            }`,
             paddingBottom: "0.25rem",
             height: "1.15rem",
             width: "1.5rem",
@@ -125,6 +128,8 @@ export default function Highlighter(props) {
           handleToggleInlineStyles={props.handleToggleInlineStyles}
           activeStatus={props.activeStatus}
           buttonref={buttonref}
+          editorState={props.editorState}
+          onChange={props.onChange}
           activeColor={
             props.editorState.getCurrentInlineStyle()._map._map._root?.entries[
               props.editorState.getCurrentInlineStyle()._map._map._root?.entries

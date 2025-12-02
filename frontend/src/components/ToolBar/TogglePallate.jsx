@@ -128,6 +128,9 @@ export default function TogglePallate(props) {
           handleToggleInlineStyles={props.handleToggleInlineStyles}
           activeStatus={props.activeStatus}
           buttonref={buttonref}
+          editorState={props.editorState}
+          editorRef={props.editorRef}
+          onChange={props.onChange}
           activeColor={
             props.editorState.getCurrentInlineStyle()._map._map._root?.entries[
               props.editorState.getCurrentInlineStyle()._map._map._root?.entries

@@ -435,6 +435,9 @@ export default function DropDown(props) {
               cmd={colorOption.cmd}
               bgColor={colorOption.bgColor}
               activeColor={props.activeColor}
+              activeStatus={props.activeStatus}
+              editorState={props.editorState}
+              onChange={props.onChange}
               close={"text_color"}
             />
           ))}
@@ -462,6 +465,9 @@ export default function DropDown(props) {
               cmd={highlightColorOption.cmd}
               bgColor={highlightColorOption.bgColor}
               activeColor={props.activeColor}
+              editorState={props.editorState}
+              onChange={props.onChange}
+              activeStatus={props.activeStatus}
               close={"highlighter_color"}
             />
           ))}

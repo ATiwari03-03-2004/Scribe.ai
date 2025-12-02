@@ -1,10 +1,39 @@
+import { RichUtils } from "draft-js";
+
 export default function ToggleColor(props) {
+
+  let handleTextColor = (key) => {
+    let newState = props.editorState;
+    props.activeStatus._map._map._root?.entries.forEach((entry) => {
+      if (entry[0].startsWith("COLOR-")) {
+        newState = RichUtils.toggleInlineStyle(newState, entry[0]);
+      }
+    });
+    console.log(newState)
+    newState = RichUtils.toggleInlineStyle(newState, key);
+    props.onChange(newState);
+    props.handleDropDown("");
+  };
+
+  let handleHighlightColor = (key) => {
+    let newState = props.editorState;
+    props.activeStatus._map._map._root?.entries.forEach((entry) => {
+      if (entry[0].startsWith("HIGHLIGHT-")) {
+        newState = RichUtils.toggleInlineStyle(newState, entry[0]);
+      }
+    });
+    
+    console.log(newState)
+    newState = RichUtils.toggleInlineStyle(newState, key);
+    props.onChange(newState);
+    props.handleDropDown("");
+  };
+
   return (
     <button
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => {
-        props.handleToggleInlineStyles(props.cmd);
-        props.handleDropDown(props.close);
+        props.close === "highlighter_color" ? handleHighlightColor(props.cmd) : handleTextColor(props.cmd);
       }}
       style={
         props.cmd === "COLOR-WHITE" || props.cmd === "COLOR-WHITE-SMOKE" || props.cmd === "HIGHLIGHT-WHITE" || props.cmd === "HIGHLIGHT-WHITE-SMOKE"
