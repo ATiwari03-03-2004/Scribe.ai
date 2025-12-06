@@ -60,6 +60,7 @@ export default function ToolBar(props) {
         handleDropDown={props.handleDropDown}
         editorRef={props.editorRef}
         onChange={props.onChange}
+        currentBlockData={props.currentBlockData}
       />
       <CustomBlocks
         editorState={props.editorState}

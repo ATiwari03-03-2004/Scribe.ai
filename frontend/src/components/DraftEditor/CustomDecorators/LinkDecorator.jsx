@@ -1,4 +1,3 @@
-// Link DEcorator Strategy
 const findLinkEntities = (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges(
     (character) => {

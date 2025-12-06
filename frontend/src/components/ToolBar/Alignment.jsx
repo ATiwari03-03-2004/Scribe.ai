@@ -1,9 +1,33 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropDown from "../DropDown/DropDown";
 
 export default function Alignment(props) {
   let [alignmentType, setAlignmentType] = useState("format_align_left");
   let buttonref = useRef(null);
+  useEffect(() => {
+    if (props.activeStatus === "Center") {
+      setAlignmentType("format_align_center");
+    } else if (props.activeStatus === "Right") {
+      setAlignmentType("format_align_right");
+    } else if (props.activeStatus === "Justify") {
+      setAlignmentType("format_justify");
+    } else if (
+      props.activeStatus.startsWith("header-") &&
+      props.currentBlockData.has("textAlign")
+    ) {
+      if (props.currentBlockData.get("textAlign") === "Right") {
+        setAlignmentType("format_align_right");
+      } else if (props.currentBlockData.get("textAlign") === "Center") {
+        setAlignmentType("format_align_center");
+      } else if (props.currentBlockData.get("textAlign") === "Justify") {
+        setAlignmentType("format_align_justify");
+      } else {
+        setAlignmentType("format_align_left");
+      }
+    } else {
+      setAlignmentType("format_align_left");
+    }
+  }, [props.activeStatus, props.currentBlockData]);
   return (
     <div>
       <button

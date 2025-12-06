@@ -31,6 +31,7 @@ export default function Navbar(props) {
             type="text"
             placeholder={docName}
             value={docName}
+            id="doc_name"
             onChange={(e) => setDocName(e.target.value)}
             onKeyDown={(e) => (e.key === "Enter" ? e.target.blur() : null)}
             style={{
@@ -116,6 +117,7 @@ export default function Navbar(props) {
         setIsFinal={props.setIsFinal}
         isClose={isClose}
         handleDropDown={handleDropDown}
+        currentBlockData={props.currentBlockData}
       />
     </div>
   );

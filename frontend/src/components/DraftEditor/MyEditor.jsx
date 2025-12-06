@@ -249,6 +249,10 @@ function MyEditor() {
           .getCurrentContent()
           .getBlockForKey(editorState.getSelection().getStartKey())
           .getType()}
+        currentBlockData={editorState
+          .getCurrentContent()
+          .getBlockForKey(editorState.getSelection().getStartKey())
+          .getData()}
         editorState={editorState}
         onChange={onChange}
         isRecognizing={isRecognizing}

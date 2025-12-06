@@ -1,52 +1,20 @@
 import ToggleButton from "./ToggleButton";
 import Alignment from "./Alignment";
 import "./ToggleBlockStyle.css";
+import Header from "./Header";
 
 export default function ToggleBlockStyle(props) {
   return (
     <div className="block">
       <div>
-        <ToggleButton
+        <Header
           handler={props.handleToggleBlockTypes}
-          cmd={"header-one"}
-          title={"Header one"}
-          icon={"format_h1"}
-          active={props.activeStatus === "header-one"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"header-two"}
-          title={"Header two"}
-          icon={"format_h2"}
-          active={props.activeStatus === "header-two"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"header-three"}
-          title={"Header three"}
-          icon={"format_h3"}
-          active={props.activeStatus === "header-three"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"header-four"}
-          title={"Header four"}
-          icon={"format_h4"}
-          active={props.activeStatus === "header-four"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"header-five"}
-          title={"Header five"}
-          icon={"format_h5"}
-          active={props.activeStatus === "header-five"}
-        />
-        <ToggleButton
-          handler={props.handleToggleBlockTypes}
-          cmd={"header-six"}
-          title={"Header six"}
-          icon={"format_h6"}
-          active={props.activeStatus === "header-six"}
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          editorRef={props.editorRef}
+          onChange={props.onChange}
+          editorState={props.editorState}
+          active={props.activeStatus}
         />
         <ToggleButton
           handler={props.handleToggleBlockTypes}
@@ -84,6 +52,7 @@ export default function ToggleBlockStyle(props) {
           handleDropDown={props.handleDropDown}
           editorRef={props.editorRef}
           onChange={props.onChange}
+          currentBlockData={props.currentBlockData}
         />
       </div>
     </div>

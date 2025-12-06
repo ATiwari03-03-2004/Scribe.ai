@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ToggleColor from "../ToolBar/ToggleColor";
+import ToggleButton from "../ToolBar/ToggleButton";
 import EditorState from "draft-js/lib/EditorState";
 import { RichUtils } from "draft-js";
 
@@ -421,6 +422,8 @@ export default function DropDown(props) {
             alignItems: "baseline",
             width: "14rem",
             position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
             backgroundColor: "white",
             padding: "0.75rem",
             boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
@@ -451,6 +454,8 @@ export default function DropDown(props) {
             alignItems: "baseline",
             width: "14rem",
             position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
             backgroundColor: "white",
             padding: "0.75rem",
             boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
@@ -473,7 +478,18 @@ export default function DropDown(props) {
           ))}
         </div>
       ) : props.isClose.dropdown === "alignment" ? (
-        <div className="DD" style={{ display: "flex", width: "3.75rem" }}>
+        <div
+          className="DD"
+          style={{
+            display: "flex",
+            width: "3.75rem",
+            position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+          }}
+        >
           <button
             title={"Left Align"}
             style={{ cursor: "pointer" }}
@@ -507,6 +523,91 @@ export default function DropDown(props) {
             <span className="material-symbols-outlined">
               format_align_justify
             </span>
+          </button>
+        </div>
+      ) : props.isClose.dropdown === "text_type" ? (
+        <div
+          className="DD"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+            width: "9.75rem",
+          }}
+        >
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              props.handler("unstyled");
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <p>Normal Text</p>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-one" ? props.handler("header-one") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h1>Title</h1>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-two" ? props.handler("header-two") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h2>Subtitle</h2>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-three" ? props.handler("header-three") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h3>Heading 1</h3>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-four" ? props.handler("header-four") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h4>Heading 2</h4>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-five" ? props.handler("header-five") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h5>Heading 3</h5>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              (props.active !== "header-six" ? props.handler("header-six") : null);
+              props.handleDropDown("");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <h6>Heading 4</h6>
           </button>
         </div>
       ) : null}
