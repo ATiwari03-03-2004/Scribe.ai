@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SpeechRecognition, recognition } from "./language";
-import LanguageSelector from "../Modal/LanguageSelector";
+import LanguageSelector from "../../Modal/LanguageSelector";
 import { EditorState, ContentBlock, genKey } from "draft-js";
 
 export default function SpeechToText(props) {

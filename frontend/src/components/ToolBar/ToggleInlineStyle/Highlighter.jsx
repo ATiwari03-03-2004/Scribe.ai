@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import DropDown from "../DropDown/DropDown";
+import DropDown from "../../DropDown/DropDown";
 
 export default function Highlighter(props) {
   let buttonref = useRef(null);

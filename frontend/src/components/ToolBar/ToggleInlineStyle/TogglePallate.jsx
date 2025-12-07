@@ -1,4 +1,4 @@
-import DropDown from "../DropDown/DropDown";
+import DropDown from "../../DropDown/DropDown";
 import "./TogglePallate.css";
 import { useRef } from "react";
 

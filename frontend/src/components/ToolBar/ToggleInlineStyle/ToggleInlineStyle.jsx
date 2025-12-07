@@ -1,7 +1,8 @@
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../ToggleButton";
 import Font from "./Font";
 import "./ToggleInlineStyle.css";
 import FontSize from "./FontSize";
+import ClearFormatting from "./ClearFormatting";
 
 export default function ToggleInlineStyle(props) {
   return (
@@ -67,6 +68,12 @@ export default function ToggleInlineStyle(props) {
           cmd={"SUPERSCRIPT"}
           title={"Superscript"}
           icon={"superscript"}
+          active={props.activeStatus.has("SUPERSCRIPT")}
+        />
+        <ClearFormatting
+          activeStatus={props.activeStatus}
+          editorState={props.editorState}
+          onChange={props.onChange}
         />
       </div>
     </div>

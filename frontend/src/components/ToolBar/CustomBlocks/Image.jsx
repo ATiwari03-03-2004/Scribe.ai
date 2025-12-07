@@ -1,5 +1,5 @@
 import { AtomicBlockUtils } from "draft-js";
-import DropDown from "../DropDown/DropDown";
+import DropDown from "../../DropDown/DropDown";
 import { useRef } from "react";
 
 export default function Image(props) {

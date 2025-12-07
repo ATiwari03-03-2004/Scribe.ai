@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import DropDown from "../DropDown/DropDown";
+import DropDown from "../../DropDown/DropDown";
 
 export default function Header(props) {
   let [textType, setTextType] = useState("Normal Text");

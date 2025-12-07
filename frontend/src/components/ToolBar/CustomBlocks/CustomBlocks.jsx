@@ -6,6 +6,7 @@ import Redo from "./Redo";
 import Image from "./Image";
 import Video from "./Video";
 import "./CustomBlocks.css";
+import SpellChecker from "./SpellChecker";
 
 export default function CustomBlocks(props) {
   return (
@@ -34,6 +35,7 @@ export default function CustomBlocks(props) {
         <TextToSpeech editorState={props.editorState} />
         <Undo editorState={props.editorState} onChange={props.onChange} />
         <Redo editorState={props.editorState} onChange={props.onChange} />
+        <SpellChecker editorState={props.editorState} onChange={props.onChange} />
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-import ToggleBlockStyle from "./ToggleBlockStyle";
-import ToggleInlineStyle from "./ToggleInlineStyle";
-import TogglePallate from "./TogglePallate";
-import CustomBlocks from "./CustomBlocks";
-import Highlighter from "./Highlighter";
+import ToggleBlockStyle from "./ToggleBlockStyle/ToggleBlockStyle";
+import ToggleInlineStyle from "./ToggleInlineStyle/ToggleInlineStyle";
+import TogglePallate from "./ToggleInlineStyle/TogglePallate";
+import CustomBlocks from "./CustomBlocks/CustomBlocks";
+import Highlighter from "./ToggleInlineStyle/Highlighter";
 import "../ToolBar/ToolBar.css";
-import IncreaseIndent from "./IncreaseIndent";
-import DecreaseIndent from "./DecreaseIndent";
+import IncreaseIndent from "./ToggleInlineStyle/IncreaseIndent";
+import DecreaseIndent from "./ToggleInlineStyle/DecreaseIndent";
 
 export default function ToolBar(props) {
   return (

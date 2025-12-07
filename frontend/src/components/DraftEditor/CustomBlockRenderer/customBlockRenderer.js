@@ -1,5 +1,5 @@
-import InterimSpeechRecognizedTextBlock from "../../ToolBar/InterimSpeechRecognizedTextBlock";
-import MediaBlock from "../../ToolBar/MediaBlock";
+import InterimSpeechRecognizedTextBlock from "../../ToolBar/CustomBlocks/InterimSpeechRecognizedTextBlock";
+import MediaBlock from "../../ToolBar/CustomBlocks/MediaBlock";
 
 export default function customBlockRenderer(block, sharedState) {
   if (block.getType() === "custom-speech-to-text") {

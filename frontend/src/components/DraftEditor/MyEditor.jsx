@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { OrderedSet } from "immutable";
+import { findLinkEntities, Link } from "./CustomDecorators/LinkDecorator";
+import { spellChecker } from "../ToolBar/CustomBlocks/en_US.js";
+import {
+  checkSpelling,
+  SpellingError,
+} from "./CustomDecorators/SpellingErrorDecorator";
+import { CompositeDecorator } from "draft-js";
 import {
   Editor,
   Modifier,
@@ -11,13 +17,50 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./MyEditor.css";
-import decorator from "./CustomDecorators/Decorator";
 import customBlockRenderer from "./CustomBlockRenderer/customBlockRenderer";
 import Navbar from "../Navbar/Navbar";
 import SideBar from "../SideBar/SideBar";
 import { customStyleMaps } from "./custom";
 
 function MyEditor() {
+  let [menu, setMenu] = useState(null);
+
+  const menuRef = useRef(menu);
+  useEffect(() => {
+    menuRef.current = menu;
+  }, [menu]);
+
+  let replaceText = (start, end, blockKey, word) => {
+    const contentState = editorState.getCurrentContent();
+    const selection = SelectionState.createEmpty(blockKey).merge({
+      anchorOffset: start,
+      focusOffset: end,
+    });
+    const newContent = Modifier.replaceText(contentState, selection, word);
+    const newState = EditorState.push(
+      editorState,
+      newContent,
+      "correcting-spelling"
+    );
+    setEditorState(newState);
+    setMenu(null);
+  };
+
+  const decorator = new CompositeDecorator([
+    {
+      strategy: findLinkEntities,
+      component: Link,
+    },
+    {
+      strategy: checkSpelling,
+      component: (props) => {
+        return (
+          <SpellingError prop={props} setMenu={setMenu} menuRef={menuRef} />
+        );
+      },
+    },
+  ]);
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
@@ -240,6 +283,7 @@ function MyEditor() {
   return (
     <>
       <Navbar
+        setMenu={setMenu}
         displayVal={sideBarDisplay}
         display={setSideBarDisplay}
         handleToggleInlineStyles={handleToggleInlineStyles}
@@ -269,6 +313,7 @@ function MyEditor() {
         className="text-editor"
         style={{ display: "flex" }}
         onPaste={handleOnPaste}
+        onMouseDown={() => setMenu(null)}
       >
         <div
           style={
@@ -305,6 +350,57 @@ function MyEditor() {
         </div>
       </div>
       <SideBar display={sideBarDisplay} displaySet={setSideBarDisplay} />
+      {menu && (
+        <div
+          style={{
+            position: "absolute",
+            top: menu.ref.current.getBoundingClientRect().bottom + 5,
+            left: menu.ref.current.getBoundingClientRect().left,
+            border: "1px solid gray",
+            borderRadius: "6px",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {menu.suggestion.map((word, key) => (
+            <button
+              onClick={() =>
+                replaceText(menu.start, menu.end, menu.blockKey, word)
+              }
+              key={key}
+            >
+              <b>{word}</b>
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              spellChecker.add(menu.incorrectWord);
+              replaceText(
+                menu.start,
+                menu.end,
+                menu.blockKey,
+                menu.incorrectWord
+              );
+            }}
+          >
+            Ignore All
+          </button>
+          <button
+            onClick={() => {
+              spellChecker.add(menu.incorrectWord);
+              replaceText(
+                menu.start,
+                menu.end,
+                menu.blockKey,
+                menu.incorrectWord
+              );
+            }}
+          >
+            Add to Dictionary
+          </button>
+        </div>
+      )}
     </>
   );
 }

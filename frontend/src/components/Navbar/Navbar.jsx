@@ -65,9 +65,10 @@ export default function Navbar(props) {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() =>
-              props.display((prev) => (prev === "none" ? "flex" : "none"))
-            }
+            onClick={() => {
+              props.display((prev) => (prev === "none" ? "flex" : "none"));
+              props.setMenu(null);
+            }}
           >
             <img
               className="GEMINI_IMG"

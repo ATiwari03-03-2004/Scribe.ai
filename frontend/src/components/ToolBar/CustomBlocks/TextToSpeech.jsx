@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 export default function TextToSpeech(props) {
   let [ttsSynth, setttsSynth] = useState(false);
 
-  useEffect(() => {
-    handleSpeech(props.editorState.getCurrentContent().getPlainText());
-  }, [ttsSynth]);
-
   let handleSpeech = (text) => {
-    if (ttsSynth) {
+    if (!ttsSynth) {
+      setttsSynth(true);
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-IN";
       utterance.pitch = 1.5;
@@ -19,7 +16,23 @@ export default function TextToSpeech(props) {
         utterance.voice = voices[0];
       }
       window.speechSynthesis.speak(utterance);
+      utterance.onend = () => {
+        alert("Synthesis finished!");
+        setttsSynth(false);
+      };
+      utterance.onerror = (event) => {
+        if (event.error === "not-allowed") {
+          alert("Permission to synthesis is not allowed.");
+        } else if (event.error === "interrupted") {
+          alert("Synthesis cancelled!");
+        } else {
+          alert("Speech recognition error " + event.error);
+        }
+        console.log("Text Synthesis error: ", event.error);
+        setttsSynth(false);
+      };
     } else {
+      setttsSynth(false);
       window.speechSynthesis.cancel();
     }
   };
@@ -27,7 +40,7 @@ export default function TextToSpeech(props) {
     <button
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => {
-        setttsSynth((prev) => !prev);
+        handleSpeech(props.editorState.getCurrentContent().getPlainText());
       }}
       title="Text To Speech"
       style={

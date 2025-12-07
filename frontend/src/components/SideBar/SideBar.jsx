@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SpeechRecognition, recognition } from "../ToolBar/language.js";
+import { recognition } from "../ToolBar/CustomBlocks/language.js";
 import "./SideBar.css";
 
 export default function SideBar(props) {

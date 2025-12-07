@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { langs, langsObj, recognition } from "../ToolBar/language";
+import { langs, langsObj, recognition } from "../ToolBar/CustomBlocks/language";
 import '../Modal/Modal.css';
 
 export default function LanguageSelector(props) {

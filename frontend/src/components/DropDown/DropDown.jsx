@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import ToggleColor from "../ToolBar/ToggleColor";
-import ToggleButton from "../ToolBar/ToggleButton";
+import ToggleColor from "../ToolBar/ToggleInlineStyle/ToggleColor";
 import EditorState from "draft-js/lib/EditorState";
 import { RichUtils } from "draft-js";
 

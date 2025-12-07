@@ -1,4 +1,4 @@
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../ToggleButton";
 import Alignment from "./Alignment";
 import "./ToggleBlockStyle.css";
 import Header from "./Header";
