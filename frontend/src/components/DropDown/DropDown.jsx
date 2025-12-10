@@ -1,10 +1,79 @@
 import { useEffect, useState } from "react";
 import ToggleColor from "../ToolBar/ToggleInlineStyle/ToggleColor";
 import EditorState from "draft-js/lib/EditorState";
-import { RichUtils } from "draft-js";
+import { RichUtils, SelectionState, Modifier } from "draft-js";
+import "./DropDown.css";
 
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
+  let [errorIdx, setErrorIdx] = useState({ idx: 0 });
+
+  let highlightText = (blockKey, start, end) => {
+    const selection = SelectionState.createEmpty(blockKey).merge({
+      anchorOffset: start,
+      focusOffset: end,
+    });
+    const newEditorState = EditorState.forceSelection(
+      props.editorState,
+      selection
+    );
+    props.onChange(newEditorState);
+    const blockElement = document.querySelector(
+      `[data-offset-key="${blockKey}-0-0"]`
+    );
+    const blockParent = blockElement.closest('[data-block="true"]');
+    blockParent.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  let replaceText = (start, end, blockKey, word, incorrectWord) => {
+    const contentState = props.editorState.getCurrentContent();
+    const selection = SelectionState.createEmpty(blockKey).merge({
+      anchorOffset: start,
+      focusOffset: end,
+    });
+    const newContent = Modifier.replaceText(contentState, selection, word);
+    const newState = EditorState.push(
+      props.editorState,
+      newContent,
+      "correcting-spelling"
+    );
+    props.onChange(newState);
+    let err = props.error;
+    if (word.length !== incorrectWord.length) {
+      let diff = word.length - incorrectWord.length;
+      for (
+        let i = errorIdx.idx + 1;
+        i < err.length && err[i].blockKey === blockKey;
+        i++
+      ) {
+        err[i].start += diff;
+        err[i].end += diff;
+      }
+    }
+    err.splice(errorIdx.idx, 1);
+    if (err.length === 0) {
+      setErrorIdx({ idx: 0 });
+    } else if (errorIdx.idx === err.length) {
+      setErrorIdx((prev) => {
+        return { idx: prev.idx - 1 };
+      });
+    } else {
+      setErrorIdx((prev) => {
+        return { idx: prev.idx };
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log(errorIdx);
+    if (props.error && props.error.length > 0) {
+      highlightText(
+        props.error[errorIdx.idx].blockKey,
+        props.error[errorIdx.idx].start,
+        props.error[errorIdx.idx].end
+      );
+    }
+  }, [errorIdx]);
 
   const fonts = [
     { key: "FONT-ARIAL", name: "Arial", style: "Arial, Helvetica, sans-serif" },
@@ -551,7 +620,9 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-one" ? props.handler("header-one") : null);
+              props.active !== "header-one"
+                ? props.handler("header-one")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
@@ -561,7 +632,9 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-two" ? props.handler("header-two") : null);
+              props.active !== "header-two"
+                ? props.handler("header-two")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
@@ -571,7 +644,9 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-three" ? props.handler("header-three") : null);
+              props.active !== "header-three"
+                ? props.handler("header-three")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
@@ -581,7 +656,9 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-four" ? props.handler("header-four") : null);
+              props.active !== "header-four"
+                ? props.handler("header-four")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
@@ -591,7 +668,9 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-five" ? props.handler("header-five") : null);
+              props.active !== "header-five"
+                ? props.handler("header-five")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
@@ -601,13 +680,118 @@ export default function DropDown(props) {
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              (props.active !== "header-six" ? props.handler("header-six") : null);
+              props.active !== "header-six"
+                ? props.handler("header-six")
+                : null;
               props.handleDropDown("");
             }}
             style={{ cursor: "pointer" }}
           >
             <h6>Heading 4</h6>
           </button>
+        </div>
+      ) : props.isClose.dropdown === "error-suggestions" ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            backgroundColor: "white",
+            borderRadius: "0.25rem",
+            width: "20rem",
+            zIndex: "2",
+          }}
+        >
+          <div>
+            <h3>Spelling Suggestions</h3>
+            <span
+              className="material-symbols-outlined"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                setErrorIdx((prev) => {
+                  return {
+                    idx:
+                      (props.error.length + prev.idx - 1) % props.error.length,
+                  };
+                })
+              }
+            >
+              arrow_back_ios
+            </span>
+            <span
+              className="material-symbols-outlined"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                setErrorIdx((prev) => {
+                  return { idx: (prev.idx + 1) % props.error.length };
+                })
+              }
+            >
+              arrow_forward_ios
+            </span>
+            <span
+              className="material-symbols-outlined"
+              style={{ cursor: "pointer" }}
+              onClick={() => props.handleDropDown("")}
+            >
+              close
+            </span>
+          </div>
+          {props.error && props.error.length > 0 ? (
+            <div
+              style={{
+                borderTop: "1px solid gray",
+              }}
+            >
+              <p>
+                Change <b>{props.error[errorIdx.idx].word}</b> to:
+              </p>
+              {props.error[errorIdx.idx].suggestion &&
+              props.error[errorIdx.idx].suggestion.length > 0 ? (
+                props.error[errorIdx.idx].suggestion.map((suggestion, key) => (
+                  <button
+                    className="Suggestion"
+                    style={{
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                      color: "white",
+                      border: "2px solid black",
+                      borderRadius: "1rem",
+                      cursor: "pointer",
+                    }}
+                    key={key}
+                    onClick={() =>
+                      replaceText(
+                        props.error[errorIdx.idx].start,
+                        props.error[errorIdx.idx].end,
+                        props.error[errorIdx.idx].blockKey,
+                        suggestion,
+                        props.error[errorIdx.idx].word
+                      )
+                    }
+                  >
+                    {suggestion}
+                  </button>
+                ))
+              ) : (
+                <div>
+                  <i style={{ color: "gray" }}>No suggestions</i>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                borderTop: "1px solid gray",
+              }}
+            >
+              <i style={{ color: "gray" }}>
+                No available suggestions to review.
+              </i>
+            </div>
+          )}
         </div>
       ) : null}
     </>

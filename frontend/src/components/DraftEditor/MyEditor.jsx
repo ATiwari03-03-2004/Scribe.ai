@@ -313,7 +313,11 @@ function MyEditor() {
         className="text-editor"
         style={{ display: "flex" }}
         onPaste={handleOnPaste}
-        onMouseDown={() => setMenu(null)}
+        onMouseDown={(e) => {
+          if (!e.target.closest(".spelling-error-span")) {
+            setMenu(null);
+          }
+        }}
       >
         <div
           style={

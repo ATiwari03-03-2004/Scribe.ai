@@ -37,6 +37,7 @@ const SpellingError = (props) => {
 
   return (
     <span
+      className="spelling-error-span"
       style={{ textDecoration: "1px wavy red underline" }}
       onClick={(e) => handleClick(e)}
       ref={spanRef}

@@ -1,7 +1,12 @@
 import { spellChecker } from "./en_US";
 import { convertToRaw } from "draft-js";
+import { useRef, useState } from "react";
+import DropDown from "../../DropDown/DropDown";
 
 export default function SpellChecker(props) {
+  let [error, setError] = useState(null);
+  let buttonref = useRef(null);
+
   let checkSpelling = () => {
     let contentState = props.editorState.getCurrentContent();
     const raw = convertToRaw(contentState);
@@ -22,18 +27,34 @@ export default function SpellChecker(props) {
         }
       }
     });
+    setError(results);
   };
 
   return (
-    <div>
+    <>
       <button
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => checkSpelling()}
+        onClick={() => {
+          props.handleDropDown("error-suggestions");
+          checkSpelling();
+        }}
         title="Check Spelling"
         style={{ cursor: "pointer" }}
+        ref={buttonref}
       >
         <span className="material-symbols-outlined">spellcheck</span>
       </button>
-    </div>
+      {props.isClose.open && props.isClose.dropdown === "error-suggestions" ? (
+        <DropDown
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          error={error}
+          setError={setError}
+          buttonref={buttonref}
+          editorState={props.editorState}
+          onChange={props.onChange}
+        />
+      ) : null}
+    </>
   );
 }

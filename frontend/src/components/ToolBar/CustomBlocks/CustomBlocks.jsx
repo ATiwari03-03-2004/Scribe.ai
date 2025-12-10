@@ -11,7 +11,13 @@ import SpellChecker from "./SpellChecker";
 export default function CustomBlocks(props) {
   return (
     <div className="custom-block" style={{ paddingRight: "0.35rem" }}>
-      <div style={{display: "flex"}}>
+      <div style={{ display: "flex" }}>
+        <SpellChecker
+          editorState={props.editorState}
+          onChange={props.onChange}
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+        />
         <LinkBlock editorState={props.editorState} onChange={props.onChange} />
         <Image
           editorState={props.editorState}
@@ -35,7 +41,6 @@ export default function CustomBlocks(props) {
         <TextToSpeech editorState={props.editorState} />
         <Undo editorState={props.editorState} onChange={props.onChange} />
         <Redo editorState={props.editorState} onChange={props.onChange} />
-        <SpellChecker editorState={props.editorState} onChange={props.onChange} />
       </div>
     </div>
   );
