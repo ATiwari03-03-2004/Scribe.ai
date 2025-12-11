@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ToggleColor from "../ToolBar/ToggleInlineStyle/ToggleColor";
 import EditorState from "draft-js/lib/EditorState";
 import { RichUtils, SelectionState, Modifier } from "draft-js";
@@ -230,6 +230,7 @@ let highlightColorOptions = [
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
   let [errorIdx, setErrorIdx] = useState({ idx: 0 });
+  let [addWord, setAddWord] = useState("");
   const [state, setState] = useState({
     width: 200,
     height: 200,
@@ -302,14 +303,6 @@ export default function DropDown(props) {
       );
     }
   }, [errorIdx]);
-
-  useEffect(() => {
-    if (props.error.length === 0) {
-      setTimeout(() => {
-        props.handleDropDown("");
-      }, 1000);
-    }
-  }, [props.error.length]);
 
   let handleFont = (key, name) => {
     let newState = props.editorState;
@@ -706,199 +699,289 @@ export default function DropDown(props) {
           </button>
         </div>
       ) : props.isClose.dropdown === "error-suggestions" ? (
-        <Rnd
-          size={{ width: state.width, height: state.height }}
-          position={{ x: state.x, y: state.y }}
-          onDragStop={(e, d) => {
-            setState((prev) => ({ ...prev, x: d.x, y: d.y }));
+        <div
+          style={{
+            position: "fixed",
+            top: "5px",
+            left: "5px",
           }}
-          onResize={(e, direction, ref, delta, position) => {
-            setState((prev) => ({
-              ...prev,
-              width: ref.offsetWidth,
-              height: ref.offsetHeight,
-              ...position,
-            }));
-          }}
-          style={{ zIndex: "10" }}
-          bounds="window"
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              position: "absolute",
-              boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
-              backgroundColor: "white",
-              borderRadius: "0.25rem",
-              width: "20rem",
-              zIndex: "10",
+          <Rnd
+            size={{ width: state.width, height: state.height }}
+            position={{ x: state.x, y: state.y }}
+            onDragStop={(e, d) => {
+              setState((prev) => ({ ...prev, x: d.x, y: d.y }));
             }}
+            onResize={(e, direction, ref, delta, position) => {
+              setState((prev) => ({
+                ...prev,
+                width: ref.offsetWidth,
+                height: ref.offsetHeight,
+                ...position,
+              }));
+            }}
+            bounds="window"
           >
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "0rem 0.75rem 0rem 0.75rem",
+                flexDirection: "column",
+                position: "absolute",
+                boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+                backgroundColor: "white",
+                borderRadius: "0.25rem",
+                width: "20rem",
+                zIndex: "10",
               }}
             >
-              <h3>Spelling Suggestions</h3>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span
-                  className="material-symbols-outlined prev"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    setErrorIdx((prev) => {
-                      return {
-                        idx:
-                          (props.error.length + prev.idx - 1) %
-                          props.error.length,
-                      };
-                    })
-                  }
-                  title="Previous Suggestion"
-                >
-                  chevron_backward
-                </span>
-                <span
-                  className="material-symbols-outlined next"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    setErrorIdx((prev) => {
-                      return { idx: (prev.idx + 1) % props.error.length };
-                    })
-                  }
-                  title="Next Suggestion"
-                >
-                  chevron_forward
-                </span>
-                <span
-                  className="material-symbols-outlined close"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => props.handleDropDown("")}
-                >
-                  close
-                </span>
-              </div>
-            </div>
-            {props.error && props.error.length > 0 ? (
               <div
                 style={{
-                  borderTop: "1px solid gray",
-                  padding: "0.75rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0rem 0.75rem 0rem 0.75rem",
                 }}
               >
-                <p>
-                  Change <b>{props.error[errorIdx.idx].word}</b> to:
-                </p>
-                {props.error[errorIdx.idx].suggestion &&
-                props.error[errorIdx.idx].suggestion.length > 0 ? (
-                  props.error[errorIdx.idx].suggestion.map(
-                    (suggestion, key) => (
-                      <button
-                        className="Suggestion"
-                        style={{
-                          backgroundColor: "rgba(0, 0, 0, 0.7)",
-                          color: "white",
-                          border: "2px solid black",
-                          borderRadius: "1rem",
-                          cursor: "pointer",
-                          margin: "0.15rem",
-                        }}
-                        key={key}
-                        onClick={() =>
-                          replaceText(
-                            props.error[errorIdx.idx].start,
-                            props.error[errorIdx.idx].end,
-                            props.error[errorIdx.idx].blockKey,
-                            suggestion,
-                            props.error[errorIdx.idx].word
-                          )
-                        }
-                      >
-                        {suggestion}
-                      </button>
-                    )
-                  )
-                ) : (
-                  <div>
-                    <i style={{ color: "gray" }}>No suggestions</i>
-                  </div>
-                )}
-                <div style={{ marginTop: "0.75rem" }}>
-                  <button
-                    className="suggest-add"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => {
-                      spellChecker.add(props.error[errorIdx.idx].word);
-                      replaceText(
-                        props.error[errorIdx.idx].start,
-                        props.error[errorIdx.idx].end,
-                        props.error[errorIdx.idx].blockKey,
-                        props.error[errorIdx.idx].word,
-                        props.error[errorIdx.idx].word
-                      );
-                    }}
-                    title="Add to Dictionary"
-                    style={{
-                      cursor: "pointer",
-                      marginRight: "0.75rem",
-                      fontSize: "0.9rem",
-                      height: "2rem",
-                      width: "4.5rem",
-                      backgroundColor: "white",
-                      borderRadius: "1.2rem",
-                      border: "1px solid rgba(138, 137, 137, 1)",
-                    }}
+                <h3>Spelling Suggestions</h3>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span
+                    className="material-symbols-outlined prev"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      setErrorIdx((prev) => {
+                        return {
+                          idx:
+                            (props.error.length + prev.idx - 1) %
+                            props.error.length,
+                        };
+                      })
+                    }
+                    title="Previous Suggestion"
                   >
-                    Add
-                  </button>
-                  <button
-                    className="suggest-add"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => {
-                      spellChecker.add(props.error[errorIdx.idx].word);
-                      replaceText(
-                        props.error[errorIdx.idx].start,
-                        props.error[errorIdx.idx].end,
-                        props.error[errorIdx.idx].blockKey,
-                        props.error[errorIdx.idx].word,
-                        props.error[errorIdx.idx].word
-                      );
-                    }}
-                    title="Ignore All"
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "0.9rem",
-                      height: "2rem",
-                      width: "4.5rem",
-                      backgroundColor: "white",
-                      borderRadius: "1.2rem",
-                      border: "1px solid rgba(138, 137, 137, 1)",
-                    }}
+                    chevron_backward
+                  </span>
+                  <span
+                    className="material-symbols-outlined next"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      setErrorIdx((prev) => {
+                        return { idx: (prev.idx + 1) % props.error.length };
+                      })
+                    }
+                    title="Next Suggestion"
                   >
-                    Ignore
-                  </button>
+                    chevron_forward
+                  </span>
+                  <span
+                    className="material-symbols-outlined close"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => props.handleDropDown("")}
+                  >
+                    close
+                  </span>
                 </div>
               </div>
-            ) : (
-              <div
-                style={{
-                  borderTop: "1px solid gray",
-                  padding: "0.75rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <i style={{ color: "gray" }}>
-                  No available suggestions to review.
-                </i>
-              </div>
-            )}
+              {props.error && props.error.length > 0 ? (
+                <div
+                  style={{
+                    borderTop: "1px solid gray",
+                    padding: "0.75rem",
+                  }}
+                >
+                  <p>
+                    Change <b>{props.error[errorIdx.idx].word}</b> to:
+                  </p>
+                  {props.error[errorIdx.idx].suggestion &&
+                  props.error[errorIdx.idx].suggestion.length > 0 ? (
+                    props.error[errorIdx.idx].suggestion.map(
+                      (suggestion, key) => (
+                        <button
+                          className="Suggestion"
+                          style={{
+                            backgroundColor: "rgba(0, 0, 0, 0.7)",
+                            color: "white",
+                            border: "2px solid black",
+                            borderRadius: "1rem",
+                            cursor: "pointer",
+                            margin: "0.15rem",
+                          }}
+                          key={key}
+                          onClick={() =>
+                            replaceText(
+                              props.error[errorIdx.idx].start,
+                              props.error[errorIdx.idx].end,
+                              props.error[errorIdx.idx].blockKey,
+                              suggestion,
+                              props.error[errorIdx.idx].word
+                            )
+                          }
+                        >
+                          {suggestion}
+                        </button>
+                      )
+                    )
+                  ) : (
+                    <div>
+                      <i style={{ color: "gray" }}>No suggestions</i>
+                    </div>
+                  )}
+                  <div style={{ marginTop: "0.75rem" }}>
+                    <button
+                      className="suggest-add"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        spellChecker.add(props.error[errorIdx.idx].word);
+                        replaceText(
+                          props.error[errorIdx.idx].start,
+                          props.error[errorIdx.idx].end,
+                          props.error[errorIdx.idx].blockKey,
+                          props.error[errorIdx.idx].word,
+                          props.error[errorIdx.idx].word
+                        );
+                      }}
+                      title="Add to Dictionary"
+                      style={{
+                        cursor: "pointer",
+                        marginRight: "0.75rem",
+                        fontSize: "0.9rem",
+                        height: "2rem",
+                        width: "4.5rem",
+                        backgroundColor: "white",
+                        borderRadius: "1.2rem",
+                        border: "1px solid rgba(138, 137, 137, 1)",
+                      }}
+                    >
+                      Add
+                    </button>
+                    <button
+                      className="suggest-add"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        spellChecker.add(props.error[errorIdx.idx].word);
+                        replaceText(
+                          props.error[errorIdx.idx].start,
+                          props.error[errorIdx.idx].end,
+                          props.error[errorIdx.idx].blockKey,
+                          props.error[errorIdx.idx].word,
+                          props.error[errorIdx.idx].word
+                        );
+                      }}
+                      title="Ignore All"
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "0.9rem",
+                        height: "2rem",
+                        width: "4.5rem",
+                        backgroundColor: "white",
+                        borderRadius: "1.2rem",
+                        border: "1px solid rgba(138, 137, 137, 1)",
+                      }}
+                    >
+                      Ignore
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    borderTop: "1px solid gray",
+                    padding: "0.75rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <i style={{ color: "gray" }}>
+                    No available suggestions to review.
+                  </i>
+                </div>
+              )}
+            </div>
+          </Rnd>
+        </div>
+      ) : props.isClose.dropdown === "personal_dictionary" ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "5px",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            backgroundColor: "white",
+            padding: "0.55rem",
+            borderRadius: "5px",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            className="top-bar"
+            style={{ display: "flex", justifyContent: "end" }}
+          >
+            <span
+              className="material-symbols-outlined"
+              onClick={() => props.handleDropDown("")}
+              style={{ cursor: "pointer", borderRadius: "100%" }}
+            >
+              close_small
+            </span>
           </div>
-        </Rnd>
+          <div
+            className="added-words"
+            style={{
+              // height: "8rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              // justifyContent: "start", for case when adding words
+              justifyContent: "center",
+              overflowY: "auto",
+              padding: "0.5rem",
+            }}
+          >
+            <p>
+              <i style={{ color: "gray" }}>Personal Dictionary is Empty!</i>
+            </p>
+          </div>
+          <div
+            className="add"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "0.5rem",
+            }}
+          >
+            <input
+              type="text"
+              id="add_word_in_pd"
+              placeholder="Add word"
+              style={{
+                border: "1px solid black",
+                borderRadius: "2.5px",
+                marginRight: "0.5rem",
+                height: "1.6rem",
+                paddingLeft: "5px",
+              }}
+              onChange={setAddWord}
+              value={addWord}
+            />
+            <span
+              className="material-symbols-outlined"
+              title="Add word to Personal Dictionary"
+              style={{
+                cursor: "pointer",
+                fontSize: "1rem",
+                borderRadius: "100%",
+                backgroundColor: "black",
+                color: "white",
+                padding: "0.25rem",
+              }}
+            >
+              add
+            </span>
+          </div>
+        </div>
       ) : null}
     </>
   );

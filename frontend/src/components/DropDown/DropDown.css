@@ -27,3 +27,11 @@
 .suggest-add:hover {
   box-shadow: 2px 2px 10px gray;
 }
+
+.top-bar span {
+  opacity: 0.75;
+}
+
+.top-bar span:hover {
+  opacity: 1;
+}

@@ -28,6 +28,9 @@ function MyEditor() {
 
   let handleDropDown = (dditem) => {
     setIsClose((prev) => {
+      if (prev.open && dditem === "") {
+        return { open: false, dropdown: "" };
+      }
       if (prev.open && prev.dropdown === dditem) {
         return { open: false, dropdown: "" };
       }

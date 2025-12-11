@@ -7,6 +7,7 @@ import Image from "./Image";
 import Video from "./Video";
 import "./CustomBlocks.css";
 import SpellChecker from "./SpellChecker";
+import PersonalDictionary from "./PersonalDictionary";
 
 export default function CustomBlocks(props) {
   return (
@@ -18,6 +19,10 @@ export default function CustomBlocks(props) {
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
           setMenu={props.setMenu}
+        />
+        <PersonalDictionary
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
         />
         <LinkBlock editorState={props.editorState} onChange={props.onChange} />
         <Image
