@@ -35,8 +35,12 @@ export default function SpellChecker(props) {
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => {
-          props.handleDropDown("error-suggestions");
-          checkSpelling();
+          if (props.isClose.open) props.handleDropDown("error-suggestions");
+          else {
+            props.handleDropDown("error-suggestions");
+            checkSpelling();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
         }}
         title="Check Spelling"
         style={{ cursor: "pointer" }}

@@ -4,19 +4,7 @@ import { useState } from "react";
 
 export default function Navbar(props) {
   let [docName, setDocName] = useState("Untitled");
-  let [isClose, setIsClose] = useState({ open: false, dropdown: "" });
 
-  let handleDropDown = (dditem) => {
-    setIsClose((prev) => {
-      if (prev.open && prev.dropdown === dditem) {
-        return { open: false, dropdown: "" };
-      }
-      if (prev.open && prev.dropdown !== dditem && dditem.length) {
-        return { open: true, dropdown: dditem };
-      }
-      return { open: true, dropdown: dditem };
-    });
-  };
   return (
     <div
       className="navbar"
@@ -68,6 +56,7 @@ export default function Navbar(props) {
             onClick={() => {
               props.display((prev) => (prev === "none" ? "flex" : "none"));
               props.setMenu(null);
+              props.handleDropDown("");
             }}
           >
             <img
@@ -116,8 +105,8 @@ export default function Navbar(props) {
         setFinalRecognizedText={props.setFinalRecognizedText}
         isFinal={props.isFinal}
         setIsFinal={props.setIsFinal}
-        isClose={isClose}
-        handleDropDown={handleDropDown}
+        isClose={props.isClose}
+        handleDropDown={props.handleDropDown}
         currentBlockData={props.currentBlockData}
       />
     </div>

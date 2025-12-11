@@ -8,9 +8,7 @@ export default function SideBar(props) {
   let [isFinal, setIsFinal] = useState(true);
   let [interimRecognizedText, setInterimRecognizedText] = useState("");
 
-  let generate = () => {
-
-  }
+  let generate = () => {};
 
   let startRecognition = () => {
     setIsRecognizing(true);
@@ -67,6 +65,7 @@ export default function SideBar(props) {
   };
 
   let handleClose = () => {
+    props.handleDropDown("");
     props.displaySet((prev) => (prev === "none" ? "flex" : "none"));
   };
 
@@ -167,31 +166,35 @@ export default function SideBar(props) {
           </span>
           <span
             className="material-symbols-outlined"
-            style={( generationPrompt.length ? {
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "100%",
-              height: "2rem",
-              width: "2rem",
-              color: "white",
-              backgroundColor: "rgba(14, 137, 252, 1)",
-            } : {
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "100%",
-              height: "2rem",
-              width: "2rem",
-              color: "white",
-              backgroundColor: "rgba(14, 137, 252, 1)",
-              opacity: "0.5",
-              cursor: "not-allowed"
-            })}
+            style={
+              generationPrompt.length
+                ? {
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "100%",
+                    height: "2rem",
+                    width: "2rem",
+                    color: "white",
+                    backgroundColor: "rgba(14, 137, 252, 1)",
+                  }
+                : {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "100%",
+                    height: "2rem",
+                    width: "2rem",
+                    color: "white",
+                    backgroundColor: "rgba(14, 137, 252, 1)",
+                    opacity: "0.5",
+                    cursor: "not-allowed",
+                  }
+            }
             title="Generate"
             onClick={() => {
-              (generationPrompt.length ? generate() : null)
+              generationPrompt.length ? generate() : null;
             }}
           >
             arrow_upward

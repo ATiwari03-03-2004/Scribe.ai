@@ -24,6 +24,19 @@ import { customStyleMaps } from "./custom";
 
 function MyEditor() {
   let [menu, setMenu] = useState(null);
+  let [isClose, setIsClose] = useState({ open: false, dropdown: "" });
+
+  let handleDropDown = (dditem) => {
+    setIsClose((prev) => {
+      if (prev.open && prev.dropdown === dditem) {
+        return { open: false, dropdown: "" };
+      }
+      if (prev.open && prev.dropdown !== dditem && dditem.length) {
+        return { open: true, dropdown: dditem };
+      }
+      return { open: true, dropdown: dditem };
+    });
+  };
 
   const menuRef = useRef(menu);
   useEffect(() => {
@@ -283,6 +296,8 @@ function MyEditor() {
   return (
     <>
       <Navbar
+        isClose={isClose}
+        handleDropDown={handleDropDown}
         setMenu={setMenu}
         displayVal={sideBarDisplay}
         display={setSideBarDisplay}
@@ -353,13 +368,21 @@ function MyEditor() {
           />
         </div>
       </div>
-      <SideBar display={sideBarDisplay} displaySet={setSideBarDisplay} />
+      <SideBar
+        display={sideBarDisplay}
+        displaySet={setSideBarDisplay}
+        handleDropDown={handleDropDown}
+      />
       {menu && (
         <div
           style={{
             position: "absolute",
-            top: menu.ref.current.getBoundingClientRect().bottom + 5,
-            left: menu.ref.current.getBoundingClientRect().left,
+            top:
+              menu.ref.current.getBoundingClientRect().bottom +
+              5 +
+              window.scrollY,
+            left:
+              menu.ref.current.getBoundingClientRect().left + window.scrollX,
             border: "1px solid gray",
             borderRadius: "6px",
             zIndex: 1,
