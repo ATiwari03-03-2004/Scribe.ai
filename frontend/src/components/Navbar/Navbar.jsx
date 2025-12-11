@@ -108,6 +108,7 @@ export default function Navbar(props) {
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
         currentBlockData={props.currentBlockData}
+        setMenu={props.setMenu}
       />
     </div>
   );

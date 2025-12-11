@@ -37,6 +37,7 @@ export default function SpellChecker(props) {
         onClick={() => {
           if (props.isClose.open) props.handleDropDown("error-suggestions");
           else {
+            props.setMenu(null);
             props.handleDropDown("error-suggestions");
             checkSpelling();
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -57,6 +58,7 @@ export default function SpellChecker(props) {
           buttonref={buttonref}
           editorState={props.editorState}
           onChange={props.onChange}
+          setMenu={props.setMenu}
         />
       ) : null}
     </>

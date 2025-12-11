@@ -395,6 +395,7 @@ function MyEditor() {
               onClick={() =>
                 replaceText(menu.start, menu.end, menu.blockKey, word)
               }
+              style={{ cursor: "pointer" }}
               key={key}
             >
               <b>{word}</b>
@@ -410,6 +411,7 @@ function MyEditor() {
                 menu.incorrectWord
               );
             }}
+            style={{ cursor: "pointer" }}
           >
             Ignore All
           </button>
@@ -423,6 +425,7 @@ function MyEditor() {
                 menu.incorrectWord
               );
             }}
+            style={{ cursor: "pointer" }}
           >
             Add to Dictionary
           </button>

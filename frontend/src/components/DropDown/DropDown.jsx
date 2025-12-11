@@ -4,6 +4,7 @@ import EditorState from "draft-js/lib/EditorState";
 import { RichUtils, SelectionState, Modifier } from "draft-js";
 import "./DropDown.css";
 import { Rnd } from "react-rnd";
+import { spellChecker } from "../ToolBar/CustomBlocks/en_US";
 
 const fonts = [
   { key: "FONT-ARIAL", name: "Arial", style: "Arial, Helvetica, sans-serif" },
@@ -301,6 +302,14 @@ export default function DropDown(props) {
       );
     }
   }, [errorIdx]);
+
+  useEffect(() => {
+    if (props.error.length === 0) {
+      setTimeout(() => {
+        props.handleDropDown("");
+      }, 1000);
+    }
+  }, [props.error.length]);
 
   let handleFont = (key, name) => {
     let newState = props.editorState;
@@ -711,7 +720,7 @@ export default function DropDown(props) {
               ...position,
             }));
           }}
-          style={{zIndex: "10"}}
+          style={{ zIndex: "10" }}
           bounds="window"
         >
           <div
@@ -817,6 +826,61 @@ export default function DropDown(props) {
                     <i style={{ color: "gray" }}>No suggestions</i>
                   </div>
                 )}
+                <div style={{ marginTop: "0.75rem" }}>
+                  <button
+                    className="suggest-add"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      spellChecker.add(props.error[errorIdx.idx].word);
+                      replaceText(
+                        props.error[errorIdx.idx].start,
+                        props.error[errorIdx.idx].end,
+                        props.error[errorIdx.idx].blockKey,
+                        props.error[errorIdx.idx].word,
+                        props.error[errorIdx.idx].word
+                      );
+                    }}
+                    title="Add to Dictionary"
+                    style={{
+                      cursor: "pointer",
+                      marginRight: "0.75rem",
+                      fontSize: "0.9rem",
+                      height: "2rem",
+                      width: "4.5rem",
+                      backgroundColor: "white",
+                      borderRadius: "1.2rem",
+                      border: "1px solid rgba(138, 137, 137, 1)",
+                    }}
+                  >
+                    Add
+                  </button>
+                  <button
+                    className="suggest-add"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      spellChecker.add(props.error[errorIdx.idx].word);
+                      replaceText(
+                        props.error[errorIdx.idx].start,
+                        props.error[errorIdx.idx].end,
+                        props.error[errorIdx.idx].blockKey,
+                        props.error[errorIdx.idx].word,
+                        props.error[errorIdx.idx].word
+                      );
+                    }}
+                    title="Ignore All"
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "0.9rem",
+                      height: "2rem",
+                      width: "4.5rem",
+                      backgroundColor: "white",
+                      borderRadius: "1.2rem",
+                      border: "1px solid rgba(138, 137, 137, 1)",
+                    }}
+                  >
+                    Ignore
+                  </button>
+                </div>
               </div>
             ) : (
               <div

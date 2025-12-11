@@ -75,6 +75,7 @@ export default function ToolBar(props) {
         setIsFinal={props.setIsFinal}
         isClose={props.isClose}
         handleDropDown={props.handleDropDown}
+        setMenu={props.setMenu}
       />
     </div>
   );

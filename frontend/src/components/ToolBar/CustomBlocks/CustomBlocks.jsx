@@ -17,6 +17,7 @@ export default function CustomBlocks(props) {
           onChange={props.onChange}
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
+          setMenu={props.setMenu}
         />
         <LinkBlock editorState={props.editorState} onChange={props.onChange} />
         <Image
