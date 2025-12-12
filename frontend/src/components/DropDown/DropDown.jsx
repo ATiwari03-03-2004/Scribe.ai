@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import ToggleColor from "../ToolBar/ToggleInlineStyle/ToggleColor";
 import EditorState from "draft-js/lib/EditorState";
 import { RichUtils, SelectionState, Modifier } from "draft-js";
@@ -230,9 +230,16 @@ let highlightColorOptions = [
 export default function DropDown(props) {
   let [positions, setPositions] = useState({ left: "", top: "" });
   let [errorIdx, setErrorIdx] = useState({ idx: 0 });
+  let [matchIdx, setMatchIdx] = useState({ idx: 0 });
   let [addWord, setAddWord] = useState("");
   const [state, setState] = useState({
     width: 200,
+    height: 200,
+    x: 0,
+    y: 0,
+  });
+  const [state1, setState1] = useState({
+    width: 500,
     height: 200,
     x: 0,
     y: 0,
@@ -255,22 +262,22 @@ export default function DropDown(props) {
     blockParent.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  let replaceText = (start, end, blockKey, word, incorrectWord) => {
+  let replaceText = (start, end, blockKey, newWord, oldWord) => {
     const contentState = props.editorState.getCurrentContent();
     const selection = SelectionState.createEmpty(blockKey).merge({
       anchorOffset: start,
       focusOffset: end,
     });
-    const newContent = Modifier.replaceText(contentState, selection, word);
+    const newContent = Modifier.replaceText(contentState, selection, newWord);
     const newState = EditorState.push(
       props.editorState,
       newContent,
-      "correcting-spelling"
+      "replacing-word(s)"
     );
     props.onChange(newState);
-    let err = props.error;
-    if (word.length !== incorrectWord.length) {
-      let diff = word.length - incorrectWord.length;
+    let err = [...props.error];
+    if (newWord.length !== oldWord.length) {
+      let diff = newWord.length - oldWord.length;
       for (
         let i = errorIdx.idx + 1;
         i < err.length && err[i].blockKey === blockKey;
@@ -303,6 +310,18 @@ export default function DropDown(props) {
       );
     }
   }, [errorIdx]);
+
+  useEffect(() => {
+    if (props.state) {
+      if (props.state.matches && props.state.matches.length > 0) {
+        highlightText(
+          props.state.matches[matchIdx.idx].blockKey,
+          props.state.matches[matchIdx.idx].start,
+          props.state.matches[matchIdx.idx].end
+        );
+      }
+    }
+  }, [props.state, matchIdx]);
 
   let handleFont = (key, name) => {
     let newState = props.editorState;
@@ -777,7 +796,7 @@ export default function DropDown(props) {
                     style={{ cursor: "pointer" }}
                     onClick={() => props.handleDropDown("")}
                   >
-                    close
+                    close_small
                   </span>
                 </div>
               </div>
@@ -963,11 +982,11 @@ export default function DropDown(props) {
                 height: "1.6rem",
                 paddingLeft: "5px",
               }}
-              onChange={setAddWord}
+              onChange={(e) => setAddWord(e.target.value)}
               value={addWord}
             />
             <span
-              className="material-symbols-outlined"
+              className="material-symbols-outlined suggest-add"
               title="Add word to Personal Dictionary"
               style={{
                 cursor: "pointer",
@@ -981,6 +1000,643 @@ export default function DropDown(props) {
               add
             </span>
           </div>
+        </div>
+      ) : props.isClose.dropdown === "find" ? (
+        <div
+          className="DD"
+          style={{
+            position: "absolute",
+            left: `${positions.left}px`,
+            top: `${positions.top}px`,
+            width: "9rem",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => props.handleDropDown("find-word")}
+            style={{
+              cursor: "pointer",
+              border: "1px solid gray",
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span className="material-symbols-outlined">search</span> Find
+            </span>
+          </button>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => props.handleDropDown("find-replace-word")}
+            style={{
+              cursor: "pointer",
+              border: "1px solid gray",
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+            }}
+          >
+            {" "}
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span className="material-symbols-outlined">find_replace</span>{" "}
+              Find and Replace
+            </span>
+          </button>
+        </div>
+      ) : props.isClose.dropdown === "find-word" ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "5px",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            backgroundColor: "white",
+            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "0.25rem",
+            display: "flex",
+            flexDirection: "column",
+            padding: "0.75rem",
+            zIndex: "2",
+          }}
+        >
+          <div
+            className="find"
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+              marginTop: "0.5rem",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <input
+              type="text"
+              id="find"
+              placeholder="Find word"
+              style={{
+                border: "1px solid black",
+                borderRadius: "2.5px",
+                marginRight: "0.5rem",
+                height: "1.6rem",
+                paddingLeft: "5px",
+                width: "24rem",
+              }}
+              value={props.state.find}
+              onChange={(e) =>
+                props.setState((prev) => {
+                  return {
+                    find: e.target.value,
+                    replaceWith: prev.replaceWith,
+                    matchCase: prev.matchCase,
+                    matches: prev.matches,
+                  };
+                })
+              }
+            />
+            <span
+              className={
+                props.state.find.length > 0
+                  ? "material-symbols-outlined suggest-add"
+                  : "material-symbols-outlined disabled"
+              }
+              title="Find"
+              style={
+                props.state.find.length > 0
+                  ? {
+                      cursor: "pointer",
+                      fontSize: "1rem",
+                      borderRadius: "100%",
+                      backgroundColor: "black",
+                      color: "white",
+                      padding: "0.38rem",
+                    }
+                  : {
+                      cursor: "pointer",
+                      fontSize: "1rem",
+                      borderRadius: "100%",
+                      backgroundColor: "black",
+                      color: "white",
+                      padding: "0.38rem",
+                      opacity: "0.65",
+                    }
+              }
+              onClick={props.state.find.length > 0 ? props.findfn : null}
+            >
+              search
+            </span>
+            <div
+              className="top-bar"
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                marginLeft: "1rem",
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                onClick={() => props.handleDropDown("")}
+                style={{ cursor: "pointer", borderRadius: "100%" }}
+              >
+                close
+              </span>
+            </div>
+          </div>
+          <div
+            className="case"
+            style={{
+              marginTop: "0.5rem",
+              marginBottom: "0.55rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+              }}
+            >
+              <input
+                type="checkbox"
+                name="case"
+                id="case"
+                style={{
+                  accentColor: "black",
+                  cursor: "pointer",
+                }}
+                onChange={() =>
+                  props.setState((prev) => {
+                    return {
+                      find: prev.find,
+                      replaceWith: prev.replaceWith,
+                      matchCase: !prev.matchCase,
+                      matches: prev.matches,
+                    };
+                  })
+                }
+              />
+              <label htmlFor="case" style={{ cursor: "pointer" }}>
+                Match Case
+              </label>
+            </div>
+            <div
+              className="options"
+              style={{ display: "flex", marginTop: "0.25rem" }}
+            >
+              <div
+                className="found"
+                style={{
+                  marginTop: "0.5rem",
+                  marginBottom: "0.5rem",
+                  marginRight: "1rem",
+                }}
+              >
+                {props.state.matches && props.state.matches.length > 0 ? (
+                  <span>
+                    <i style={{ color: "gray" }}>
+                      {matchIdx.idx + 1} of {props.state.matches.length}
+                    </i>
+                  </span>
+                ) : props.state.matches ? (
+                  <span>
+                    <i style={{ color: "gray" }}>0 of 0</i>
+                  </span>
+                ) : null}
+              </div>
+              <button
+                className={
+                  props.state.matches && props.state.matches.length > 0
+                    ? "suggest-add"
+                    : "disabled"
+                }
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setMatchIdx((prev) => {
+                    return {
+                      idx:
+                        (props.state.matches.length + prev.idx - 1) %
+                        props.state.matches.length,
+                    };
+                  });
+                }}
+                style={{
+                  cursor: "pointer",
+                  marginRight: "0.75rem",
+                  height: "2rem",
+                  width: "2rem",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "black",
+                  color: "white",
+                  borderRadius: "1.2rem",
+                  border: "1px solid rgba(138, 137, 137, 1)",
+                }}
+                title="Previous"
+                disabled={
+                  props.state.matches && props.state.matches.length > 0
+                    ? false
+                    : true
+                }
+              >
+                <span className="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button
+                className={
+                  props.state.matches && props.state.matches.length > 0
+                    ? "suggest-add"
+                    : "disabled"
+                }
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setMatchIdx((prev) => {
+                    return {
+                      idx: (prev.idx + 1) % props.state.matches.length,
+                    };
+                  });
+                }}
+                title="Next"
+                style={{
+                  cursor: "pointer",
+                  height: "2rem",
+                  width: "2rem",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "black",
+                  color: "white",
+                  borderRadius: "1.2rem",
+                  border: "1px solid rgba(138, 137, 137, 1)",
+                }}
+                disabled={
+                  props.state.matches && props.state.matches.length > 0
+                    ? false
+                    : true
+                }
+              >
+                <span className="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : props.isClose.dropdown === "find-replace-word" ? (
+        <div
+          style={{
+            position: "fixed",
+            top: "5px",
+            left: "5px",
+          }}
+        >
+          <Rnd
+            size={{ width: state1.width, height: state1.height }}
+            position={{ x: state1.x, y: state1.y }}
+            onDragStop={(e, d) => {
+              setState1((prev) => ({ ...prev, x: d.x, y: d.y }));
+            }}
+            onResize={(e, direction, ref, delta, position) => {
+              setState1((prev) => ({
+                ...prev,
+                width: ref.offsetWidth,
+                height: ref.offsetHeight,
+                ...position,
+              }));
+            }}
+            bounds="window"
+          >
+            <div
+              style={{
+                position: "absolute",
+                zIndex: "2",
+                backgroundColor: "white",
+                boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+                borderRadius: "0.25rem",
+                display: "flex",
+                flexDirection: "column",
+                padding: "0.75rem",
+              }}
+            >
+              <div
+                className="top-bar"
+                style={{ display: "flex", justifyContent: "end" }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  onClick={() => props.handleDropDown("")}
+                  style={{ cursor: "pointer", borderRadius: "100%" }}
+                >
+                  close_small
+                </span>
+              </div>
+              <div
+                className="find"
+                style={{
+                  display: "flex",
+                  justifyContent: "start",
+                  alignItems: "center",
+                  marginTop: "0.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <input
+                  type="text"
+                  id="find"
+                  placeholder="Find word"
+                  style={{
+                    border: "1px solid black",
+                    borderRadius: "2.5px",
+                    marginRight: "0.5rem",
+                    height: "1.6rem",
+                    paddingLeft: "5px",
+                    width: "24rem",
+                  }}
+                  value={props.state.find}
+                  onChange={(e) =>
+                    props.setState((prev) => {
+                      return {
+                        find: e.target.value,
+                        replaceWith: prev.replaceWith,
+                        matchCase: prev.matchCase,
+                        matches: prev.matches,
+                      };
+                    })
+                  }
+                />
+                <span
+                  className={
+                    props.state.find.length > 0
+                      ? "material-symbols-outlined suggest-add"
+                      : "material-symbols-outlined disabled"
+                  }
+                  title="Find"
+                  style={
+                    props.state.find.length > 0
+                      ? {
+                          cursor: "pointer",
+                          fontSize: "1rem",
+                          borderRadius: "100%",
+                          backgroundColor: "black",
+                          color: "white",
+                          padding: "0.38rem",
+                        }
+                      : {
+                          cursor: "pointer",
+                          fontSize: "1rem",
+                          borderRadius: "100%",
+                          backgroundColor: "black",
+                          color: "white",
+                          padding: "0.38rem",
+                          opacity: "0.65",
+                        }
+                  }
+                  onClick={props.state.find.length > 0 ? props.findfn : null}
+                >
+                  search
+                </span>
+              </div>
+              <div
+                className="replace"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: "0.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <input
+                  type="text"
+                  id="replace"
+                  placeholder="Replace with"
+                  style={{
+                    border: "1px solid black",
+                    borderRadius: "2.5px",
+                    marginRight: "0.5rem",
+                    height: "1.6rem",
+                    paddingLeft: "5px",
+                    width: "26rem",
+                  }}
+                  value={props.state.replaceWith}
+                  onChange={(e) =>
+                    props.setState((prev) => {
+                      return {
+                        find: prev.find,
+                        replaceWith: e.target.value,
+                        matchCase: prev.matchCase,
+                        matches: prev.matches,
+                      };
+                    })
+                  }
+                />
+              </div>
+              <div
+                className="case"
+                style={{
+                  marginTop: "0.5rem",
+                  marginBottom: "0.55rem",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="case"
+                  id="case"
+                  style={{
+                    accentColor: "black",
+                    cursor: "pointer",
+                  }}
+                  onChange={() =>
+                    props.setState((prev) => {
+                      return {
+                        find: prev.find,
+                        replaceWith: prev.replaceWith,
+                        matchCase: !prev.matchCase,
+                        matches: prev.matches,
+                      };
+                    })
+                  }
+                />
+                <label htmlFor="case" style={{ cursor: "pointer" }}>
+                  Match Case
+                </label>
+              </div>
+              <div
+                className="found"
+                style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+              >
+                {props.state.matches && props.state.matches.length > 0 ? (
+                  <span>
+                    <i style={{ color: "gray" }}>
+                      {matchIdx.idx + 1} of {props.state.matches.length}
+                    </i>
+                  </span>
+                ) : props.state.matches ? (
+                  <span>
+                    <i style={{ color: "gray" }}>0 of 0</i>
+                  </span>
+                ) : null}
+              </div>
+              <div
+                className="options"
+                style={{ display: "flex", marginTop: "0.25rem" }}
+              >
+                <button
+                  className={
+                    props.state.matches && props.state.matches.length > 0
+                      ? "suggest-add"
+                      : "disabled"
+                  }
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    props.replaceFn(
+                      props.state.matches[matchIdx.idx],
+                      matchIdx.idx
+                    );
+                    if (props.state.matches.length === 0) {
+                      setMatchIdx({ idx: 0 });
+                    } else if (errorIdx.idx === props.state.matches.length) {
+                      setMatchIdx((prev) => {
+                        return { idx: prev.idx - 1 };
+                      });
+                    } else {
+                      setMatchIdx((prev) => {
+                        return { idx: prev.idx };
+                      });
+                    }
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "0.75rem",
+                    fontSize: "0.9rem",
+                    height: "2rem",
+                    width: "6.25rem",
+                    backgroundColor: "white",
+                    borderRadius: "1.2rem",
+                    border: "1px solid rgba(138, 137, 137, 1)",
+                  }}
+                  disabled={
+                    props.state.matches && props.state.matches.length > 0
+                      ? false
+                      : true
+                  }
+                >
+                  Replace
+                </button>
+                <button
+                  className={
+                    props.state.matches && props.state.matches.length > 0
+                      ? "suggest-add"
+                      : "disabled"
+                  }
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => props.replaceAll()}
+                  style={{
+                    cursor: "pointer",
+                    marginRight: "0.75rem",
+                    fontSize: "0.9rem",
+                    height: "2rem",
+                    width: "6.25rem",
+                    backgroundColor: "white",
+                    borderRadius: "1.2rem",
+                    border: "1px solid rgba(138, 137, 137, 1)",
+                  }}
+                  disabled={
+                    props.state.matches && props.state.matches.length > 0
+                      ? false
+                      : true
+                  }
+                >
+                  Replace All
+                </button>
+                <button
+                  className={
+                    props.state.matches && props.state.matches.length > 0
+                      ? "suggest-add"
+                      : "disabled"
+                  }
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    setMatchIdx((prev) => {
+                      return {
+                        idx:
+                          (props.state.matches.length + prev.idx - 1) %
+                          props.state.matches.length,
+                      };
+                    });
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    marginRight: "0.75rem",
+                    height: "2rem",
+                    width: "6.25rem",
+                    backgroundColor: "black",
+                    color: "white",
+                    borderRadius: "1.2rem",
+                    border: "1px solid rgba(138, 137, 137, 1)",
+                  }}
+                  disabled={
+                    props.state.matches && props.state.matches.length > 0
+                      ? false
+                      : true
+                  }
+                >
+                  Previous
+                </button>
+                <button
+                  className={
+                    props.state.matches && props.state.matches.length > 0
+                      ? "suggest-add"
+                      : "disabled"
+                  }
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    setMatchIdx((prev) => {
+                      return {
+                        idx: (prev.idx + 1) % props.state.matches.length,
+                      };
+                    });
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    height: "2rem",
+                    width: "6.25rem",
+                    backgroundColor: "black",
+                    color: "white",
+                    borderRadius: "1.2rem",
+                    border: "1px solid rgba(138, 137, 137, 1)",
+                  }}
+                  disabled={
+                    props.state.matches && props.state.matches.length > 0
+                      ? false
+                      : true
+                  }
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </Rnd>
         </div>
       ) : null}
     </>

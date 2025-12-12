@@ -35,7 +35,16 @@ export default function SpellChecker(props) {
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => {
-          if (props.isClose.open) checkSpelling();
+          if (
+            props.isClose.open &&
+            props.isClose.dropdown !== "error-suggestions"
+          )
+            props.handleDropDown("error-suggestions");
+          else if (
+            props.isClose.open &&
+            props.isClose.dropdown === "error-suggestions"
+          )
+            checkSpelling();
           else {
             props.setMenu(null);
             props.handleDropDown("error-suggestions");

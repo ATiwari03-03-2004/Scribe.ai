@@ -8,11 +8,12 @@ import Video from "./Video";
 import "./CustomBlocks.css";
 import SpellChecker from "./SpellChecker";
 import PersonalDictionary from "./PersonalDictionary";
+import FindNReplace from "./FindNReplace";
 
 export default function CustomBlocks(props) {
   return (
     <div className="custom-block" style={{ paddingRight: "0.35rem" }}>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         <SpellChecker
           editorState={props.editorState}
           onChange={props.onChange}
@@ -23,6 +24,12 @@ export default function CustomBlocks(props) {
         <PersonalDictionary
           isClose={props.isClose}
           handleDropDown={props.handleDropDown}
+        />
+        <FindNReplace
+          isClose={props.isClose}
+          handleDropDown={props.handleDropDown}
+          editorState={props.editorState}
+          onChange={props.onChange}
         />
         <LinkBlock editorState={props.editorState} onChange={props.onChange} />
         <Image
